@@ -1,18 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.main.MainActivity">
 
-    <TextView
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="24dp">
+    </androidx.constraintlayout.widget.Guideline>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="24dp">
+    </androidx.constraintlayout.widget.Guideline>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/weather_info_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="48dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/weather_image"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_launcher_foreground">
+            </com.google.android.material.imageview.ShapeableImageView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/city_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="24dp"
+                    android:text="@{City}"
+                    android:textSize="16sp"
+                    android:textAllCaps="true">
+                </com.google.android.material.textview.MaterialTextView>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/degrees_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/city_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="6dp"
+                    android:text="@{Degrees}"
+                    android:textSize="32sp"
+                    android:textAllCaps="true">
+                </com.google.android.material.textview.MaterialTextView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/heart_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/weather_info_card"
+        app:layout_constraintEnd_toStartOf="@+id/life_progress"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:src="@drawable/hearth"
+        android:layout_marginTop="24dp">
+    </com.google.android.material.imageview.ShapeableImageView>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/life_progress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/weather_info_card"
+        app:layout_constraintStart_toEndOf="@+id/heart_image"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="12dp">
+    </com.google.android.material.progressindicator.LinearProgressIndicator>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/current_life_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/life_progress"
+        app:layout_constraintTop_toBottomOf="@+id/weather_info_card"
+        app:layout_constraintBaseline_toBottomOf="@id/life_progress"
+        android:text="@{50}"
+        android:layout_marginStart="6dp">
+    </com.google.android.material.textview.MaterialTextView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/separator_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/current_life_text"
+        app:layout_constraintTop_toBottomOf="@+id/weather_info_card"
+        app:layout_constraintBaseline_toBaselineOf="@id/current_life_text"
+        android:text="@string/separator">
+    </com.google.android.material.textview.MaterialTextView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/max_life_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/separator_text"
+        app:layout_constraintTop_toBottomOf="@+id/weather_info_card"
+        app:layout_constraintBaseline_toBaselineOf="@id/separator_text"
+        android:text="@{50}">
+    </com.google.android.material.textview.MaterialTextView>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/star_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/heart_image"
+        app:layout_constraintEnd_toStartOf="@+id/xp_progress"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:src="@drawable/star"
+        android:layout_marginTop="12dp">
+    </com.google.android.material.imageview.ShapeableImageView>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/xp_progress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/life_progress"
+        app:layout_constraintStart_toEndOf="@+id/star_image"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="12dp">
+    </com.google.android.material.progressindicator.LinearProgressIndicator>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/level_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/xp_progress"
+        app:layout_constraintTop_toBottomOf="@+id/weather_info_card"
+        app:layout_constraintBaseline_toBottomOf="@id/xp_progress"
+        android:text="@string/level"
+        android:layout_marginStart="6dp">
+    </com.google.android.material.textview.MaterialTextView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/current_level_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/level_text"
+        app:layout_constraintTop_toBottomOf="@+id/weather_info_card"
+        app:layout_constraintBaseline_toBaselineOf="@id/level_text"
+        android:text="@{10}"
+        android:textAllCaps="true">
+    </com.google.android.material.textview.MaterialTextView>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/star_image"
+        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation_view"
+        app:layout_constraintStart_toStartOf="@+id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@+id/end_guideline">
+    </androidx.fragment.app.FragmentContainerView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/main_bottom_navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/main_menu">
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/create_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation_view"
+        android:src="@drawable/plus"
+        android:contentDescription="@string/create"
+        android:layout_marginBottom="-28dp">
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 </androidx.constraintlayout.widget.ConstraintLayout>

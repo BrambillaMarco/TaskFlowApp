@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/habit_item"
+        android:contentDescription="@string/habit"
+        android:title="@string/habit"
+        android:icon="@drawable/habit_outlined">
+    </item>
+
+    <item
+        android:id="@+id/daily_item"
+        android:contentDescription="@string/daily"
+        android:title="@string/daily"
+        android:icon="@drawable/calendar_outline">
+    </item>
+
+    <item
+        android:id="@+id/fab_button"
+        android:title=""
+        android:enabled="false">
+    </item>
+
+    <item
+        android:id="@+id/to_do_item"
+        android:contentDescription="@string/to_do"
+        android:title="@string/to_do"
+        android:icon="@drawable/to_do_outlined">
+    </item>
+
+    <item
+        android:id="@+id/account_item"
+        android:contentDescription="@string/account"
+        android:title="@string/account"
+        android:icon="@drawable/account_outlined">
+    </item>
+</menu>
