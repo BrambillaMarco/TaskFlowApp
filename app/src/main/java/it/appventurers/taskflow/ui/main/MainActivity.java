@@ -1,18 +1,13 @@
 package it.appventurers.taskflow.ui.main;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
-
-import com.google.android.material.navigation.NavigationBarView;
 
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.databinding.ActivityMainBinding;
@@ -44,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
                                 .setPopExitAnim(androidx.navigation.ui.R.anim.nav_default_pop_exit_anim)
                                 .build());
                 item.setChecked(true);
+                item.setIcon(R.drawable.habit_filled);
+                binding.mainBottomNavigationView.getMenu().findItem(R.id.daily_item)
+                        .setIcon(R.drawable.daily_outline);
+                binding.mainBottomNavigationView.getMenu().findItem(R.id.to_do_item)
+                        .setIcon(R.drawable.to_do_outlined);
+                binding.mainBottomNavigationView.getMenu().findItem(R.id.account_item)
+                        .setIcon(R.drawable.account_outlined);
+                binding.createButton.show();
             } else if (item.getItemId() == R.id.daily_item) {
                 navController.navigate(R.id.dailyFragment, null,
                         new NavOptions.Builder()
@@ -53,6 +56,14 @@ public class MainActivity extends AppCompatActivity {
                                 .setPopExitAnim(androidx.navigation.ui.R.anim.nav_default_pop_exit_anim)
                                 .build());
                 item.setChecked(true);
+                item.setIcon(R.drawable.daily_filled);
+                binding.mainBottomNavigationView.getMenu().findItem(R.id.habit_item)
+                        .setIcon(R.drawable.habit_outlined);
+                binding.mainBottomNavigationView.getMenu().findItem(R.id.to_do_item)
+                        .setIcon(R.drawable.to_do_outlined);
+                binding.mainBottomNavigationView.getMenu().findItem(R.id.account_item)
+                        .setIcon(R.drawable.account_outlined);
+                binding.createButton.show();
             } else if (item.getItemId() == R.id.to_do_item) {
                 navController.navigate(R.id.toDoFragment, null,
                         new NavOptions.Builder()
@@ -62,6 +73,14 @@ public class MainActivity extends AppCompatActivity {
                                 .setPopExitAnim(androidx.navigation.ui.R.anim.nav_default_pop_exit_anim)
                                 .build());
                 item.setChecked(true);
+                item.setIcon(R.drawable.to_do_filled);
+                binding.mainBottomNavigationView.getMenu().findItem(R.id.daily_item)
+                        .setIcon(R.drawable.daily_outline);
+                binding.mainBottomNavigationView.getMenu().findItem(R.id.habit_item)
+                        .setIcon(R.drawable.habit_outlined);
+                binding.mainBottomNavigationView.getMenu().findItem(R.id.account_item)
+                        .setIcon(R.drawable.account_outlined);
+                binding.createButton.show();
             } else if (item.getItemId() == R.id.account_item) {
                 navController.navigate(R.id.accountFragment, null,
                         new NavOptions.Builder()
@@ -71,6 +90,14 @@ public class MainActivity extends AppCompatActivity {
                                 .setPopExitAnim(androidx.navigation.ui.R.anim.nav_default_pop_exit_anim)
                                 .build());
                 item.setChecked(true);
+                item.setIcon(R.drawable.account_filled);
+                binding.mainBottomNavigationView.getMenu().findItem(R.id.daily_item)
+                        .setIcon(R.drawable.daily_outline);
+                binding.mainBottomNavigationView.getMenu().findItem(R.id.to_do_item)
+                        .setIcon(R.drawable.to_do_outlined);
+                binding.mainBottomNavigationView.getMenu().findItem(R.id.habit_item)
+                        .setIcon(R.drawable.habit_outlined);
+                binding.createButton.hide();
             }
             return false;
         });
@@ -99,6 +126,15 @@ public class MainActivity extends AppCompatActivity {
             finish();
         } else {
             binding.mainBottomNavigationView.setSelectedItemId(R.id.habit_item);
+            binding.mainBottomNavigationView.getMenu().findItem(R.id.habit_item)
+                    .setIcon(R.drawable.habit_filled);
+            binding.mainBottomNavigationView.getMenu().findItem(R.id.daily_item)
+                    .setIcon(R.drawable.daily_outline);
+            binding.mainBottomNavigationView.getMenu().findItem(R.id.to_do_item)
+                    .setIcon(R.drawable.to_do_outlined);
+            binding.mainBottomNavigationView.getMenu().findItem(R.id.account_item)
+                    .setIcon(R.drawable.account_outlined);
+            binding.createButton.show();
             navController.navigate(R.id.habitFragment);
         }
     }

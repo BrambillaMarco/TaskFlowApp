@@ -6,14 +6,14 @@
         android:id="@+id/habit_item"
         android:contentDescription="@string/habit"
         android:title="@string/habit"
-        android:icon="@drawable/habit_outlined">
+        android:icon="@drawable/habit_filled">
     </item>
 
     <item
         android:id="@+id/daily_item"
         android:contentDescription="@string/daily"
         android:title="@string/daily"
-        android:icon="@drawable/calendar_outline">
+        android:icon="@drawable/daily_outline">
     </item>
 
     <item
