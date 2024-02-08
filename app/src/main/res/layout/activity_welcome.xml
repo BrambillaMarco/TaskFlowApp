@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.access.WelcomeActivity">
+    tools:context=".ui.welcome.WelcomeActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/logo_image"
@@ -18,11 +18,14 @@
     </com.google.android.material.imageview.ShapeableImageView>
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/welcome_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/logo_image"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:navGraph="@navigation/welcome_nav_graph"
+        app:defaultNavHost="true">
     </androidx.fragment.app.FragmentContainerView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

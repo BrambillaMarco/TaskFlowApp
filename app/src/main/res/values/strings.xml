@@ -49,4 +49,5 @@
     <string name="reminder">Reminder</string>
     <string name="create_to_do">Create to do</string>
     <string name="delete_account">Delete account</string>
+    <string name="fragment_to_load">fragment_to_load</string>
 </resources>

@@ -7,10 +7,14 @@
     tools:context=".ui.create.CreateActivity">
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/create_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:navGraph="@navigation/create_nav_graph"
+        app:defaultNavHost="true">
     </androidx.fragment.app.FragmentContainerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
