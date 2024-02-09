@@ -62,11 +62,9 @@ public class RemoteUserAuth extends BaseRemoteUserAuth{
     @Override
     public void signInWithGoogle(String token) {
         if (token != null) {
-            // Got an ID token from Google. Use it to authenticate with Firebase.
             AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(token, null);
             mAuth.signInWithCredential(firebaseCredential).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
                         userCallback.onSuccessAuthUser(new User(user.getDisplayName(), user.getEmail(), user.getUid()));

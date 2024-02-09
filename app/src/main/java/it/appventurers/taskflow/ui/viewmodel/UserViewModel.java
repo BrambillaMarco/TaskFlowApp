@@ -30,6 +30,11 @@ public class UserViewModel extends ViewModel {
         setUserData();
     }
 
+    public void retrievePassword(String email) {
+        userRepository.retrievePassword(email);
+        setUserData();
+    }
+
     public MutableLiveData<Result> getUserData() {
         return userData;
     }
