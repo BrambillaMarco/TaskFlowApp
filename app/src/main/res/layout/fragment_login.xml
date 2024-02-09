@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.welcome.LoginFragment">
+    tools:context=".ui.elements.welcome.LoginFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_guideline"
@@ -42,7 +42,8 @@
         app:layout_constraintTop_toBottomOf="@id/login_text"
         android:layout_marginTop="24dp"
         app:endIconMode="clear_text"
-        app:startIconDrawable="@drawable/email">
+        app:startIconDrawable="@drawable/email"
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email_edit_text"
@@ -62,7 +63,8 @@
         app:layout_constraintTop_toBottomOf="@id/email_text_layout"
         android:layout_marginTop="24dp"
         app:endIconMode="password_toggle"
-        app:startIconDrawable="@drawable/password">
+        app:startIconDrawable="@drawable/password"
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_edit_text"

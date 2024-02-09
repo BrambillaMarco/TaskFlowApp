@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/habitFragment"
-        android:name="it.appventurers.taskflow.ui.main.HabitFragment"
+        android:name="it.appventurers.taskflow.ui.elements.main.HabitFragment"
         android:label="fragment_habit"
         tools:layout="@layout/fragment_habit" >
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/dailyFragment"
-        android:name="it.appventurers.taskflow.ui.main.DailyFragment"
+        android:name="it.appventurers.taskflow.ui.elements.main.DailyFragment"
         android:label="fragment_daily"
         tools:layout="@layout/fragment_daily" >
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/toDoFragment"
-        android:name="it.appventurers.taskflow.ui.main.ToDoFragment"
+        android:name="it.appventurers.taskflow.ui.elements.main.ToDoFragment"
         android:label="fragment_to_do"
         tools:layout="@layout/fragment_to_do" >
         <action
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/accountFragment"
-        android:name="it.appventurers.taskflow.ui.main.AccountFragment"
+        android:name="it.appventurers.taskflow.ui.elements.main.AccountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" >
         <action
@@ -59,7 +59,7 @@
     </fragment>
     <activity
         android:id="@+id/createActivity"
-        android:name="it.appventurers.taskflow.ui.create.CreateActivity"
+        android:name="it.appventurers.taskflow.ui.elements.create.CreateActivity"
         android:label="activity_create"
         tools:layout="@layout/activity_create" />
 </navigation>

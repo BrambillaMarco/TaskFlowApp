@@ -1,5 +1,6 @@
-package it.appventurers.taskflow.ui.create;
+package it.appventurers.taskflow.ui.elements.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,22 +11,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import it.appventurers.taskflow.R;
-import it.appventurers.taskflow.databinding.FragmentCreateDailyBinding;
+import it.appventurers.taskflow.databinding.FragmentAccountBinding;
+import it.appventurers.taskflow.ui.elements.welcome.WelcomeActivity;
 
 /**
- * Create daily fragment class
+ * Account fragment class
  */
-public class CreateDailyFragment extends Fragment {
+public class AccountFragment extends Fragment {
 
-    private FragmentCreateDailyBinding binding;
+    private FragmentAccountBinding binding;
 
-    public CreateDailyFragment() {
+    public AccountFragment() {
         // Required empty public constructor
     }
 
-    public static CreateDailyFragment newInstance() {
-        return new CreateDailyFragment();
+    public static AccountFragment newInstance() {
+        return new AccountFragment();
     }
 
     @Override
@@ -37,7 +38,7 @@ public class CreateDailyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentCreateDailyBinding.inflate(inflater, container, false);
+        binding = FragmentAccountBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -45,11 +46,15 @@ public class CreateDailyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.backButton.setOnClickListener(view1 -> requireActivity().finish());
+        binding.logoutButton.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getContext(), WelcomeActivity.class);
+            startActivity(intent);
+            requireActivity().finish();
+        });
 
-        binding.createButton.setOnClickListener(view1 -> {
-            binding.createButton.setVisibility(View.INVISIBLE);
-            binding.dailyProgress.setVisibility(View.VISIBLE);
+        binding.deleteButton.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getContext(), WelcomeActivity.class);
+            startActivity(intent);
             requireActivity().finish();
         });
     }

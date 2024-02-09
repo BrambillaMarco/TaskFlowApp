@@ -1,4 +1,4 @@
-package it.appventurers.taskflow.ui.welcome;
+package it.appventurers.taskflow.ui.elements.welcome;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;

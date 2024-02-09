@@ -1,33 +1,30 @@
-package it.appventurers.taskflow.ui.welcome;
+package it.appventurers.taskflow.ui.elements.create;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import it.appventurers.taskflow.R;
-import it.appventurers.taskflow.databinding.FragmentRegisterBinding;
+import it.appventurers.taskflow.databinding.FragmentCreateHabitBinding;
 
 /**
- * Register fragment class
+ * Create habit fragment class
  */
-public class RegisterFragment extends Fragment {
+public class CreateHabitFragment extends Fragment {
 
-    private FragmentRegisterBinding binding;
+    private FragmentCreateHabitBinding binding;
 
-    public RegisterFragment() {
+    public CreateHabitFragment() {
         // Required empty public constructor
     }
 
-    public static RegisterFragment newInstance() {
-        return new RegisterFragment();
+    public static CreateHabitFragment newInstance() {
+        return new CreateHabitFragment();
     }
 
     @Override
@@ -39,19 +36,20 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentRegisterBinding.inflate(inflater, container, false);
+        binding = FragmentCreateHabitBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        NavController navController = NavHostFragment.findNavController(this);
 
-        binding.registerButton.setOnClickListener(view1 -> {
-            binding.registerButton.setVisibility(View.INVISIBLE);
-            binding.registerProgress.setVisibility(View.VISIBLE);
-            navController.navigateUp();
+        binding.backButton.setOnClickListener(view1 -> requireActivity().finish());
+
+        binding.createButton.setOnClickListener(view1 -> {
+            binding.createButton.setVisibility(View.INVISIBLE);
+            binding.habitProgress.setVisibility(View.VISIBLE);
+            requireActivity().finish();
         });
     }
 

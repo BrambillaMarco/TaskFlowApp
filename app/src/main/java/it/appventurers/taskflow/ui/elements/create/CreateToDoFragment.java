@@ -1,4 +1,4 @@
-package it.appventurers.taskflow.ui.create;
+package it.appventurers.taskflow.ui.elements.create;
 
 import android.os.Bundle;
 
@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.databinding.FragmentCreateToDoBinding;
 
 /**

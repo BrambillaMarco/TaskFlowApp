@@ -1,4 +1,4 @@
-package it.appventurers.taskflow.ui.main;
+package it.appventurers.taskflow.ui.elements.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -11,7 +11,7 @@ import android.view.View;
 
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.databinding.ActivityMainBinding;
-import it.appventurers.taskflow.ui.create.CreateActivity;
+import it.appventurers.taskflow.ui.elements.create.CreateActivity;
 
 public class MainActivity extends AppCompatActivity {
 

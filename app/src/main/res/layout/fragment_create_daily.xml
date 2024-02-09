@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.create.CreateDailyFragment">
+    tools:context=".ui.elements.create.CreateDailyFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_guideline"

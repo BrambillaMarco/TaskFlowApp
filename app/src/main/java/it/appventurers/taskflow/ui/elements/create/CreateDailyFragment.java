@@ -1,33 +1,30 @@
-package it.appventurers.taskflow.ui.create;
+package it.appventurers.taskflow.ui.elements.create;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import it.appventurers.taskflow.R;
-import it.appventurers.taskflow.databinding.FragmentCreateHabitBinding;
+import it.appventurers.taskflow.databinding.FragmentCreateDailyBinding;
 
 /**
- * Create habit fragment class
+ * Create daily fragment class
  */
-public class CreateHabitFragment extends Fragment {
+public class CreateDailyFragment extends Fragment {
 
-    private FragmentCreateHabitBinding binding;
+    private FragmentCreateDailyBinding binding;
 
-    public CreateHabitFragment() {
+    public CreateDailyFragment() {
         // Required empty public constructor
     }
 
-    public static CreateHabitFragment newInstance() {
-        return new CreateHabitFragment();
+    public static CreateDailyFragment newInstance() {
+        return new CreateDailyFragment();
     }
 
     @Override
@@ -39,7 +36,7 @@ public class CreateHabitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentCreateHabitBinding.inflate(inflater, container, false);
+        binding = FragmentCreateDailyBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -51,7 +48,7 @@ public class CreateHabitFragment extends Fragment {
 
         binding.createButton.setOnClickListener(view1 -> {
             binding.createButton.setVisibility(View.INVISIBLE);
-            binding.habitProgress.setVisibility(View.VISIBLE);
+            binding.dailyProgress.setVisibility(View.VISIBLE);
             requireActivity().finish();
         });
     }
