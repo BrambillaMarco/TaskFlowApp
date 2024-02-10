@@ -51,10 +51,10 @@ public class RemoteUserAuth extends BaseRemoteUserAuth{
                 if (user != null) {
                     userCallback.onSuccessAuthUser(new User(user.getDisplayName(), user.getEmail(), user.getUid()));
                 } else {
-                    userCallback.onFailure("Unable to sign in");
+                    userCallback.onFailure("Unable to sign in.");
                 }
             } else {
-                userCallback.onFailure("Unable to sign in");
+                userCallback.onFailure("Unable to sign in.");
             }
         });
     }

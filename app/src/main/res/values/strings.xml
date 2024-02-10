@@ -48,4 +48,16 @@
     <string name="create_to_do">Create to do</string>
     <string name="delete_account">Delete account</string>
     <string name="fragment_to_load">fragment_to_load</string>
+    <string name="error_email_empty">Insert email</string>
+    <string name="error_password_empty">Insert password</string>
+    <string name="error_not_equals">Passwords are not equals</string>
+    <string name="error_password_short">Password must contain 8 character</string>
+    <string name="account_created">Account created.</string>
+    <string name="error_saving">Unable to save data. Try later.</string>
+    <string name="error_login">Email or password are wrong.</string>
+    <string name="error_reading">Unable to read credentials. Try later.</string>
+    <string name="error_retrieving_credentials">Unable to retrieve credentials. Try later.</string>
+    <string name="error_credentials_empty">Insert credentials</string>
+    <string name="account_deleted">Account deleted.</string>
+    <string name="error_deleting">Unable to delete account.</string>
 </resources>

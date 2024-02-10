@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import it.appventurers.taskflow.data.repository.UserRepository;
 import it.appventurers.taskflow.model.Result;
+import it.appventurers.taskflow.model.User;
 
 public class UserViewModel extends ViewModel {
 
@@ -13,6 +14,10 @@ public class UserViewModel extends ViewModel {
 
     public UserViewModel(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public User getLoggedUser() {
+        return userRepository.getLoggedUser();
     }
 
     public void signUp(String email, String password) {
@@ -35,11 +40,21 @@ public class UserViewModel extends ViewModel {
         setUserData();
     }
 
+    public void logout() {
+        userRepository.logout();
+        setUserData();
+    }
+
+    public void deleteUser() {
+        userRepository.deleteUser();
+        setUserData();
+    }
+
     public MutableLiveData<Result> getUserData() {
         return userData;
     }
 
-    public void setUserData() {
+    private void setUserData() {
         userData = userRepository.getUserData();
     }
 }

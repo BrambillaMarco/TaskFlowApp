@@ -71,7 +71,8 @@ public class UserRepository implements IUserCallback{
 
     @Override
     public void onSuccessLogout() {
-
+        Result.UserSuccess result = new Result.UserSuccess(null);
+        userData.postValue(result);
     }
 
     @Override
@@ -92,6 +93,7 @@ public class UserRepository implements IUserCallback{
 
     @Override
     public void onSuccessDeleteUser() {
-
+        Result.UserSuccess result = new Result.UserSuccess(null);
+        userData.postValue(result);
     }
 }
