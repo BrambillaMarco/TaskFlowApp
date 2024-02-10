@@ -49,8 +49,8 @@ public class UserRepository implements IUserCallback{
         remoteUserAuth.updatePassword(password);
     }
 
-    public void updateEmail(String email) {
-        remoteUserAuth.updateEmail(email);
+    public void updateEmail(String newEmail, String oldEmail, String password) {
+        remoteUserAuth.updateEmail(newEmail, oldEmail, password);
     }
 
     public void retrievePassword(String email) {
@@ -77,12 +77,14 @@ public class UserRepository implements IUserCallback{
 
     @Override
     public void onSuccessUpdatePassword() {
-
+        Result.UserSuccess result = new Result.UserSuccess(null);
+        userData.postValue(result);
     }
 
     @Override
-    public void onSuccessUpdateEmail() {
-
+    public void onSuccessUpdateEmail(String email) {
+        Result.UserSuccess result = new Result.UserSuccess(null);
+        userData.postValue(result);
     }
 
     @Override

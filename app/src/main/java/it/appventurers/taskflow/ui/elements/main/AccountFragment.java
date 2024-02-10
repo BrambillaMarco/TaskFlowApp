@@ -68,7 +68,15 @@ public class AccountFragment extends Fragment {
         userViewModel = new UserViewModel(
                 ClassBuilder.getClassBuilder().getUserRepository(requireActivity().getApplication()));
         encryptedSharedPreferences = new EncryptedSharedPreferencesUtil(requireContext());
-
+        try {
+            String password = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
+                    PASSWORD + userViewModel.getLoggedUser().getuId());
+            binding.passwordEditText.setText(password);
+        } catch (GeneralSecurityException | IOException e) {
+            binding.passwordEditText.setText("");
+            binding.passwordTextLayout.setError(getString(R.string.error_retrieve_password));
+        }
+        binding.emailEditText.setText(userViewModel.getLoggedUser().getEmail());
 
         binding.logoutButton.setOnClickListener(view1 -> {
             userViewModel.logout();

@@ -8,7 +8,7 @@ public interface IUserCallback {
     void onFailure(String error);
     void onSuccessLogout();
     void onSuccessUpdatePassword();
-    void onSuccessUpdateEmail();
+    void onSuccessUpdateEmail(String email);
     void onSuccessRetrievePassword();
     void onSuccessDeleteUser();
 }

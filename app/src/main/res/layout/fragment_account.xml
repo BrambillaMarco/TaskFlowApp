@@ -25,16 +25,17 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/email_text_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/accept_email_button"
             app:layout_constraintTop_toBottomOf="@id/account_info_text"
             android:layout_marginTop="24dp"
             app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/email"
-            android:layout_marginEnd="150dp"
             android:enabled="false"
-            android:layout_marginStart="10dp">
+            android:layout_marginStart="10dp"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email_edit_text"
@@ -51,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?attr/materialIconButtonStyle"
-            app:layout_constraintStart_toEndOf="@id/email_text_layout"
+            app:layout_constraintEnd_toStartOf="@id/denied_email_button"
             app:layout_constraintBaseline_toBaselineOf="@id/email_text_layout"
             app:icon="@drawable/pencil"
             app:iconTint="@color/black"
@@ -64,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?attr/materialIconButtonStyle"
-            app:layout_constraintStart_toEndOf="@id/email_text_layout"
+            app:layout_constraintEnd_toStartOf="@id/denied_email_button"
             app:layout_constraintBaseline_toBaselineOf="@id/email_text_layout"
             app:icon="@drawable/done"
             app:iconTint="@color/black"
@@ -78,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?attr/materialIconButtonStyle"
-            app:layout_constraintStart_toEndOf="@id/accept_email_button"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@id/email_text_layout"
             app:icon="@drawable/delete"
             app:iconTint="@color/black"
@@ -88,23 +89,24 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/password_text_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/accept_password_button"
             app:layout_constraintTop_toBottomOf="@id/email_text_layout"
             android:layout_marginTop="24dp"
             app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/password"
-            android:layout_marginEnd="150dp"
             android:enabled="false"
-            android:layout_marginStart="10dp">
+            android:layout_marginStart="10dp"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
-                android:inputType="textVisiblePassword"
+                android:inputType="textPassword"
                 android:text="@{Password}">
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
@@ -114,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?attr/materialIconButtonStyle"
-            app:layout_constraintStart_toEndOf="@id/password_text_layout"
+            app:layout_constraintEnd_toStartOf="@id/denied_password_button"
             app:layout_constraintBaseline_toBaselineOf="@id/password_text_layout"
             app:icon="@drawable/pencil"
             app:iconTint="@color/black"
@@ -127,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?attr/materialIconButtonStyle"
-            app:layout_constraintStart_toEndOf="@id/password_text_layout"
+            app:layout_constraintEnd_toStartOf="@id/denied_password_button"
             app:layout_constraintBaseline_toBaselineOf="@id/password_text_layout"
             app:icon="@drawable/done"
             app:iconTint="@color/black"
@@ -141,7 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?attr/materialIconButtonStyle"
-            app:layout_constraintStart_toEndOf="@id/accept_password_button"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@id/password_text_layout"
             app:icon="@drawable/delete"
             app:iconTint="@color/black"

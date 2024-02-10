@@ -1,8 +1,11 @@
 package it.appventurers.taskflow.data.source;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -93,12 +96,21 @@ public class RemoteUserAuth extends BaseRemoteUserAuth{
     }
 
     @Override
-    public void updateEmail(String email) {
+    public void updateEmail(String newEmail, String oldEmail, String password) {
         FirebaseUser user = mAuth.getCurrentUser();
+        Log.d("ciao", "qui ci arrivo");
         if (user != null) {
-            user.verifyBeforeUpdateEmail(email).addOnCompleteListener(task -> {
+            AuthCredential credential = EmailAuthProvider.getCredential(oldEmail, password);
+            user.reauthenticate(credential).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    userCallback.onSuccessUpdateEmail();
+                    user.updateEmail(newEmail).addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            Log.d("ciao", "operazione eseguita");
+                            userCallback.onSuccessUpdateEmail(newEmail);
+                        } else {
+                            userCallback.onFailure("Unable to update the email");
+                        }
+                    });
                 } else {
                     userCallback.onFailure("Unable to update the email");
                 }

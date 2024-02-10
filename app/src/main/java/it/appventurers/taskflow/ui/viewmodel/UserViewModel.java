@@ -50,6 +50,16 @@ public class UserViewModel extends ViewModel {
         setUserData();
     }
 
+    public void updatePassword(String password) {
+        userRepository.updatePassword(password);
+        setUserData();
+    }
+
+    public void updateEmail(String newEmail, String oldEmail, String password) {
+        userRepository.updateEmail(newEmail, oldEmail, password);
+        setUserData();
+    }
+
     public MutableLiveData<Result> getUserData() {
         return userData;
     }

@@ -21,7 +21,7 @@ public abstract class BaseRemoteUserAuth {
 
     public abstract void updatePassword(String password);
 
-    public abstract void updateEmail(String email);
+    public abstract void updateEmail(String newEmail, String oldEmail, String password);
 
     public abstract void retrievePassword(String email);
 
