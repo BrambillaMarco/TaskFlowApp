@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -27,6 +28,7 @@ import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.databinding.FragmentRegisterBinding;
 import it.appventurers.taskflow.model.Result;
 import it.appventurers.taskflow.model.User;
+import it.appventurers.taskflow.ui.viewmodel.DataViewModel;
 import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
 import it.appventurers.taskflow.util.ClassBuilder;
 import it.appventurers.taskflow.util.EncryptedSharedPreferencesUtil;
@@ -39,6 +41,7 @@ public class RegisterFragment extends Fragment {
     private FragmentRegisterBinding binding;
     private EncryptedSharedPreferencesUtil encryptedSharedPreferences;
     private UserViewModel userViewModel;
+    private DataViewModel dataViewModel;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -69,6 +72,9 @@ public class RegisterFragment extends Fragment {
         userViewModel = new UserViewModel(
                 ClassBuilder.getClassBuilder()
                         .getUserRepository(requireActivity().getApplication()));
+        dataViewModel = new DataViewModel(
+                ClassBuilder.getClassBuilder()
+                        .getDataRepository(requireActivity().getApplication()));
 
         binding.registerButton.setOnClickListener(view1 -> {
             binding.emailTextLayout.setError(null);
@@ -87,14 +93,20 @@ public class RegisterFragment extends Fragment {
                 userViewModel.getUserData().observe(getViewLifecycleOwner(), result -> {
                     if (result.isSuccess()) {
                         User user = ((Result.UserSuccess) result).getUser();
-                        saveRemoteDataToLocal(user, email, password);
-
-                        Snackbar.make(
-                                view,
-                                getString(R.string.account_created),
-                                Snackbar.LENGTH_SHORT)
-                                .show();
-                        navController.navigateUp();
+                        dataViewModel.saveUser(user);
+                        dataViewModel.getData().observe(getViewLifecycleOwner(), result1 -> {
+                            if (result1.isSuccess()) {
+                                saveRemoteDataToLocal(user, email, password);
+                                Snackbar.make(view, getString(R.string.account_created), Snackbar.LENGTH_SHORT)
+                                        .show();
+                                navController.navigateUp();
+                            } else {
+                                String error = ((Result.Fail) result1).getError();
+                                Snackbar.make(view,
+                                        error,
+                                        Snackbar.LENGTH_SHORT).show();
+                            }
+                        });
                     } else {
                         String error = ((Result.Fail) result).getError();
                         Snackbar.make(view,

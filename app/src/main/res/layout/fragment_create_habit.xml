@@ -118,7 +118,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/notes_text_layout"
+        android:id="@+id/note_text_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
@@ -128,7 +128,7 @@
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/notes_edit_text"
+            android:id="@+id/note_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/notes"
@@ -141,7 +141,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notes_text_layout"
+        app:layout_constraintTop_toBottomOf="@id/note_text_layout"
         android:layout_marginTop="24dp">
     </com.google.android.material.divider.MaterialDivider>
 
@@ -157,7 +157,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-            android:id="@+id/english_button"
+            android:id="@+id/positive_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/plus"
@@ -168,7 +168,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-            android:id="@+id/italian_button"
+            android:id="@+id/negative_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/minus"

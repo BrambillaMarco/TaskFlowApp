@@ -27,6 +27,7 @@ import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.databinding.FragmentAccountBinding;
 import it.appventurers.taskflow.model.Result;
 import it.appventurers.taskflow.ui.elements.welcome.WelcomeActivity;
+import it.appventurers.taskflow.ui.viewmodel.DataViewModel;
 import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
 import it.appventurers.taskflow.util.ClassBuilder;
 import it.appventurers.taskflow.util.EncryptedSharedPreferencesUtil;
@@ -39,6 +40,7 @@ public class AccountFragment extends Fragment {
     private FragmentAccountBinding binding;
     private EncryptedSharedPreferencesUtil encryptedSharedPreferences;
     private UserViewModel userViewModel;
+    private DataViewModel dataViewModel;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -68,6 +70,9 @@ public class AccountFragment extends Fragment {
         userViewModel = new UserViewModel(
                 ClassBuilder.getClassBuilder().getUserRepository(requireActivity().getApplication()));
         encryptedSharedPreferences = new EncryptedSharedPreferencesUtil(requireContext());
+        dataViewModel = new DataViewModel(
+                ClassBuilder.getClassBuilder()
+                        .getDataRepository(requireActivity().getApplication()));
         try {
             String password = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
                     PASSWORD + userViewModel.getLoggedUser().getuId());
@@ -109,6 +114,7 @@ public class AccountFragment extends Fragment {
             userViewModel.deleteUser();
             userViewModel.getUserData().observe(getViewLifecycleOwner(), result -> {
                 if (result.isSuccess()) {
+
                     Snackbar.make(
                             view,
                             getString(R.string.account_deleted),

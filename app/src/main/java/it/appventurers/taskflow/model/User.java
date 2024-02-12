@@ -1,5 +1,7 @@
 package it.appventurers.taskflow.model;
 
+import androidx.annotation.NonNull;
+
 public class User {
 
     private String name;

@@ -7,16 +7,20 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.autofill.CharSequenceTransformation;
 import android.view.View;
 
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.databinding.ActivityMainBinding;
 import it.appventurers.taskflow.ui.elements.create.CreateActivity;
+import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
+import it.appventurers.taskflow.util.ClassBuilder;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private NavController navController;
+    private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.main_fragment_container);
         navController = navHostFragment.getNavController();
+        userViewModel = new UserViewModel(
+                ClassBuilder.getClassBuilder().getUserRepository(getApplication()));
 
         binding.mainBottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.habit_item) {

@@ -1,4 +1,4 @@
-package it.appventurers.taskflow.data.repository;
+package it.appventurers.taskflow.data.repository.user;
 
 import it.appventurers.taskflow.model.User;
 

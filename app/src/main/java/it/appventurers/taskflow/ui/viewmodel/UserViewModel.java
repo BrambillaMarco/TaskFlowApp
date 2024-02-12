@@ -3,7 +3,7 @@ package it.appventurers.taskflow.ui.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import it.appventurers.taskflow.data.repository.UserRepository;
+import it.appventurers.taskflow.data.repository.user.UserRepository;
 import it.appventurers.taskflow.model.Result;
 import it.appventurers.taskflow.model.User;
 

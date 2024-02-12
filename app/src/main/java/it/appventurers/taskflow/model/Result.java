@@ -1,7 +1,5 @@
 package it.appventurers.taskflow.model;
 
-import it.appventurers.taskflow.data.repository.UserRepository;
-
 public abstract class Result {
 
     private Result(){
@@ -9,7 +7,10 @@ public abstract class Result {
     }
 
     public boolean isSuccess() {
-        return this instanceof UserSuccess;
+        return this instanceof UserSuccess ||
+                this instanceof HabitSuccess ||
+                this instanceof DailySuccess ||
+                this instanceof ToDoSuccess;
     }
 
     public static final class UserSuccess extends Result {
@@ -22,6 +23,45 @@ public abstract class Result {
 
         public User getUser() {
             return user;
+        }
+    }
+
+    public static final class HabitSuccess extends Result {
+
+        private final Habit habit;
+
+        public HabitSuccess(Habit habit) {
+            this.habit = habit;
+        }
+
+        public Habit getHabit() {
+            return habit;
+        }
+    }
+
+    public static final class DailySuccess extends Result {
+
+        private final Daily daily;
+
+        public DailySuccess(Daily daily) {
+            this.daily = daily;
+        }
+
+        public Daily getDaily() {
+            return daily;
+        }
+    }
+
+    public static final class ToDoSuccess extends Result {
+
+        private final ToDo toDo;
+
+        public ToDoSuccess(ToDo toDo) {
+            this.toDo = toDo;
+        }
+
+        public ToDo getToDo() {
+            return toDo;
         }
     }
 
