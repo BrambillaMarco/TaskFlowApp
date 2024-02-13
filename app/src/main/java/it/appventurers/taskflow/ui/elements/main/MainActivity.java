@@ -1,26 +1,46 @@
 package it.appventurers.taskflow.ui.elements.main;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.service.autofill.CharSequenceTransformation;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.databinding.ActivityMainBinding;
+import it.appventurers.taskflow.model.Result;
+import it.appventurers.taskflow.model.Weather;
 import it.appventurers.taskflow.ui.elements.create.CreateActivity;
 import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
+import it.appventurers.taskflow.ui.viewmodel.WeatherViewModel;
 import it.appventurers.taskflow.util.ClassBuilder;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int PERMISSION_CODE = 1;
     private ActivityMainBinding binding;
     private NavController navController;
-    private UserViewModel userViewModel;
+    private WeatherViewModel weatherViewModel;
+    private FusedLocationProviderClient fusedLocationClient;
+    private Weather weather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +52,35 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.main_fragment_container);
         navController = navHostFragment.getNavController();
-        userViewModel = new UserViewModel(
-                ClassBuilder.getClassBuilder().getUserRepository(getApplication()));
+        weatherViewModel = new WeatherViewModel(
+                ClassBuilder.getClassBuilder().getWeatherRepository(getApplication()));
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_CODE);
+        }
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                String position = latitude + "," + longitude;
+                weatherViewModel.getWeatherInfo(position);
+                weatherViewModel.getWeatherData().observe(this, result -> {
+                    if (result.isSuccess()) {
+                        weather = ((Result.WeatherSuccess) result).getWeather();
+                        binding.cityText.setText(weather.getCity());
+                        binding.degreesText.setText(weather.getTemperature());
+                        changeImage(weather.getCode());
+                    } else {
+                        String error = ((Result.Fail) result).getError();
+                        Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).addOnFailureListener(e -> {
+
+        });
+
 
         binding.mainBottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.habit_item) {
@@ -125,6 +172,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void changeImage(String code) {
+        
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -142,6 +193,19 @@ public class MainActivity extends AppCompatActivity {
                     .setIcon(R.drawable.account_outlined);
             binding.createButton.show();
             navController.navigate(R.id.habitFragment);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==PERMISSION_CODE){
+            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Please provide the permissions", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         }
     }
 }

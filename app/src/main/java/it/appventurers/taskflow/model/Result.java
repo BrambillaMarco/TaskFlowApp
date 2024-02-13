@@ -10,7 +10,8 @@ public abstract class Result {
         return this instanceof UserSuccess ||
                 this instanceof HabitSuccess ||
                 this instanceof DailySuccess ||
-                this instanceof ToDoSuccess;
+                this instanceof ToDoSuccess ||
+                this instanceof WeatherSuccess;
     }
 
     public static final class UserSuccess extends Result {
@@ -62,6 +63,19 @@ public abstract class Result {
 
         public ToDo getToDo() {
             return toDo;
+        }
+    }
+
+    public static final class WeatherSuccess extends Result {
+
+        private final Weather weather;
+
+        public WeatherSuccess(Weather weather) {
+            this.weather = weather;
+        }
+
+        public Weather getWeather() {
+            return weather;
         }
     }
 

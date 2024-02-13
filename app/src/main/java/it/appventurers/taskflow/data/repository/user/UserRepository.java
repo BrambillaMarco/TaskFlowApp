@@ -2,7 +2,7 @@ package it.appventurers.taskflow.data.repository.user;
 
 import androidx.lifecycle.MutableLiveData;
 
-import it.appventurers.taskflow.data.source.BaseRemoteUserAuth;
+import it.appventurers.taskflow.data.source.user.BaseRemoteUserAuth;
 import it.appventurers.taskflow.model.Result;
 import it.appventurers.taskflow.model.User;
 
