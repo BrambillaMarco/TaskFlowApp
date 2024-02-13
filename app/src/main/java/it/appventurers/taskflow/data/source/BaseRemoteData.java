@@ -24,10 +24,12 @@ public abstract class BaseRemoteData {
     public abstract void deleteHabit(User user, Habit habit);
 
     public abstract void saveDaily(User user, Daily daily);
+    public abstract void getDaily(User user, Daily daily);
     public abstract void updateDaily(User user, Daily daily);
     public abstract void deleteDaily(User user, Daily daily);
 
     public abstract void saveToDo(User user, ToDo toDo);
+    public abstract void getToDo(User user, ToDo toDo);
     public abstract void updateToDo(User user, ToDo toDo);
     public abstract void deleteToDo(User user, ToDo toDo);
 }

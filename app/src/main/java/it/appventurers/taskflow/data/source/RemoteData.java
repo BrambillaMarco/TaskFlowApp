@@ -5,6 +5,7 @@ import static it.appventurers.taskflow.util.Constant.HABIT;
 import static it.appventurers.taskflow.util.Constant.TO_DO;
 import static it.appventurers.taskflow.util.Constant.USER;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import it.appventurers.taskflow.model.Daily;
@@ -71,7 +72,6 @@ public class RemoteData extends BaseRemoteData{
                     }
                 });
     }
-
     @Override
     public void updateHabit(User user, Habit habit) {
 
