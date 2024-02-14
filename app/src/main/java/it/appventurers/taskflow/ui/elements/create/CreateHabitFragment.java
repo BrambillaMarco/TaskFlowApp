@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,6 +32,12 @@ public class CreateHabitFragment extends Fragment {
     private FragmentCreateHabitBinding binding;
     private UserViewModel userViewModel;
     private DataViewModel dataViewModel;
+    private String title;
+    private String note;
+    private boolean negative;
+    private boolean positive;
+    private int difficulty;
+    private int resetCounter;
 
     public CreateHabitFragment() {
         // Required empty public constructor
@@ -43,6 +50,10 @@ public class CreateHabitFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        negative = false;
+        positive = false;
+        difficulty = 0;
+        resetCounter = 0;
     }
 
     @Override
@@ -65,45 +76,59 @@ public class CreateHabitFragment extends Fragment {
 
         binding.backButton.setOnClickListener(view1 -> requireActivity().finish());
 
+        binding.negativePositiveButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (checkedId == R.id.positive_button && isChecked) {
+                positive = true;
+            }
+            if (checkedId == R.id.negative_button && isChecked) {
+                negative = true;
+            }
+        });
+
+        binding.difficultyButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (checkedId == R.id.trivial_button) {
+                difficulty = 1;
+            } else if (checkedId == R.id.easy_button) {
+                difficulty = 2;
+            } else if (checkedId == R.id.medium_button) {
+                difficulty = 3;
+            } else if (checkedId == R.id.hard_button) {
+                difficulty = 4;
+            }
+        });
+
+        binding.resetCounterButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (checkedId == R.id.daily_button) {
+                resetCounter = 1;
+            } else if (checkedId == R.id.weekly_button) {
+                resetCounter = 2;
+            } else if (checkedId == R.id.monthly_button) {
+                resetCounter = 3;
+            }
+        });
+
         binding.createButton.setOnClickListener(view1 -> {
             binding.createButton.setVisibility(View.INVISIBLE);
             binding.habitProgress.setVisibility(View.VISIBLE);
-            String title = binding.titleEditText.getText().toString().trim();
-            String note = binding.noteEditText.getText().toString().trim();
-            boolean positive = binding.positiveButton.isSelected();
-            boolean negative = binding.negativeButton.isSelected();
-            int difficulty = 0;
-            if (binding.trivialButton.isSelected()) {
-                difficulty = 1;
-            } else if (binding.easyButton.isSelected()) {
-                difficulty = 2;
-            } else if (binding.mediumButton.isSelected()) {
-                difficulty = 3;
-            } else if (binding.hardButton.isSelected()) {
-                difficulty = 4;
+            title = binding.titleEditText.getText().toString().trim();
+            note = binding.noteEditText.getText().toString().trim();
+            if (!title.isEmpty() && (positive || negative) && difficulty != 0 && resetCounter != 0) {
+                Habit habit = new Habit(title, note, negative, positive, difficulty, resetCounter);
+                dataViewModel.saveHabit(userViewModel.getLoggedUser(), habit);
+                dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
+                    if (result.isSuccess()) {
+                        Snackbar.make(view, "Habit created", Snackbar.LENGTH_SHORT).show();
+                        requireActivity().finish();
+                    } else {
+                        String error = ((Result.Fail) result).getError();
+                        Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show();
+                        binding.createButton.setVisibility(View.VISIBLE);
+                        binding.habitProgress.setVisibility(View.INVISIBLE);
+                    }
+                });
+            } else {
+                Snackbar.make(view, "Insert all fields", Snackbar.LENGTH_SHORT).show();
             }
-            int resetCounter = 0;
-            if (binding.dailyButton.isSelected()) {
-                resetCounter = 1;
-            } else if (binding.weeklyButton.isSelected()) {
-                resetCounter = 2;
-            } else if (binding.monthlyButton.isSelected()) {
-                resetCounter = 3;
-            }
-            Habit habit = new Habit(title, note, negative, positive, difficulty, resetCounter);
-            dataViewModel.saveHabit(userViewModel.getLoggedUser(), habit);
-            dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
-                if (result.isSuccess()) {
-                    Snackbar.make(view, "Habit created", Snackbar.LENGTH_SHORT).show();
-                    requireActivity().finish();
-                } else {
-                    String error = ((Result.Fail) result).getError();
-                    Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show();
-                    binding.createButton.setVisibility(View.VISIBLE);
-                    binding.habitProgress.setVisibility(View.INVISIBLE);
-                }
-            });
-
         });
     }
 

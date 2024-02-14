@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         userViewModel = new UserViewModel(
                 ClassBuilder.getClassBuilder().getUserRepository(getApplication()));
 
+
+
         binding.mainBottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.habit_item) {
                 navController.navigate(R.id.habitFragment, null,

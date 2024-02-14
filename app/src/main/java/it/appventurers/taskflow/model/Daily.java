@@ -7,6 +7,9 @@ public class Daily {
     private int difficulty;
     private int resetCounter;
 
+    public Daily() {
+    }
+
     public Daily(String name, String note, int difficulty, int resetCounter) {
         this.name = name;
         this.note = note;

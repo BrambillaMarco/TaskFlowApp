@@ -4,6 +4,8 @@ import android.provider.ContactsContract;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
+
 import it.appventurers.taskflow.data.source.BaseRemoteData;
 import it.appventurers.taskflow.model.Daily;
 import it.appventurers.taskflow.model.Habit;
@@ -42,6 +44,10 @@ public class DataRepository implements IDataCallback {
         remoteData.saveHabit(user, habit);
     }
 
+    public void getAllHabit(User user) {
+        remoteData.getAllHabit(user);
+    }
+
     public void updateHabit(User user, Habit habit) {
         remoteData.updateHabit(user, habit);
     }
@@ -54,6 +60,10 @@ public class DataRepository implements IDataCallback {
         remoteData.saveDaily(user, daily);
     }
 
+    public void getAllDaily(User user) {
+        remoteData.getAllDaily(user);
+    }
+
     public void updateDaily(User user, Daily daily) {
         remoteData.updateDaily(user, daily);
     }
@@ -64,6 +74,10 @@ public class DataRepository implements IDataCallback {
 
     public void saveToDo(User user, ToDo toDo) {
         remoteData.saveToDo(user, toDo);
+    }
+
+    public void getAllToDo(User user) {
+        remoteData.getAllToDo(user);
     }
 
     public void updateToDo(User user, ToDo toDo) {
@@ -87,14 +101,32 @@ public class DataRepository implements IDataCallback {
     }
 
     @Override
+    public void onSuccessGetHabit(ArrayList<Habit> habitList) {
+        Result.HabitSuccess result = new Result.HabitSuccess(habitList);
+        data.postValue(result);
+    }
+
+    @Override
     public void onSuccessDaily(Daily daily) {
         Result.DailySuccess result = new Result.DailySuccess(daily);
         data.postValue(result);
     }
 
     @Override
+    public void onSuccessGetDaily(ArrayList<Daily> dailyList) {
+        Result.DailySuccess result = new Result.DailySuccess(dailyList);
+        data.postValue(result);
+    }
+
+    @Override
     public void onSuccessToDo(ToDo toDo) {
         Result.ToDoSuccess result = new Result.ToDoSuccess(toDo);
+        data.postValue(result);
+    }
+
+    @Override
+    public void onSuccessGetToDo(ArrayList<ToDo> toDoList) {
+        Result.ToDoSuccess result = new Result.ToDoSuccess(toDoList);
         data.postValue(result);
     }
 

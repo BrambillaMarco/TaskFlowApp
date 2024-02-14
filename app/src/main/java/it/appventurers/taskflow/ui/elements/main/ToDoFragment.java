@@ -12,13 +12,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 
 import it.appventurers.taskflow.R;
-import it.appventurers.taskflow.adapter.HabitsRecyclerViewAdapter;
-import it.appventurers.taskflow.adapter.ToDosRecyclerViewAdapter;
-import it.appventurers.taskflow.databinding.FragmentHabitBinding;
+import it.appventurers.taskflow.adapter.DailyAdapter;
+import it.appventurers.taskflow.adapter.ToDoAdapter;
 import it.appventurers.taskflow.databinding.FragmentToDoBinding;
+import it.appventurers.taskflow.model.Daily;
+import it.appventurers.taskflow.model.Result;
+import it.appventurers.taskflow.model.ToDo;
+import it.appventurers.taskflow.ui.viewmodel.DataViewModel;
+import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
+import it.appventurers.taskflow.util.ClassBuilder;
 
 /**
  * To Do fragment class
@@ -26,6 +33,9 @@ import it.appventurers.taskflow.databinding.FragmentToDoBinding;
 public class ToDoFragment extends Fragment {
 
     private FragmentToDoBinding binding;
+    private UserViewModel userViewModel;
+    private DataViewModel dataViewModel;
+    private ArrayList<ToDo> toDoList;
 
     public ToDoFragment() {
         // Required empty public constructor
@@ -38,6 +48,7 @@ public class ToDoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        toDoList = new ArrayList<>();
     }
 
     @Override
@@ -51,10 +62,31 @@ public class ToDoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerviewToDos = view.findViewById(R.id.recyclerview_to_do);
+        RecyclerView recyclerViewToDo = view.findViewById(R.id.to_do_recycler);
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
+        userViewModel = new UserViewModel(
+                ClassBuilder.getClassBuilder()
+                        .getUserRepository(requireActivity().getApplication()));
+        dataViewModel = new DataViewModel(
+                ClassBuilder.getClassBuilder()
+                        .getDataRepository(requireActivity().getApplication()));
 
+        dataViewModel.getAllToDo(userViewModel.getLoggedUser());
+        dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
+            if (result.isSuccess()) {
+                ArrayList<ToDo> retrievedToDoList = ((Result.ToDoSuccess) result).getToDoList();
+                if (!retrievedToDoList.isEmpty()) {
+                    toDoList.addAll(retrievedToDoList);
+                    ToDoAdapter toDoAdapter = new ToDoAdapter(toDoList);
+                    recyclerViewToDo.setLayoutManager(layoutManager);
+                    recyclerViewToDo.setAdapter(toDoAdapter);
+                }
+            } else {
+                String error = ((Result.Fail) result).getError();
+                Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -6,7 +6,7 @@
     tools:context=".ui.elements.main.DailyFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_daily"
+        android:id="@+id/daily_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </androidx.recyclerview.widget.RecyclerView>

@@ -62,4 +62,6 @@
     <string name="error_deleting">Unable to delete account.</string>
     <string name="error_retrieve_password">Unable to retrieve password</string>
     <string name="error_change_email">Unable to update the email</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
 </resources>

@@ -9,6 +9,9 @@ public class Habit {
     private int difficulty;
     private int resetCounter;
 
+    public Habit() {
+    }
+
     public Habit(String name, String note,
                  boolean negative, boolean positive,
                  int difficulty, int resetCounter) {

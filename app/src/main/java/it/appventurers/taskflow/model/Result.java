@@ -1,5 +1,7 @@
 package it.appventurers.taskflow.model;
 
+import java.util.ArrayList;
+
 public abstract class Result {
 
     private Result(){
@@ -29,39 +31,72 @@ public abstract class Result {
     public static final class HabitSuccess extends Result {
 
         private final Habit habit;
+        private final ArrayList<Habit> habitList;
+
+        public HabitSuccess(ArrayList<Habit> habitList) {
+            this.habit = null;
+            this.habitList = habitList;
+        }
 
         public HabitSuccess(Habit habit) {
             this.habit = habit;
+            this.habitList = null;
         }
 
         public Habit getHabit() {
             return habit;
+        }
+
+        public ArrayList<Habit> getHabitList() {
+            return habitList;
         }
     }
 
     public static final class DailySuccess extends Result {
 
         private final Daily daily;
+        private final ArrayList<Daily> dailyList;
+
+        public DailySuccess(ArrayList<Daily> dailyList) {
+            this.daily = null;
+            this.dailyList = dailyList;
+        }
 
         public DailySuccess(Daily daily) {
             this.daily = daily;
+            this.dailyList = null;
         }
 
         public Daily getDaily() {
             return daily;
+        }
+
+        public ArrayList<Daily> getDailyList() {
+            return dailyList;
         }
     }
 
     public static final class ToDoSuccess extends Result {
 
         private final ToDo toDo;
+        private final ArrayList<ToDo> toDoList;
+
+        public ToDoSuccess(ArrayList<ToDo> toDoList) {
+            this.toDo = null;
+            this.toDoList = toDoList;
+        }
 
         public ToDoSuccess(ToDo toDo) {
             this.toDo = toDo;
+            this.toDoList = null;
         }
 
         public ToDo getToDo() {
             return toDo;
+        }
+
+        public ArrayList<ToDo> getToDoList() {
+            return toDoList;
         }
     }
 

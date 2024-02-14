@@ -2,6 +2,8 @@ package it.appventurers.taskflow.ui.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
+
 import it.appventurers.taskflow.data.repository.data.DataRepository;
 import it.appventurers.taskflow.model.Daily;
 import it.appventurers.taskflow.model.Habit;
@@ -39,6 +41,11 @@ public class DataViewModel {
         setData();
     }
 
+    public void getAllHabit(User user) {
+        dataRepository.getAllHabit(user);
+        setData();
+    }
+
     public void updateHabit(User user, Habit habit) {
         dataRepository.updateHabit(user, habit);
         setData();
@@ -54,6 +61,11 @@ public class DataViewModel {
         setData();
     }
 
+    public void getAllDaily(User user) {
+        dataRepository.getAllDaily(user);
+        setData();
+    }
+
     public void updateDaily(User user, Daily daily) {
         dataRepository.updateDaily(user, daily);
         setData();
@@ -66,6 +78,11 @@ public class DataViewModel {
 
     public void saveToDo(User user, ToDo toDo) {
         dataRepository.saveToDo(user, toDo);
+        setData();
+    }
+
+    public void getAllToDo(User user) {
+        dataRepository.getAllToDo(user);
         setData();
     }
 

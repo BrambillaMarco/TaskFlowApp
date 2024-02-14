@@ -6,6 +6,9 @@ public class ToDo {
     private String note;
     private int difficulty;
 
+    public ToDo() {
+    }
+
     public ToDo(String name, String note, int difficulty) {
         this.name = name;
         this.note = note;

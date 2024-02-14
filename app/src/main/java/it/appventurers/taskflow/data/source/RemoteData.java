@@ -5,8 +5,18 @@ import static it.appventurers.taskflow.util.Constant.HABIT;
 import static it.appventurers.taskflow.util.Constant.TO_DO;
 import static it.appventurers.taskflow.util.Constant.USER;
 
-import com.google.firebase.firestore.DocumentSnapshot;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import it.appventurers.taskflow.model.Daily;
 import it.appventurers.taskflow.model.Habit;
@@ -16,6 +26,9 @@ import it.appventurers.taskflow.model.User;
 public class RemoteData extends BaseRemoteData{
 
     private FirebaseFirestore db;
+    private ArrayList<Habit> habitList;
+    private ArrayList<Daily> dailyList;
+    private ArrayList<ToDo> toDoList;
 
     public RemoteData() {
         db = FirebaseFirestore.getInstance();
@@ -72,6 +85,27 @@ public class RemoteData extends BaseRemoteData{
                     }
                 });
     }
+
+    @Override
+    public void getAllHabit(User user) {
+        habitList = new ArrayList<>();
+        db.collection(USER).document(user.getuId())
+                .collection(HABIT).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("database", document.getId() + " => " + document.getData());
+                                habitList.add(document.toObject(Habit.class));
+                            }
+                            dataCallback.onSuccessGetHabit(habitList);
+                        } else {
+                            dataCallback.onFailure("Unable to load the data");
+                        }
+                    }
+                });
+    }
+
     @Override
     public void updateHabit(User user, Habit habit) {
 
@@ -104,6 +138,26 @@ public class RemoteData extends BaseRemoteData{
     }
 
     @Override
+    public void getAllDaily(User user) {
+        dailyList = new ArrayList<>();
+        db.collection(USER).document(user.getuId())
+                .collection(DAILY).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("database", document.getId() + " => " + document.getData());
+                                dailyList.add(document.toObject(Daily.class));
+                            }
+                            dataCallback.onSuccessGetDaily(dailyList);
+                        } else {
+                            dataCallback.onFailure("Unable to load the data");
+                        }
+                    }
+                });
+    }
+
+    @Override
     public void updateDaily(User user, Daily daily) {
 
     }
@@ -130,6 +184,26 @@ public class RemoteData extends BaseRemoteData{
                         dataCallback.onSuccessToDo(toDo);
                     } else {
                         dataCallback.onFailure("Unable to save to do");
+                    }
+                });
+    }
+
+    @Override
+    public void getAllToDo(User user) {
+        toDoList = new ArrayList<>();
+        db.collection(USER).document(user.getuId())
+                .collection(TO_DO).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("database", document.getId() + " => " + document.getData());
+                                toDoList.add(document.toObject(ToDo.class));
+                            }
+                            dataCallback.onSuccessGetToDo(toDoList);
+                        } else {
+                            dataCallback.onFailure("Unable to load the data");
+                        }
                     }
                 });
     }
