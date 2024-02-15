@@ -5,6 +5,7 @@ public class Weather {
     private String city;
     private String temperature;
     private String code;
+    private String day;
 
     public Weather() {
     }
@@ -18,7 +19,7 @@ public class Weather {
     }
 
     public String getTemperature() {
-        return temperature;
+        return temperature + " °C";
     }
 
     public void setTemperature(String temperature) {
@@ -31,5 +32,13 @@ public class Weather {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 }

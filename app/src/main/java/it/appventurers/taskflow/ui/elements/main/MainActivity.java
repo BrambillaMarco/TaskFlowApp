@@ -3,7 +3,6 @@ package it.appventurers.taskflow.ui.elements.main;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
@@ -11,17 +10,12 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.service.autofill.CharSequenceTransformation;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 
 import it.appventurers.taskflow.R;
@@ -29,9 +23,9 @@ import it.appventurers.taskflow.databinding.ActivityMainBinding;
 import it.appventurers.taskflow.model.Result;
 import it.appventurers.taskflow.model.Weather;
 import it.appventurers.taskflow.ui.elements.create.CreateActivity;
-import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
 import it.appventurers.taskflow.ui.viewmodel.WeatherViewModel;
 import it.appventurers.taskflow.util.ClassBuilder;
+import it.appventurers.taskflow.util.WeatherIconUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,7 +64,15 @@ public class MainActivity extends AppCompatActivity {
                         weather = ((Result.WeatherSuccess) result).getWeather();
                         binding.cityText.setText(weather.getCity());
                         binding.degreesText.setText(weather.getTemperature());
-                        changeImage(weather.getCode());
+                        if (weather.getDay().equals("1")) {
+                            binding.weatherImage.setImageResource(
+                                    WeatherIconUtil.changeImageDay(
+                                            weather.getCode()));
+                        } else {
+                            binding.weatherImage.setImageResource(
+                                    WeatherIconUtil.changeImageNight(
+                                            weather.getCode()));
+                        }
                     } else {
                         String error = ((Result.Fail) result).getError();
                         Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show();
@@ -170,10 +172,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    private void changeImage(String code) {
-        
     }
 
     @Override

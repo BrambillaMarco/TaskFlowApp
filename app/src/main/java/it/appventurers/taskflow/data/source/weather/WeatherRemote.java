@@ -39,11 +39,13 @@ public class WeatherRemote extends BaseWeatherRemote{
                         String city = location.getString("name");
                         String temperature = current.getString("temp_c");
                         String code = current.getJSONObject("condition").getString("code");
+                        String day = current.getString("is_day");
 
                         Weather weather = new Weather();
                         weather.setCity(city);
                         weather.setTemperature(temperature);
                         weather.setCode(code);
+                        weather.setDay(day);
                         weatherCallback.onSuccessWeather(weather);
                     }
                 } catch (IOException | JSONException e) {
