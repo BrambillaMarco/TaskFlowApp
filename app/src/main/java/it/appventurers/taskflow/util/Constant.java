@@ -11,6 +11,5 @@ public class Constant {
     public static final String HABIT = "habit";
     public static final String DAILY = "daily";
     public static final String TO_DO = "to do";
-    public static final String ANDROID_CLIENT = "1009816970924-vae1p2sjnmkpnu91llsm9ekvsfeeig37.apps.googleusercontent.com";
-    public static final String WEB_CLIENT = "1009816970924-ma2bc8ue2845ojme72h59uqfkokagooo.apps.googleusercontent.com";
+    public static final String BASE_WEATHER_SERVER = "https://api.weatherapi.com/v1/";
 }

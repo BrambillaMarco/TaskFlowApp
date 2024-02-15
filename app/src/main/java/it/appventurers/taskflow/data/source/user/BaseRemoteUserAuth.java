@@ -1,4 +1,4 @@
-package it.appventurers.taskflow.data.source;
+package it.appventurers.taskflow.data.source.user;
 
 import it.appventurers.taskflow.data.repository.user.IUserCallback;
 import it.appventurers.taskflow.model.User;

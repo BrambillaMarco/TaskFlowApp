@@ -1,4 +1,4 @@
-package it.appventurers.taskflow.data.source;
+package it.appventurers.taskflow.data.source.data;
 
 import static it.appventurers.taskflow.util.Constant.DAILY;
 import static it.appventurers.taskflow.util.Constant.HABIT;

@@ -1,6 +1,7 @@
 package it.appventurers.taskflow.ui.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import it.appventurers.taskflow.model.Result;
 import it.appventurers.taskflow.model.ToDo;
 import it.appventurers.taskflow.model.User;
 
-public class DataViewModel {
+public class DataViewModel extends ViewModel {
 
     private final DataRepository dataRepository;
     private MutableLiveData<Result> data;
