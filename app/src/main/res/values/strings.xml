@@ -47,7 +47,6 @@
     <string name="reminder">Reminder</string>
     <string name="create_to_do">Create to do</string>
     <string name="delete_account">Delete account</string>
-    <string name="fragment_to_load">fragment_to_load</string>
     <string name="error_email_empty">Insert email</string>
     <string name="error_password_empty">Insert password</string>
     <string name="error_not_equals">Passwords are not equals</string>

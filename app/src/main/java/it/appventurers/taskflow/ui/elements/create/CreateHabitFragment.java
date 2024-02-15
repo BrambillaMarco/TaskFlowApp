@@ -1,5 +1,8 @@
 package it.appventurers.taskflow.ui.elements.create;
 
+import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
+
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +23,7 @@ import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.databinding.FragmentCreateHabitBinding;
 import it.appventurers.taskflow.model.Habit;
 import it.appventurers.taskflow.model.Result;
+import it.appventurers.taskflow.ui.elements.main.MainActivity;
 import it.appventurers.taskflow.ui.viewmodel.DataViewModel;
 import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
 import it.appventurers.taskflow.util.ClassBuilder;
@@ -118,6 +122,9 @@ public class CreateHabitFragment extends Fragment {
                 dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
                     if (result.isSuccess()) {
                         Snackbar.make(view, "Habit created", Snackbar.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        intent.putExtra(LOAD_FRAGMENT, "HabitFragment");
+                        startActivity(intent);
                         requireActivity().finish();
                     } else {
                         String error = ((Result.Fail) result).getError();

@@ -1,5 +1,8 @@
 package it.appventurers.taskflow.ui.elements.create;
 
+import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
+
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +19,7 @@ import it.appventurers.taskflow.databinding.FragmentCreateToDoBinding;
 import it.appventurers.taskflow.model.Daily;
 import it.appventurers.taskflow.model.Result;
 import it.appventurers.taskflow.model.ToDo;
+import it.appventurers.taskflow.ui.elements.main.MainActivity;
 import it.appventurers.taskflow.ui.viewmodel.DataViewModel;
 import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
 import it.appventurers.taskflow.util.ClassBuilder;
@@ -81,7 +85,10 @@ public class CreateToDoFragment extends Fragment {
             dataViewModel.saveToDo(userViewModel.getLoggedUser(), toDo);
             dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
                 if (result.isSuccess()) {
-                    Snackbar.make(view, "Daily created", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "To do created", Snackbar.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    intent.putExtra(LOAD_FRAGMENT, "ToDoFragment");
+                    startActivity(intent);
                     requireActivity().finish();
                 } else {
                     String error = ((Result.Fail) result).getError();

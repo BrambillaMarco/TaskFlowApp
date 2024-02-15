@@ -32,6 +32,9 @@ public class RemoteData extends BaseRemoteData{
 
     public RemoteData() {
         db = FirebaseFirestore.getInstance();
+        habitList = new ArrayList<>();
+        dailyList = new ArrayList<>();
+        toDoList = new ArrayList<>();
     }
 
     @Override
@@ -88,20 +91,16 @@ public class RemoteData extends BaseRemoteData{
 
     @Override
     public void getAllHabit(User user) {
-        habitList = new ArrayList<>();
         db.collection(USER).document(user.getuId())
-                .collection(HABIT).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("database", document.getId() + " => " + document.getData());
-                                habitList.add(document.toObject(Habit.class));
-                            }
-                            dataCallback.onSuccessGetHabit(habitList);
-                        } else {
-                            dataCallback.onFailure("Unable to load the data");
+                .collection(HABIT).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("database", document.getId() + " => " + document.getData());
+                            habitList.add(document.toObject(Habit.class));
                         }
+                        dataCallback.onSuccessGetHabit(habitList);
+                    } else {
+                        dataCallback.onFailure("Unable to load the data");
                     }
                 });
     }
@@ -141,18 +140,15 @@ public class RemoteData extends BaseRemoteData{
     public void getAllDaily(User user) {
         dailyList = new ArrayList<>();
         db.collection(USER).document(user.getuId())
-                .collection(DAILY).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("database", document.getId() + " => " + document.getData());
-                                dailyList.add(document.toObject(Daily.class));
-                            }
-                            dataCallback.onSuccessGetDaily(dailyList);
-                        } else {
-                            dataCallback.onFailure("Unable to load the data");
+                .collection(DAILY).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("database", document.getId() + " => " + document.getData());
+                            dailyList.add(document.toObject(Daily.class));
                         }
+                        dataCallback.onSuccessGetDaily(dailyList);
+                    } else {
+                        dataCallback.onFailure("Unable to load the data");
                     }
                 });
     }
@@ -192,18 +188,15 @@ public class RemoteData extends BaseRemoteData{
     public void getAllToDo(User user) {
         toDoList = new ArrayList<>();
         db.collection(USER).document(user.getuId())
-                .collection(TO_DO).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("database", document.getId() + " => " + document.getData());
-                                toDoList.add(document.toObject(ToDo.class));
-                            }
-                            dataCallback.onSuccessGetToDo(toDoList);
-                        } else {
-                            dataCallback.onFailure("Unable to load the data");
+                .collection(TO_DO).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("database", document.getId() + " => " + document.getData());
+                            toDoList.add(document.toObject(ToDo.class));
                         }
+                        dataCallback.onSuccessGetToDo(toDoList);
+                    } else {
+                        dataCallback.onFailure("Unable to load the data");
                     }
                 });
     }

@@ -37,6 +37,8 @@ public class HabitFragment extends Fragment {
     private DataViewModel dataViewModel;
     private UserViewModel userViewModel;
     private ArrayList<Habit> habitList;
+    private RecyclerView recyclerViewHabit;
+    private RecyclerView.LayoutManager layoutManager;
 
     public HabitFragment() {
         // Required empty public constructor
@@ -63,10 +65,8 @@ public class HabitFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        RecyclerView recyclerViewHabit = view.findViewById(R.id.habit_recycler);
-        RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(requireContext(),
+        recyclerViewHabit = view.findViewById(R.id.habit_recycler);
+        layoutManager = new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
         userViewModel = new UserViewModel(
                 ClassBuilder.getClassBuilder()
@@ -78,13 +78,10 @@ public class HabitFragment extends Fragment {
         dataViewModel.getAllHabit(userViewModel.getLoggedUser());
         dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()) {
-                ArrayList<Habit> retrievedHabitList = ((Result.HabitSuccess) result).getHabitList();
-                if (!retrievedHabitList.isEmpty()) {
-                    habitList.addAll(retrievedHabitList);
-                    HabitAdapter habitAdapter = new HabitAdapter(habitList);
-                    recyclerViewHabit.setLayoutManager(layoutManager);
-                    recyclerViewHabit.setAdapter(habitAdapter);
-                }
+                habitList.addAll(((Result.HabitSuccess) result).getHabitList());
+                HabitAdapter habitAdapter = new HabitAdapter(habitList);
+                recyclerViewHabit.setLayoutManager(layoutManager);
+                recyclerViewHabit.setAdapter(habitAdapter);
             } else {
                 String error = ((Result.Fail) result).getError();
                 Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show();
@@ -92,4 +89,9 @@ public class HabitFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        habitList.clear();
+    }
 }

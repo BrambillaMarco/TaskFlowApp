@@ -1,5 +1,7 @@
 package it.appventurers.taskflow.ui.elements.main;
 
+import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private NavController navController;
     private UserViewModel userViewModel;
+    private String fragmentToLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +32,21 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        fragmentToLoad = getIntent().getStringExtra(LOAD_FRAGMENT);
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.main_fragment_container);
         navController = navHostFragment.getNavController();
         userViewModel = new UserViewModel(
                 ClassBuilder.getClassBuilder().getUserRepository(getApplication()));
 
-
+        if ("HabitFragment".equals(fragmentToLoad)) {
+            navController.navigate(R.id.habitFragment);
+        } else if ("DailyFragment".equals(fragmentToLoad)) {
+            navController.navigate(R.id.dailyFragment);
+        } else if ("ToDoFragment".equals(fragmentToLoad)) {
+            navController.navigate(R.id.toDoFragment);
+        }
 
         binding.mainBottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.habit_item) {
@@ -113,15 +124,15 @@ public class MainActivity extends AppCompatActivity {
         binding.createButton.setOnClickListener(view1 -> {
             if (binding.mainBottomNavigationView.getSelectedItemId() == R.id.habit_item) {
                 Intent intent = new Intent(getBaseContext(), CreateActivity.class);
-                intent.putExtra(String.valueOf(R.string.fragment_to_load), "HabitFragment");
+                intent.putExtra(LOAD_FRAGMENT, "HabitFragment");
                 startActivity(intent);
             } else if (binding.mainBottomNavigationView.getSelectedItemId() == R.id.daily_item) {
                 Intent intent = new Intent(getBaseContext(), CreateActivity.class);
-                intent.putExtra(String.valueOf(R.string.fragment_to_load), "DailyFragment");
+                intent.putExtra(LOAD_FRAGMENT, "DailyFragment");
                 startActivity(intent);
             } else if (binding.mainBottomNavigationView.getSelectedItemId() == R.id.to_do_item) {
                 Intent intent = new Intent(getBaseContext(), CreateActivity.class);
-                intent.putExtra(String.valueOf(R.string.fragment_to_load), "ToDoFragment");
+                intent.putExtra(LOAD_FRAGMENT, "ToDoFragment");
                 startActivity(intent);
             }
         });
