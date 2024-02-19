@@ -18,6 +18,7 @@ public abstract class BaseRemoteData {
     }
 
     public abstract void saveUser(User user);
+    public abstract void getUserInfo(User user);
     public abstract void updateUser(User user);
     public abstract void deleteUser(User user);
 

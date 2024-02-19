@@ -26,7 +26,7 @@ public class RemoteUserAuth extends BaseRemoteUserAuth{
         if (user == null) {
             return null;
         } else {
-            return new User(user.getDisplayName(), user.getEmail(), user.getUid());
+            return User.getInstance(user.getEmail(), user.getUid());
         }
     }
 
@@ -36,7 +36,7 @@ public class RemoteUserAuth extends BaseRemoteUserAuth{
             if (task.isSuccessful()) {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
-                    userCallback.onSuccessAuthUser(new User(user.getDisplayName(), user.getEmail(), user.getUid()));
+                    userCallback.onSuccessAuthUser(User.getInstance(user.getEmail(), user.getUid()));
                 } else {
                     userCallback.onFailure("Unable to sign up");
                 }
@@ -52,7 +52,7 @@ public class RemoteUserAuth extends BaseRemoteUserAuth{
             if (task.isSuccessful()) {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
-                    userCallback.onSuccessAuthUser(new User(user.getDisplayName(), user.getEmail(), user.getUid()));
+                    userCallback.onSuccessAuthUser(User.getInstance(user.getEmail(), user.getUid()));
                 } else {
                     userCallback.onFailure("Unable to sign in.");
                 }
@@ -70,7 +70,7 @@ public class RemoteUserAuth extends BaseRemoteUserAuth{
                 if (task.isSuccessful()) {
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
-                        userCallback.onSuccessAuthUser(new User(user.getDisplayName(), user.getEmail(), user.getUid()));
+                        userCallback.onSuccessAuthUser(User.getInstance(user.getEmail(), user.getUid()));
                     } else {
                         userCallback.onFailure("Unable to sign in with Google");
                     }
@@ -131,6 +131,7 @@ public class RemoteUserAuth extends BaseRemoteUserAuth{
 
     @Override
     public void logout() {
+        User.getInstance(getLoggedUser().getEmail(), getLoggedUser().getEmail()).logout();
         FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -138,6 +139,7 @@ public class RemoteUserAuth extends BaseRemoteUserAuth{
                     firebaseAuth.removeAuthStateListener(this);
                     userCallback.onSuccessLogout();
                 } else {
+                    User.getInstance(getLoggedUser().getEmail(), getLoggedUser().getEmail());
                     userCallback.onFailure("Unable to logout");
                 }
             }

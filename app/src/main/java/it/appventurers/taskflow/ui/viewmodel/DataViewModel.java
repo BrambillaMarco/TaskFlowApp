@@ -1,5 +1,7 @@
 package it.appventurers.taskflow.ui.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -16,10 +18,13 @@ public class DataViewModel extends ViewModel {
 
     private final DataRepository dataRepository;
     private MutableLiveData<Result> data;
+    private MutableLiveData<User> userInfo;
 
 
     public DataViewModel(DataRepository dataRepository) {
         this.dataRepository = dataRepository;
+        data = new MutableLiveData<>();
+        userInfo = new MutableLiveData<>();
     }
 
     public void saveUser(User user) {
@@ -27,9 +32,14 @@ public class DataViewModel extends ViewModel {
         setData();
     }
 
+    public void getUserInfo(User user) {
+        dataRepository.getUserInfo(user);
+        setUserInfo();
+    }
+
     public void updateUser(User user) {
         dataRepository.updateUser(user);
-        setData();
+        setUserInfo();
     }
 
     public void deleteUser(User user) {
@@ -101,7 +111,15 @@ public class DataViewModel extends ViewModel {
         return data;
     }
 
+    public MutableLiveData<User> getUserInfo() {
+        return userInfo;
+    }
+
     private void setData() {
         data = dataRepository.getData();
+    }
+
+    private void setUserInfo() {
+        userInfo = dataRepository.getUserInfo();
     }
 }

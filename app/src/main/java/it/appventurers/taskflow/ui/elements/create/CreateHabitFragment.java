@@ -81,12 +81,8 @@ public class CreateHabitFragment extends Fragment {
         binding.backButton.setOnClickListener(view1 -> requireActivity().finish());
 
         binding.negativePositiveButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (checkedId == R.id.positive_button && isChecked) {
-                positive = true;
-            }
-            if (checkedId == R.id.negative_button && isChecked) {
-                negative = true;
-            }
+            positive = checkedId == R.id.positive_button && isChecked;
+            negative = checkedId == R.id.negative_button && isChecked;
         });
 
         binding.difficultyButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {

@@ -26,6 +26,7 @@ import java.security.GeneralSecurityException;
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.databinding.FragmentAccountBinding;
 import it.appventurers.taskflow.model.Result;
+import it.appventurers.taskflow.model.User;
 import it.appventurers.taskflow.ui.elements.welcome.WelcomeActivity;
 import it.appventurers.taskflow.ui.viewmodel.DataViewModel;
 import it.appventurers.taskflow.ui.viewmodel.UserViewModel;

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -50,14 +51,33 @@ public class RemoteData extends BaseRemoteData{
     }
 
     @Override
+    public void getUserInfo(User user) {
+        db.collection(USER).document(user.getuId())
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            User updatedUser = document.toObject(User.class);
+                            dataCallback.onSuccessGetUser(updatedUser);
+                        } else {
+                            dataCallback.onFailure("No such document");
+                        }
+                    } else {
+                        dataCallback.onFailure("Error, unable to get usef info");
+                    }
+                });
+    }
+
+    @Override
     public void updateUser(User user) {
         db.collection(USER).document(user.getuId())
                 .update("life", user.getLife(),
                         "currentLife", user.getCurrentLife(),
-                        "level", user.getLevel())
+                        "level", user.getLevel(),
+                        "xp", user.getXp())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        dataCallback.onSuccessUser();
+                        dataCallback.onSuccessUpdateUser(user);
                     } else {
                         dataCallback.onFailure("Unable to update data");
                     }
@@ -95,7 +115,6 @@ public class RemoteData extends BaseRemoteData{
                 .collection(HABIT).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d("database", document.getId() + " => " + document.getData());
                             habitList.add(document.toObject(Habit.class));
                         }
                         dataCallback.onSuccessGetHabit(habitList);
@@ -143,7 +162,6 @@ public class RemoteData extends BaseRemoteData{
                 .collection(DAILY).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d("database", document.getId() + " => " + document.getData());
                             dailyList.add(document.toObject(Daily.class));
                         }
                         dataCallback.onSuccessGetDaily(dailyList);
@@ -191,7 +209,6 @@ public class RemoteData extends BaseRemoteData{
                 .collection(TO_DO).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d("database", document.getId() + " => " + document.getData());
                             toDoList.add(document.toObject(ToDo.class));
                         }
                         dataCallback.onSuccessGetToDo(toDoList);

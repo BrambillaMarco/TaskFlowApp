@@ -1,10 +1,8 @@
 package it.appventurers.taskflow.model;
 
-import androidx.annotation.NonNull;
-
 public class User {
 
-    private String name;
+    private static User instance;
     private String email;
     private String uId;
     private int life;
@@ -12,8 +10,10 @@ public class User {
     private int xp;
     private int level;
 
-    public User(String name, String email, String uId) {
-        this.name = name;
+    public User() {
+    }
+
+    private User(String email, String uId) {
         this.email = email;
         this.uId = uId;
         this.life = 10;
@@ -22,12 +22,11 @@ public class User {
         this.level = 1;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public static User getInstance(String email, String uId) {
+        if (instance == null) {
+            instance = new User(email, uId);
+        }
+        return instance;
     }
 
     public String getEmail() {
@@ -76,5 +75,9 @@ public class User {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public void logout() {
+        User.instance = null;
     }
 }

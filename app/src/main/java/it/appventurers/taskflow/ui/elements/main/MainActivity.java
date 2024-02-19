@@ -5,6 +5,8 @@ import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
@@ -13,6 +15,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,10 +24,15 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.material.snackbar.Snackbar;
 
 import it.appventurers.taskflow.R;
+import it.appventurers.taskflow.data.repository.data.DataRepository;
 import it.appventurers.taskflow.databinding.ActivityMainBinding;
 import it.appventurers.taskflow.model.Result;
+import it.appventurers.taskflow.model.User;
 import it.appventurers.taskflow.model.Weather;
 import it.appventurers.taskflow.ui.elements.create.CreateActivity;
+import it.appventurers.taskflow.ui.viewmodel.DataViewModel;
+import it.appventurers.taskflow.ui.viewmodel.DataViewModelFactory;
+import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
 import it.appventurers.taskflow.ui.viewmodel.WeatherViewModel;
 import it.appventurers.taskflow.util.ClassBuilder;
 import it.appventurers.taskflow.util.WeatherIconUtil;
@@ -34,11 +42,12 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_CODE = 1;
     private ActivityMainBinding binding;
     private NavController navController;
-    private UserViewModel userViewModel;
     private String fragmentToLoad;
     private WeatherViewModel weatherViewModel;
     private FusedLocationProviderClient fusedLocationClient;
     private Weather weather;
+    private UserViewModel userViewModel;
+    private DataViewModel dataViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +63,22 @@ public class MainActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
         weatherViewModel = new WeatherViewModel(
                 ClassBuilder.getClassBuilder().getWeatherRepository(getApplication()));
+        userViewModel = new UserViewModel(
+                ClassBuilder.getClassBuilder().getUserRepository(getApplication()));
+
+        DataRepository dataRepository = ClassBuilder.getClassBuilder().getDataRepository(getApplication());
+        dataViewModel = new ViewModelProvider(
+                this,
+                new DataViewModelFactory(dataRepository)).get(DataViewModel.class);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        dataViewModel.getUserInfo(userViewModel.getLoggedUser());
+        dataViewModel.getUserInfo().observe(this, user -> {
+            binding.currentLifeText.setText(String.valueOf(user.getCurrentLife()));
+            binding.maxLifeText.setText(String.valueOf(user.getLife()));
+            binding.currentLevelText.setText(String.valueOf(user.getLevel()));
+            Log.d("ciao", "info cambiate nell'activity");
+        });
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_CODE);
@@ -86,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }).addOnFailureListener(e -> {
-
+            Log.e("errore", e.toString());
         });
 
 
@@ -97,6 +121,11 @@ public class MainActivity extends AppCompatActivity {
         } else if ("ToDoFragment".equals(fragmentToLoad)) {
             navController.navigate(R.id.toDoFragment);
         }
+
+
+        binding.currentLifeText.setText(String.valueOf(userViewModel.getLoggedUser().getCurrentLife()));
+        binding.maxLifeText.setText(String.valueOf(userViewModel.getLoggedUser().getLife()));
+        binding.currentLevelText.setText(String.valueOf(userViewModel.getLoggedUser().getLevel()));
 
         binding.mainBottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.habit_item) {
@@ -207,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
             navController.navigate(R.id.habitFragment);
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

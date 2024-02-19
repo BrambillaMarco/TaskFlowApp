@@ -1,11 +1,12 @@
 package it.appventurers.taskflow.data.repository.data;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 
 import java.util.ArrayList;
 
-import it.appventurers.taskflow.data.source.BaseRemoteData;
 import it.appventurers.taskflow.data.source.data.BaseRemoteData;
 import it.appventurers.taskflow.model.Daily;
 import it.appventurers.taskflow.model.Habit;
@@ -17,19 +18,29 @@ public class DataRepository implements IDataCallback {
 
     private final BaseRemoteData remoteData;
     private final MutableLiveData<Result> data;
+    private final MutableLiveData<User> userInfo;
 
     public DataRepository(BaseRemoteData remoteData) {
         this.remoteData = remoteData;
         remoteData.setBaseRemoteData(this);
         data = new MutableLiveData<>();
+        userInfo = new MutableLiveData<>();
     }
 
     public MutableLiveData<Result> getData() {
         return data;
     }
 
+    public MutableLiveData<User> getUserInfo() {
+        return userInfo;
+    }
+
     public void saveUser(User user) {
         remoteData.saveUser(user);
+    }
+
+    public void getUserInfo(User user) {
+        remoteData.getUserInfo(user);
     }
 
     public void updateUser(User user) {
@@ -92,6 +103,20 @@ public class DataRepository implements IDataCallback {
     public void onSuccessUser() {
         Result.UserSuccess result = new Result.UserSuccess(null);
         data.postValue(result);
+    }
+
+    @Override
+    public void onSuccessUpdateUser(User user) {
+        onSuccessGetUser(user);
+    }
+
+    @Override
+    public void onSuccessGetUser(User user) {
+        User.getInstance(user.getEmail(), user.getuId()).setLevel(user.getLevel());
+        User.getInstance(user.getEmail(), user.getuId()).setCurrentLife(user.getCurrentLife());
+        User.getInstance(user.getEmail(), user.getuId()).setLife(user.getLife());
+        User.getInstance(user.getEmail(), user.getuId()).setXp(user.getXp());
+        userInfo.postValue(User.getInstance(user.getEmail(), user.getuId()));
     }
 
     @Override

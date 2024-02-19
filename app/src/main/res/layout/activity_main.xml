@@ -111,7 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/life_progress"
-        app:layout_constraintTop_toBottomOf="@+id/weather_info_card"
+        app:layout_constraintTop_toBottomOf="@id/weather_info_card"
         app:layout_constraintBaseline_toBottomOf="@id/life_progress"
         android:text="@{50}"
         android:layout_marginStart="6dp">
@@ -122,7 +122,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/current_life_text"
-        app:layout_constraintTop_toBottomOf="@+id/weather_info_card"
+        app:layout_constraintTop_toBottomOf="@id/weather_info_card"
         app:layout_constraintBaseline_toBaselineOf="@id/current_life_text"
         android:text="@string/separator">
     </com.google.android.material.textview.MaterialTextView>
@@ -132,7 +132,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/separator_text"
-        app:layout_constraintTop_toBottomOf="@+id/weather_info_card"
+        app:layout_constraintTop_toBottomOf="@id/weather_info_card"
         app:layout_constraintBaseline_toBaselineOf="@id/separator_text"
         android:text="@{50}">
     </com.google.android.material.textview.MaterialTextView>
@@ -142,8 +142,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/heart_image"
-        app:layout_constraintEnd_toStartOf="@+id/xp_progress"
+        app:layout_constraintTop_toBottomOf="@id/heart_image"
+        app:layout_constraintEnd_toStartOf="@id/xp_progress"
         app:layout_constraintHorizontal_chainStyle="packed"
         android:src="@drawable/star"
         android:layout_marginTop="12dp">
@@ -154,8 +154,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/life_progress"
-        app:layout_constraintStart_toEndOf="@+id/star_image"
+        app:layout_constraintTop_toBottomOf="@id/life_progress"
+        app:layout_constraintStart_toEndOf="@id/star_image"
         app:layout_constraintHorizontal_chainStyle="packed"
         android:layout_marginTop="34dp"
         android:layout_marginEnd="48dp"
@@ -167,7 +167,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/xp_progress"
-        app:layout_constraintTop_toBottomOf="@+id/weather_info_card"
+        app:layout_constraintTop_toBottomOf="@id/weather_info_card"
         app:layout_constraintBaseline_toBottomOf="@id/xp_progress"
         android:text="@string/level"
         android:layout_marginStart="6dp">
@@ -178,7 +178,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/level_text"
-        app:layout_constraintTop_toBottomOf="@+id/weather_info_card"
+        app:layout_constraintTop_toBottomOf="@id/weather_info_card"
         app:layout_constraintBaseline_toBaselineOf="@id/level_text"
         android:text="@{10}"
         android:textAllCaps="true">
@@ -198,10 +198,10 @@
         android:id="@+id/main_fragment_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/main_divider"
-        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation_view"
-        app:layout_constraintStart_toStartOf="@+id/start_guideline"
-        app:layout_constraintEnd_toEndOf="@+id/end_guideline"
+        app:layout_constraintTop_toBottomOf="@id/main_divider"
+        app:layout_constraintBottom_toTopOf="@id/main_bottom_navigation_view"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
         android:name="androidx.navigation.fragment.NavHostFragment"
         app:navGraph="@navigation/main_nav_graph"
         app:defaultNavHost="true">
@@ -220,9 +220,9 @@
         android:id="@+id/create_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/start_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
-        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation_view"
+        app:layout_constraintBottom_toTopOf="@id/main_bottom_navigation_view"
         android:src="@drawable/plus"
         android:contentDescription="@string/create"
         android:layout_marginBottom="-28dp">

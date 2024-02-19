@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,14 +18,16 @@ import android.view.ViewGroup;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.adapter.HabitAdapter;
+import it.appventurers.taskflow.data.repository.data.DataRepository;
 import it.appventurers.taskflow.databinding.FragmentHabitBinding;
 import it.appventurers.taskflow.model.Habit;
 import it.appventurers.taskflow.model.Result;
+import it.appventurers.taskflow.model.User;
 import it.appventurers.taskflow.ui.viewmodel.DataViewModel;
+import it.appventurers.taskflow.ui.viewmodel.DataViewModelFactory;
 import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
 import it.appventurers.taskflow.util.ClassBuilder;
 
@@ -71,15 +74,46 @@ public class HabitFragment extends Fragment {
         userViewModel = new UserViewModel(
                 ClassBuilder.getClassBuilder()
                         .getUserRepository(requireActivity().getApplication()));
-        dataViewModel = new DataViewModel(
-                ClassBuilder.getClassBuilder()
-                        .getDataRepository(requireActivity().getApplication()));
+        DataRepository dataRepository = ClassBuilder.getClassBuilder()
+                .getDataRepository(requireActivity().getApplication());
+        dataViewModel = new ViewModelProvider(
+                requireActivity(),
+                new DataViewModelFactory(dataRepository)).get(DataViewModel.class);
 
         dataViewModel.getAllHabit(userViewModel.getLoggedUser());
         dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()) {
                 habitList.addAll(((Result.HabitSuccess) result).getHabitList());
-                HabitAdapter habitAdapter = new HabitAdapter(habitList);
+                HabitAdapter habitAdapter = new HabitAdapter(habitList, new HabitAdapter.OnItemClickListener() {
+                    @Override
+                    public void onPositiveButtonClick(int position) {
+                        userViewModel.getLoggedUser()
+                                .setXp(userViewModel.getLoggedUser().getXp() +
+                                        habitList.get(position).getDifficulty() * 2);
+                        if (userViewModel.getLoggedUser().getXp() >= 100) {
+                            userViewModel.getLoggedUser()
+                                    .setLevel(userViewModel.getLoggedUser().getLevel() + 1);
+                            userViewModel.getLoggedUser()
+                                    .setLife(userViewModel.getLoggedUser().getLife() + 10);
+                            userViewModel.getLoggedUser()
+                                    .setCurrentLife(userViewModel.getLoggedUser().getLife());
+                            userViewModel.getLoggedUser()
+                                    .setXp(0);
+                        }
+                        dataViewModel.updateUser(userViewModel.getLoggedUser());
+                    }
+
+                    @Override
+                    public void onNegativeButtonClick(int position) {
+                        //aggiorna lo User, riducendogli la vita
+                        //se la vita passa a 0 riducigli il livello
+                    }
+
+                    @Override
+                    public void onCardViewClick(int position) {
+                        //apri schermata di modifica
+                    }
+                });
                 recyclerViewHabit.setLayoutManager(layoutManager);
                 recyclerViewHabit.setAdapter(habitAdapter);
             } else {

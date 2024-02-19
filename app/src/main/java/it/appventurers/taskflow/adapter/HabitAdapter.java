@@ -19,7 +19,19 @@ import it.appventurers.taskflow.model.Habit;
 
 public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder> {
 
+    public interface OnItemClickListener {
+
+        void onPositiveButtonClick(int position);
+        void onNegativeButtonClick(int position);
+        void onCardViewClick(int position);
+    }
+
     private final List<Habit> habitList;
+    private final OnItemClickListener onItemClickListener;
+    public HabitAdapter(List<Habit> habitList, OnItemClickListener onItemClickListener) {
+        this.habitList = habitList;
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -30,10 +42,10 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder> 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            negativeButton = (Button) itemView.findViewById(R.id.negative_button);
-            titleTextView = (TextView) itemView.findViewById(R.id.habit_title_text);
-            habitCardView = (CardView) itemView.findViewById(R.id.habit_card);
-            positiveButton = (Button) itemView.findViewById(R.id.positive_button);
+            negativeButton = itemView.findViewById(R.id.negative_button);
+            titleTextView = itemView.findViewById(R.id.habit_title_text);
+            habitCardView = itemView.findViewById(R.id.habit_card);
+            positiveButton = itemView.findViewById(R.id.positive_button);
         }
 
         public Button getNegativeButton() {
@@ -53,9 +65,6 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder> 
         }
     }
 
-    public HabitAdapter(List<Habit> habitList) {
-        this.habitList = habitList;
-    }
 
     @NonNull
     @Override
@@ -68,18 +77,19 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull HabitAdapter.ViewHolder holder, int position) {
+        holder.getPositiveButton().setEnabled(habitList.get(position).isPositive());
+        holder.getNegativeButton().setEnabled(habitList.get(position).isNegative());
         holder.getNegativeButton().setOnClickListener(view -> {
-            Snackbar.make(view, "Tasto negativo premuto!", Snackbar.LENGTH_LONG).show();
+            onItemClickListener.onNegativeButtonClick(position);
         });
         holder.getHabitCardView().setOnClickListener(view -> {
-            Snackbar.make(view, "Card view premuta!", Snackbar.LENGTH_LONG).show();
+            onItemClickListener.onCardViewClick(position);
         });
         holder.getTitleTextView().setText(habitList.get(position).getName());
         holder.getPositiveButton().setOnClickListener(view -> {
-            Snackbar.make(view, "Tasto positivo premuto!", Snackbar.LENGTH_LONG).show();
+            onItemClickListener.onPositiveButtonClick(position);
         });
     }
-
 
     @Override
     public int getItemCount() {
