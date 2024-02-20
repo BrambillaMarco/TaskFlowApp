@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.appventurers.taskflow.R;
@@ -26,9 +27,10 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder> 
         void onCardViewClick(int position);
     }
 
-    private final List<Habit> habitList;
+    private final ArrayList<Habit> habitList;
     private final OnItemClickListener onItemClickListener;
-    public HabitAdapter(List<Habit> habitList, OnItemClickListener onItemClickListener) {
+
+    public HabitAdapter(ArrayList<Habit> habitList, OnItemClickListener onItemClickListener) {
         this.habitList = habitList;
         this.onItemClickListener = onItemClickListener;
     }
@@ -42,6 +44,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder> 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             negativeButton = itemView.findViewById(R.id.negative_button);
             titleTextView = itemView.findViewById(R.id.habit_title_text);
             habitCardView = itemView.findViewById(R.id.habit_card);
@@ -77,15 +80,23 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull HabitAdapter.ViewHolder holder, int position) {
-        holder.getPositiveButton().setEnabled(habitList.get(position).isPositive());
+        if (habitList.get(position).getName() == null) {
+            holder.getPositiveButton().setVisibility(View.INVISIBLE);
+            holder.getNegativeButton().setVisibility(View.INVISIBLE);
+            holder.getHabitCardView().setVisibility(View.INVISIBLE);
+        }
+
         holder.getNegativeButton().setEnabled(habitList.get(position).isNegative());
         holder.getNegativeButton().setOnClickListener(view -> {
             onItemClickListener.onNegativeButtonClick(position);
         });
+
+        holder.getTitleTextView().setText(habitList.get(position).getName());
         holder.getHabitCardView().setOnClickListener(view -> {
             onItemClickListener.onCardViewClick(position);
         });
-        holder.getTitleTextView().setText(habitList.get(position).getName());
+
+        holder.getPositiveButton().setEnabled(habitList.get(position).isPositive());
         holder.getPositiveButton().setOnClickListener(view -> {
             onItemClickListener.onPositiveButtonClick(position);
         });

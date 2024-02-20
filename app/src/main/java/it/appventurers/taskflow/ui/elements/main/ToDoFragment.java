@@ -17,14 +17,12 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 import it.appventurers.taskflow.R;
-import it.appventurers.taskflow.adapter.DailyAdapter;
 import it.appventurers.taskflow.adapter.ToDoAdapter;
 import it.appventurers.taskflow.databinding.FragmentToDoBinding;
-import it.appventurers.taskflow.model.Daily;
 import it.appventurers.taskflow.model.Result;
 import it.appventurers.taskflow.model.ToDo;
-import it.appventurers.taskflow.ui.viewmodel.DataViewModel;
-import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
+import it.appventurers.taskflow.ui.viewmodel.data.DataViewModel;
+import it.appventurers.taskflow.ui.viewmodel.user.UserViewModel;
 import it.appventurers.taskflow.util.ClassBuilder;
 
 /**
@@ -79,7 +77,17 @@ public class ToDoFragment extends Fragment {
                 ArrayList<ToDo> retrievedToDoList = ((Result.ToDoSuccess) result).getToDoList();
                 if (!retrievedToDoList.isEmpty()) {
                     toDoList.addAll(retrievedToDoList);
-                    ToDoAdapter toDoAdapter = new ToDoAdapter(toDoList);
+                    ToDoAdapter toDoAdapter = new ToDoAdapter(toDoList, new ToDoAdapter.OnItemClickListener() {
+                        @Override
+                        public void onCheckBoxButtonClick(int position) {
+
+                        }
+
+                        @Override
+                        public void onCardViewClick(int position) {
+
+                        }
+                    });
                     recyclerViewToDo.setLayoutManager(layoutManager);
                     recyclerViewToDo.setAdapter(toDoAdapter);
                 }

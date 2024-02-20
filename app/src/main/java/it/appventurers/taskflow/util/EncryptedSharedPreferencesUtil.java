@@ -51,6 +51,13 @@ public class EncryptedSharedPreferencesUtil {
         editor.apply();
     }
 
+    public void updateCredentialInformationEncrypted(String encryptedSharedPreferencesName,
+                                                     String key, String newValue)
+            throws GeneralSecurityException, IOException {
+        deleteCredentialInformationEncrypted(encryptedSharedPreferencesName, key);
+        saveCredentialInformationEncrypted(encryptedSharedPreferencesName, key, newValue);
+    }
+
     public String readCredentialInformationEncrypted(String encryptedSharedPreferencesName,
                                                 String key)
             throws GeneralSecurityException, IOException {
@@ -64,12 +71,5 @@ public class EncryptedSharedPreferencesUtil {
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
 
         return sharedPreferences.getString(key, null);
-    }
-
-    public void updateCredentialInformationEncrypted(String encryptedSharedPreferencesName,
-                                                     String key, String newValue)
-            throws GeneralSecurityException, IOException {
-        deleteCredentialInformationEncrypted(encryptedSharedPreferencesName, key);
-        saveCredentialInformationEncrypted(encryptedSharedPreferencesName, key, newValue);
     }
 }

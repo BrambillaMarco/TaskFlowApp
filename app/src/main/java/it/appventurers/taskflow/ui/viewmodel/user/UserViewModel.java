@@ -1,4 +1,4 @@
-package it.appventurers.taskflow.ui.viewmodel;
+package it.appventurers.taskflow.ui.viewmodel.user;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

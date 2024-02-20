@@ -27,7 +27,7 @@ import it.appventurers.taskflow.model.User;
 public class RemoteData extends BaseRemoteData{
 
     private FirebaseFirestore db;
-    private ArrayList<Habit> habitList;
+    private final ArrayList<Habit> habitList;
     private ArrayList<Daily> dailyList;
     private ArrayList<ToDo> toDoList;
 
@@ -111,6 +111,7 @@ public class RemoteData extends BaseRemoteData{
 
     @Override
     public void getAllHabit(User user) {
+        habitList.clear();
         db.collection(USER).document(user.getuId())
                 .collection(HABIT).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -164,6 +165,7 @@ public class RemoteData extends BaseRemoteData{
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             dailyList.add(document.toObject(Daily.class));
                         }
+                        dailyList.add(new Daily());
                         dataCallback.onSuccessGetDaily(dailyList);
                     } else {
                         dataCallback.onFailure("Unable to load the data");

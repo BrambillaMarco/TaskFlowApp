@@ -52,10 +52,9 @@
     <string name="error_not_equals">Passwords are not equals</string>
     <string name="error_password_short">Password must contain 8 character</string>
     <string name="account_created">Account created.</string>
-    <string name="error_saving">Unable to save data. Try later.</string>
+    <string name="error_saving">Unable to save data from Internet to local. Try later.</string>
     <string name="error_login">Email or password are wrong.</string>
     <string name="error_reading">Unable to read credentials. Try later.</string>
-    <string name="error_retrieving_credentials">Unable to retrieve credentials. Try later.</string>
     <string name="error_credentials_empty">Insert credentials</string>
     <string name="account_deleted">Account deleted.</string>
     <string name="error_deleting">Unable to delete account.</string>
@@ -63,4 +62,13 @@
     <string name="error_change_email">Unable to update the email</string>
     <string name="minus">-</string>
     <string name="plus">+</string>
+    <string name="email_sent">Email sent</string>
+    <string name="insert_email">Insert email</string>
+    <string name="insert_fields">Insert all fields</string>
+    <string name="habit_created">Habit created</string>
+    <string name="daily_created">Daily created</string>
+    <string name="to_do_created">To do created</string>
+    <string name="error_position">Couldn\'t locate the device</string>
+    <string name="permission_granted">Permission granted</string>
+    <string name="permission_denied">Permission denied. Please accept the permission</string>
 </resources>

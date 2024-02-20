@@ -11,9 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +24,9 @@ import java.security.GeneralSecurityException;
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.databinding.FragmentAccountBinding;
 import it.appventurers.taskflow.model.Result;
-import it.appventurers.taskflow.model.User;
 import it.appventurers.taskflow.ui.elements.welcome.WelcomeActivity;
-import it.appventurers.taskflow.ui.viewmodel.DataViewModel;
-import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
+import it.appventurers.taskflow.ui.viewmodel.data.DataViewModel;
+import it.appventurers.taskflow.ui.viewmodel.user.UserViewModel;
 import it.appventurers.taskflow.util.ClassBuilder;
 import it.appventurers.taskflow.util.EncryptedSharedPreferencesUtil;
 

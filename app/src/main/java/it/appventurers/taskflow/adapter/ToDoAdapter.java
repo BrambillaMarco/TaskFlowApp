@@ -19,7 +19,19 @@ import it.appventurers.taskflow.model.ToDo;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
+    public interface OnItemClickListener {
+
+        void onCheckBoxButtonClick(int position);
+        void onCardViewClick(int position);
+    }
+
     private final List<ToDo> toDoList;
+    private final ToDoAdapter.OnItemClickListener onItemClickListener;
+
+    public ToDoAdapter(List<ToDo> toDoList, OnItemClickListener onItemClickListener) {
+        this.toDoList = toDoList;
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -47,10 +59,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         }
     }
 
-    public ToDoAdapter(List<ToDo> toDoList) {
-        this.toDoList = toDoList;
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -63,12 +71,13 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ToDoAdapter.ViewHolder holder, int position) {
         holder.getToDoCheckBox().setOnClickListener(view -> {
-            Snackbar.make(view, "Checkbox premuta!", Snackbar.LENGTH_LONG).show();
+            onItemClickListener.onCheckBoxButtonClick(position);
         });
-        holder.getToDoCardView().setOnClickListener(view -> {
-            Snackbar.make(view, "Card view premuta!", Snackbar.LENGTH_LONG).show();
-        });
+
         holder.getTitleTextView().setText(toDoList.get(position).getName());
+        holder.getToDoCardView().setOnClickListener(view -> {
+            onItemClickListener.onCardViewClick(position);
+        });
     }
 
     @Override

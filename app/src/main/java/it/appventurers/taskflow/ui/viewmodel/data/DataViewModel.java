@@ -1,4 +1,4 @@
-package it.appventurers.taskflow.ui.viewmodel;
+package it.appventurers.taskflow.ui.viewmodel.data;
 
 import android.util.Log;
 
@@ -18,6 +18,7 @@ public class DataViewModel extends ViewModel {
 
     private final DataRepository dataRepository;
     private MutableLiveData<Result> data;
+    private MutableLiveData<Result> habitData;
     private MutableLiveData<User> userInfo;
 
 
