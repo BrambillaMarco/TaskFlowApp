@@ -200,14 +200,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getBaseContext(), CreateActivity.class);
                 intent.putExtra(LOAD_FRAGMENT, HABIT_FRAGMENT);
                 startActivity(intent);
+                finish();
             } else if (binding.mainBottomNavigationView.getSelectedItemId() == R.id.daily_item) {
                 Intent intent = new Intent(getBaseContext(), CreateActivity.class);
                 intent.putExtra(LOAD_FRAGMENT, DAILY_FRAGMENT);
                 startActivity(intent);
+                finish();
             } else if (binding.mainBottomNavigationView.getSelectedItemId() == R.id.to_do_item) {
                 Intent intent = new Intent(getBaseContext(), CreateActivity.class);
                 intent.putExtra(LOAD_FRAGMENT, TO_DO_FRAGMENT);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -238,6 +241,8 @@ public class MainActivity extends AppCompatActivity {
             binding.mainBottomNavigationView.getMenu().findItem(R.id.habit_item)
                     .setIcon(R.drawable.habit_filled);
             updateBottomNavigationIcons(R.id.habit_item);
+            navController.popBackStack();
+            navController.popBackStack(R.id.habitFragment, false);
         }
     }
 }

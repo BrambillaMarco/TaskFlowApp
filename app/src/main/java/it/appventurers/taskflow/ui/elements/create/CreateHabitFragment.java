@@ -89,7 +89,12 @@ public class CreateHabitFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.backButton.setOnClickListener(view1 -> requireActivity().finish());
+        binding.backButton.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            intent.putExtra(LOAD_FRAGMENT, HABIT_FRAGMENT);
+            startActivity(intent);
+            requireActivity().finish();
+        });
 
         binding.createButton.setOnClickListener(view1 -> {
             binding.createButton.setVisibility(View.INVISIBLE);

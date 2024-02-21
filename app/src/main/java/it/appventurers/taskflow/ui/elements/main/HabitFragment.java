@@ -55,6 +55,7 @@ public class HabitFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         habitList = new ArrayList<>();
+
         UserRepository userRepository = ClassBuilder.getClassBuilder()
                 .getUserRepository(requireActivity().getApplication());
         userViewModel = new ViewModelProvider(
@@ -86,8 +87,8 @@ public class HabitFragment extends Fragment {
         dataViewModel.getAllHabit(userViewModel.getLoggedUser());
         dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()) {
+                habitList.clear();
                 habitList.addAll(((Result.HabitSuccess) result).getHabitList());
-                habitList.add(new Habit());
                 HabitAdapter habitAdapter = new HabitAdapter(habitList,
                         new HabitAdapter.OnItemClickListener() {
 

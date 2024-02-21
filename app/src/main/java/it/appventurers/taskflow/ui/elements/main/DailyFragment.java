@@ -85,55 +85,5 @@ public class DailyFragment extends Fragment {
         layoutManager = new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
-        dataViewModel.getAllDaily(userViewModel.getLoggedUser());
-        dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
-            if (result.isSuccess()) {
-                dailyList.addAll(((Result.DailySuccess) result).getDailyList());
-                DailyAdapter dailyAdapter = new DailyAdapter(dailyList,
-                        new DailyAdapter.OnItemClickListener() {
-
-                    @Override
-                    public void onCheckBoxButtonClick(int position) {
-                        userViewModel.getLoggedUser()
-                                .setXp(userViewModel.getLoggedUser().getXp() +
-                                        dailyList.get(position).getDifficulty() * 2);
-                        if (userViewModel.getLoggedUser().getXp() >= 100) {
-                            if (userViewModel.getLoggedUser().getLevel() < 10) {
-                                userViewModel.getLoggedUser()
-                                        .setLevel(userViewModel.getLoggedUser().getLevel() + 1);
-                                userViewModel.getLoggedUser()
-                                        .setLife(userViewModel.getLoggedUser().getLife() + 10);
-                                userViewModel.getLoggedUser()
-                                        .setCurrentLife(userViewModel.getLoggedUser().getLife());
-                                userViewModel.getLoggedUser()
-                                        .setXp(0);
-                            } else {
-                                userViewModel.getLoggedUser()
-                                        .setLevel(userViewModel.getLoggedUser().getLevel() + 1);
-                                userViewModel.getLoggedUser()
-                                        .setCurrentLife(userViewModel.getLoggedUser().getLife());
-                                userViewModel.getLoggedUser()
-                                        .setXp(0);
-                            }
-                        }
-
-                        dataViewModel.updateUser(userViewModel.getLoggedUser());
-                    }
-
-                    @Override
-                    public void onCardViewClick(int position) {
-
-                    }
-                });
-
-                binding.dailyRecycler.setLayoutManager(layoutManager);
-                binding.dailyRecycler.setAdapter(dailyAdapter);
-            } else {
-                String error = ((Result.Fail) result).getError();
-                Snackbar.make(view,
-                        error,
-                        Snackbar.LENGTH_SHORT).show();
-            }
-        });
     }
 }

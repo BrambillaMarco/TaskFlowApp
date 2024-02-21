@@ -71,30 +71,6 @@ public class ToDoFragment extends Fragment {
                 ClassBuilder.getClassBuilder()
                         .getDataRepository(requireActivity().getApplication()));
 
-        dataViewModel.getAllToDo(userViewModel.getLoggedUser());
-        dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
-            if (result.isSuccess()) {
-                ArrayList<ToDo> retrievedToDoList = ((Result.ToDoSuccess) result).getToDoList();
-                if (!retrievedToDoList.isEmpty()) {
-                    toDoList.addAll(retrievedToDoList);
-                    ToDoAdapter toDoAdapter = new ToDoAdapter(toDoList, new ToDoAdapter.OnItemClickListener() {
-                        @Override
-                        public void onCheckBoxButtonClick(int position) {
 
-                        }
-
-                        @Override
-                        public void onCardViewClick(int position) {
-
-                        }
-                    });
-                    recyclerViewToDo.setLayoutManager(layoutManager);
-                    recyclerViewToDo.setAdapter(toDoAdapter);
-                }
-            } else {
-                String error = ((Result.Fail) result).getError();
-                Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show();
-            }
-        });
     }
 }
