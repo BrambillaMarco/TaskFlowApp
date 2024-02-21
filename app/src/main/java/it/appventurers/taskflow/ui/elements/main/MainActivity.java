@@ -1,9 +1,13 @@
 package it.appventurers.taskflow.ui.elements.main;
 
+import static it.appventurers.taskflow.util.Constant.ENCRYPTED_SHARED_PREFERENCES_FILE;
+import static it.appventurers.taskflow.util.Constant.LANGUAGE;
 import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
+import static it.appventurers.taskflow.util.Constant.THEME;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,6 +18,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +27,10 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Locale;
 
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.data.repository.data.DataRepository;
@@ -35,6 +44,7 @@ import it.appventurers.taskflow.ui.viewmodel.DataViewModelFactory;
 import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
 import it.appventurers.taskflow.ui.viewmodel.WeatherViewModel;
 import it.appventurers.taskflow.util.ClassBuilder;
+import it.appventurers.taskflow.util.EncryptedSharedPreferencesUtil;
 import it.appventurers.taskflow.util.WeatherIconUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,12 +58,36 @@ public class MainActivity extends AppCompatActivity {
     private Weather weather;
     private UserViewModel userViewModel;
     private DataViewModel dataViewModel;
+    private EncryptedSharedPreferencesUtil encryptedSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+
+        encryptedSharedPreferences = new EncryptedSharedPreferencesUtil(this);
+
+        try {
+            String lingua = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
+                    LANGUAGE);
+            setAppLocale(lingua);
+        } catch (GeneralSecurityException | IOException e) {
+            setAppLocale("it");
+        }
+
+        try {
+            String tema = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
+                    THEME);
+            if("dark".equalsIgnoreCase(tema)){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else if("light".equalsIgnoreCase(tema)){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+        } catch (GeneralSecurityException | IOException e) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         setContentView(view);
 
         fragmentToLoad = getIntent().getStringExtra(LOAD_FRAGMENT);
@@ -215,7 +249,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
+
+    private void setAppLocale(String localeCode) {
+        if (localeCode == null || localeCode.isEmpty()) {
+            localeCode = "it";
+        }
+        Locale locale = new Locale(localeCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+    }
+
 
     @Override
     public void onBackPressed() {

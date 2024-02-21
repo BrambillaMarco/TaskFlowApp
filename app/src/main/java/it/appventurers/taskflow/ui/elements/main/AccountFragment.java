@@ -2,26 +2,34 @@ package it.appventurers.taskflow.ui.elements.main;
 
 import static it.appventurers.taskflow.util.Constant.EMAIL_ADDRESS;
 import static it.appventurers.taskflow.util.Constant.ENCRYPTED_SHARED_PREFERENCES_FILE;
+import static it.appventurers.taskflow.util.Constant.LANGUAGE;
 import static it.appventurers.taskflow.util.Constant.PASSWORD;
+import static it.appventurers.taskflow.util.Constant.THEME;
 import static it.appventurers.taskflow.util.Constant.TOKEN;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Locale;
 
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.databinding.FragmentAccountBinding;
@@ -108,8 +116,8 @@ public class AccountFragment extends Fragment {
                         TOKEN + userViewModel.getLoggedUser().getuId());
             } catch (GeneralSecurityException | IOException e) {
                 Snackbar.make(view,
-                        getString(R.string.error_deleting),
-                        Snackbar.LENGTH_SHORT)
+                                getString(R.string.error_deleting),
+                                Snackbar.LENGTH_SHORT)
                         .show();
             }
             userViewModel.deleteUser();
@@ -129,10 +137,57 @@ public class AccountFragment extends Fragment {
                 }
             });
         });
-    }
 
+        binding.languageButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (checkedId == R.id.positive_button) {
+                try {
+                    encryptedSharedPreferences.saveCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE, LANGUAGE + userViewModel.getLoggedUser().getuId(), "en");
+                    Intent intent=new Intent(getActivity(),MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    getActivity().finish();
+                } catch (GeneralSecurityException | IOException e) {
+                    Snackbar.make(view, getString(R.string.error_saving), Snackbar.LENGTH_SHORT).show();
+                }
+            } else if (checkedId == R.id.negative_button) {
+                try {
+                    encryptedSharedPreferences.saveCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE, LANGUAGE + userViewModel.getLoggedUser().getuId(), "it");
+                    Intent intent=new Intent(getActivity(),MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    getActivity().finish();
+                } catch (GeneralSecurityException | IOException e) {
+                    Snackbar.make(view, getString(R.string.error_saving), Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        binding.themeButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (checkedId == R.id.light_button) {
+                try {
+                    encryptedSharedPreferences.saveCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE, THEME + userViewModel.getLoggedUser().getuId(), "light");
+                    Intent intent=new Intent(getActivity(),MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    getActivity().finish();
+                } catch (GeneralSecurityException | IOException e) {
+                    Snackbar.make(view, getString(R.string.error_saving), Snackbar.LENGTH_SHORT).show();
+                }
+            } else if (checkedId == R.id.dark_button) {
+                try {
+                    encryptedSharedPreferences.saveCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE, THEME + userViewModel.getLoggedUser().getuId(), "dark");
+                    Intent intent=new Intent(getActivity(),MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    getActivity().finish();
+                } catch (GeneralSecurityException | IOException e) {
+                    Snackbar.make(view, getString(R.string.error_saving), Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
     @Override
-    public void onDestroy() {
+    public void onDestroy () {
         super.onDestroy();
         binding = null;
     }
