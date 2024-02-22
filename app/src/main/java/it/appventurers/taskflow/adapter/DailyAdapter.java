@@ -12,14 +12,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.model.Daily;
 
 public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> {
 
-    private final List<Daily> dailyList;
+    public interface OnItemClickListener {
+
+        void onCheckBoxButtonClick(int position);
+        void onCardViewClick(int position);
+    }
+
+    private final ArrayList<Daily> dailyList;
+    private final DailyAdapter.OnItemClickListener onItemClickListener;
+
+    public DailyAdapter(ArrayList<Daily> dailyList, OnItemClickListener onItemClickListener) {
+        this.dailyList = dailyList;
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -29,9 +41,10 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            dailyCheckBox = (CheckBox) itemView.findViewById(R.id.daily_and_to_do_check_box);
-            dailyCardView = (CardView) itemView.findViewById(R.id.daily_and_to_do_card);
-            titleTextView = (TextView) itemView.findViewById(R.id.daily_to_do_title_text);
+
+            dailyCheckBox = itemView.findViewById(R.id.daily_and_to_do_check_box);
+            dailyCardView = itemView.findViewById(R.id.daily_and_to_do_card);
+            titleTextView = itemView.findViewById(R.id.daily_to_do_title_text);
         }
 
         public CheckBox getDailyCheckBox() {
@@ -47,10 +60,6 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
         }
     }
 
-    public DailyAdapter(List<Daily> dailyList) {
-        this.dailyList = dailyList;
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -63,12 +72,13 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull DailyAdapter.ViewHolder holder, int position) {
         holder.getDailyCheckBox().setOnClickListener(view -> {
-            Snackbar.make(view, "Checkbox premuta!", Snackbar.LENGTH_LONG).show();
+            onItemClickListener.onCheckBoxButtonClick(position);
         });
-        holder.getDailyCardView().setOnClickListener(view -> {
-            Snackbar.make(view, "Card view premuta!", Snackbar.LENGTH_LONG).show();
-        });
+
         holder.getTitleTextView().setText(dailyList.get(position).getName());
+        holder.getDailyCardView().setOnClickListener(view -> {
+            onItemClickListener.onCardViewClick(position);
+        });
     }
 
     @Override

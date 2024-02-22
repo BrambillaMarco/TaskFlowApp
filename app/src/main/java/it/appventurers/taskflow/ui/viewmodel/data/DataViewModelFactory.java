@@ -1,4 +1,4 @@
-package it.appventurers.taskflow.ui.viewmodel;
+package it.appventurers.taskflow.ui.viewmodel.data;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

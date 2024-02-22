@@ -11,16 +11,17 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginTop="24dp"
-        android:layout_weight="0.5">
+        android:layout_weight="0.5"
+        android:background="@drawable/border_outlined">
     </com.google.android.material.checkbox.MaterialCheckBox>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/daily_and_to_do_card"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:cardCornerRadius="0dp"
         android:clickable="true"
         android:focusable="true"
+        app:cardCornerRadius="0dp"
         android:layout_weight="2.50"
         android:layout_marginTop="24dp">
 

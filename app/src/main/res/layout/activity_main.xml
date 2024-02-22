@@ -42,7 +42,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/ic_launcher_foreground">
+                android:src="@drawable/ic_launcher_foreground"
+                android:padding="12dp">
             </com.google.android.material.imageview.ShapeableImageView>
 
             <androidx.constraintlayout.widget.ConstraintLayout

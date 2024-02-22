@@ -17,14 +17,12 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 import it.appventurers.taskflow.R;
-import it.appventurers.taskflow.adapter.DailyAdapter;
 import it.appventurers.taskflow.adapter.ToDoAdapter;
 import it.appventurers.taskflow.databinding.FragmentToDoBinding;
-import it.appventurers.taskflow.model.Daily;
 import it.appventurers.taskflow.model.Result;
 import it.appventurers.taskflow.model.ToDo;
-import it.appventurers.taskflow.ui.viewmodel.DataViewModel;
-import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
+import it.appventurers.taskflow.ui.viewmodel.data.DataViewModel;
+import it.appventurers.taskflow.ui.viewmodel.user.UserViewModel;
 import it.appventurers.taskflow.util.ClassBuilder;
 
 /**
@@ -73,20 +71,6 @@ public class ToDoFragment extends Fragment {
                 ClassBuilder.getClassBuilder()
                         .getDataRepository(requireActivity().getApplication()));
 
-        dataViewModel.getAllToDo(userViewModel.getLoggedUser());
-        dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
-            if (result.isSuccess()) {
-                ArrayList<ToDo> retrievedToDoList = ((Result.ToDoSuccess) result).getToDoList();
-                if (!retrievedToDoList.isEmpty()) {
-                    toDoList.addAll(retrievedToDoList);
-                    ToDoAdapter toDoAdapter = new ToDoAdapter(toDoList);
-                    recyclerViewToDo.setLayoutManager(layoutManager);
-                    recyclerViewToDo.setAdapter(toDoAdapter);
-                }
-            } else {
-                String error = ((Result.Fail) result).getError();
-                Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show();
-            }
-        });
+
     }
 }

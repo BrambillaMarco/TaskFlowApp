@@ -1,4 +1,4 @@
-package it.appventurers.taskflow.ui.viewmodel;
+package it.appventurers.taskflow.ui.viewmodel.weather;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,7 +10,6 @@ public class WeatherViewModel extends ViewModel {
 
     private final WeatherRepository weatherRepository;
     private MutableLiveData<Result> weatherData;
-
 
     public WeatherViewModel(WeatherRepository weatherRepository) {
         this.weatherRepository = weatherRepository;

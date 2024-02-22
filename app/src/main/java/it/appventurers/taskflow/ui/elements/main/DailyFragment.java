@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,11 +19,15 @@ import java.util.ArrayList;
 
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.adapter.DailyAdapter;
+import it.appventurers.taskflow.data.repository.data.DataRepository;
+import it.appventurers.taskflow.data.repository.user.UserRepository;
 import it.appventurers.taskflow.databinding.FragmentDailyBinding;
 import it.appventurers.taskflow.model.Daily;
 import it.appventurers.taskflow.model.Result;
-import it.appventurers.taskflow.ui.viewmodel.DataViewModel;
-import it.appventurers.taskflow.ui.viewmodel.UserViewModel;
+import it.appventurers.taskflow.ui.viewmodel.data.DataViewModel;
+import it.appventurers.taskflow.ui.viewmodel.data.DataViewModelFactory;
+import it.appventurers.taskflow.ui.viewmodel.user.UserViewModel;
+import it.appventurers.taskflow.ui.viewmodel.user.UserViewModelFactory;
 import it.appventurers.taskflow.util.ClassBuilder;
 
 /**
@@ -31,9 +36,13 @@ import it.appventurers.taskflow.util.ClassBuilder;
 public class DailyFragment extends Fragment {
 
     private FragmentDailyBinding binding;
+
     private UserViewModel userViewModel;
     private DataViewModel dataViewModel;
+
     private ArrayList<Daily> dailyList;
+
+    RecyclerView.LayoutManager layoutManager;
 
     public DailyFragment() {
         // Required empty public constructor
@@ -46,7 +55,20 @@ public class DailyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         dailyList = new ArrayList<>();
+
+        UserRepository userRepository = ClassBuilder.getClassBuilder()
+                .getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(
+                this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+
+        DataRepository dataRepository = ClassBuilder.getClassBuilder()
+                .getDataRepository(requireActivity().getApplication());
+        dataViewModel = new ViewModelProvider(
+                requireActivity(),
+                new DataViewModelFactory(dataRepository)).get(DataViewModel.class);
     }
 
     @Override
@@ -60,32 +82,8 @@ public class DailyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerViewDaily = view.findViewById(R.id.daily_recycler);
-        RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(requireContext(),
+        layoutManager = new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
-        userViewModel = new UserViewModel(
-                ClassBuilder.getClassBuilder()
-                        .getUserRepository(requireActivity().getApplication()));
-        dataViewModel = new DataViewModel(
-                ClassBuilder.getClassBuilder()
-                        .getDataRepository(requireActivity().getApplication()));
-
-        dataViewModel.getAllDaily(userViewModel.getLoggedUser());
-        dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
-            if (result.isSuccess()) {
-                ArrayList<Daily> retrievedDailyList = ((Result.DailySuccess) result).getDailyList();
-                if (!retrievedDailyList.isEmpty()) {
-                    dailyList.addAll(retrievedDailyList);
-                    DailyAdapter dailyAdapter = new DailyAdapter(dailyList);
-                    recyclerViewDaily.setLayoutManager(layoutManager);
-                    recyclerViewDaily.setAdapter(dailyAdapter);
-                }
-            } else {
-                String error = ((Result.Fail) result).getError();
-                Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show();
-            }
-        });
 
     }
 }

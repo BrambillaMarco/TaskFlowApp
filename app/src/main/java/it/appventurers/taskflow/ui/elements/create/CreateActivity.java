@@ -1,6 +1,9 @@
 package it.appventurers.taskflow.ui.elements.create;
 
+import static it.appventurers.taskflow.util.Constant.DAILY_FRAGMENT;
+import static it.appventurers.taskflow.util.Constant.HABIT_FRAGMENT;
 import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
+import static it.appventurers.taskflow.util.Constant.TO_DO_FRAGMENT;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -17,28 +20,28 @@ import it.appventurers.taskflow.ui.elements.main.MainActivity;
 public class CreateActivity extends AppCompatActivity {
 
     private ActivityCreateBinding binding;
-    private NavController navController;
-    private String fragmentToLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityCreateBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.create_fragment_container);
-        navController = navHostFragment.getNavController();
-        fragmentToLoad = getIntent().getStringExtra(LOAD_FRAGMENT);
+        NavController navController = navHostFragment.getNavController();
 
-        if ("HabitFragment".equals(fragmentToLoad)) {
+        String fragmentToLoad = getIntent().getStringExtra(LOAD_FRAGMENT);
+
+        if (HABIT_FRAGMENT.equals(fragmentToLoad)) {
             navController.popBackStack();
             navController.navigate(R.id.createHabitFragment);
-        } else if ("DailyFragment".equals(fragmentToLoad)) {
+        } else if (DAILY_FRAGMENT.equals(fragmentToLoad)) {
             navController.popBackStack();
             navController.navigate(R.id.createDailyFragment);
-        } else if ("ToDoFragment".equals(fragmentToLoad)) {
+        } else if (TO_DO_FRAGMENT.equals(fragmentToLoad)) {
             navController.popBackStack();
             navController.navigate(R.id.createToDoFragment);
         }
@@ -47,8 +50,9 @@ public class CreateActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
-        intent.putExtra(LOAD_FRAGMENT, "HabitFragment");
+        intent.putExtra(LOAD_FRAGMENT, HABIT_FRAGMENT);
         startActivity(intent);
         finish();
     }
