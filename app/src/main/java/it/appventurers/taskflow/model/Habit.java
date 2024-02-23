@@ -2,16 +2,13 @@ package it.appventurers.taskflow.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-public class Habit implements Parcelable {
-
 import androidx.annotation.ColorInt;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "habits")
-public class Habit {
+public class Habit implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -146,6 +143,8 @@ public class Habit {
         dest.writeByte((byte) (positive ? 1 : 0));
         dest.writeInt(difficulty);
         dest.writeInt(resetCounter);
+    }
+
     public boolean isSynced() {
         return isSynced;
     }
