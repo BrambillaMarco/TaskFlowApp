@@ -127,7 +127,21 @@ public class RemoteData extends BaseRemoteData{
 
     @Override
     public void updateHabit(User user, Habit habit) {
-
+        db.collection(USER).document(user.getuId())
+                .collection(HABIT).document(habit.getName())
+                .update(
+                        "note", habit.getNote(),
+                        "negative", habit.isNegative(),
+                        "positive", habit.isPositive(),
+                        "difficulty", habit.getDifficulty(),
+                        "resetCounter", habit.getResetCounter()
+                ).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        dataCallback.onSuccessHabit(habit);
+                    } else {
+                        dataCallback.onFailure("Unable to update habit");
+                    }
+                });
     }
 
     @Override

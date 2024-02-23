@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,6 +43,8 @@ public class HabitFragment extends Fragment {
     private DataViewModel dataViewModel;
     private ArrayList<Habit> habitList;
     private RecyclerView.LayoutManager layoutManager;
+
+    private NavController navController;
 
     public HabitFragment() {
         // Required empty public constructor
@@ -83,6 +87,8 @@ public class HabitFragment extends Fragment {
 
         layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
+
+        navController = NavHostFragment.findNavController(this);
 
         dataViewModel.getAllHabit(userViewModel.getLoggedUser());
         dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
@@ -166,7 +172,11 @@ public class HabitFragment extends Fragment {
 
                             @Override
                             public void onCardViewClick(int position) {
-                                //apri schermata di modifica
+                                Habit habit = habitList.get(position);
+                                String habitName = habit.getName();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("habitName", habitName);
+                                navController.navigate(R.id.action_habitFragment_to_createActivity);
                             }
                         });
 

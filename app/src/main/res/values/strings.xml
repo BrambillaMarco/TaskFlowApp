@@ -28,6 +28,7 @@
     <string name="delete">Delete</string>
     <string name="back">Back</string>
     <string name="create_habit">Create habit</string>
+    <string name="update_habit">Update habit</string>
     <string name="title">Title</string>
     <string name="notes">Notes</string>
     <string name="positive">Positive</string>
@@ -66,6 +67,7 @@
     <string name="insert_email">Insert email</string>
     <string name="insert_fields">Insert all fields</string>
     <string name="habit_created">Habit created</string>
+    <string name="habit_updated">Habit updated</string>
     <string name="daily_created">Daily created</string>
     <string name="to_do_created">To do created</string>
     <string name="error_position">Couldn\'t locate the device</string>

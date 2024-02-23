@@ -17,12 +17,15 @@ import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
+
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.data.repository.data.DataRepository;
 import it.appventurers.taskflow.data.repository.user.UserRepository;
 import it.appventurers.taskflow.databinding.FragmentCreateHabitBinding;
 import it.appventurers.taskflow.model.Habit;
 import it.appventurers.taskflow.model.Result;
+import it.appventurers.taskflow.model.User;
 import it.appventurers.taskflow.ui.elements.main.MainActivity;
 import it.appventurers.taskflow.ui.viewmodel.data.DataViewModel;
 import it.appventurers.taskflow.ui.viewmodel.data.DataViewModelFactory;
@@ -46,6 +49,8 @@ public class CreateHabitFragment extends Fragment {
     private boolean positive;
     private int difficulty;
     private int resetCounter;
+
+    private Habit currentHabit;
 
     public CreateHabitFragment() {
         // Required empty public constructor
@@ -88,6 +93,61 @@ public class CreateHabitFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        if (getArguments() != null && getArguments().containsKey("habitName")) {
+            String habitName = getArguments().getString("habitName");
+
+            loadAndFilterHabitByName(habitName);
+            binding.titleEditText.setText(habitName);
+            binding.titleEditText.setEnabled(false);
+            binding.createButton.setVisibility(view.INVISIBLE);
+            binding.deleteButton.setVisibility(View.VISIBLE);
+            binding.saveButton.setVisibility(View.VISIBLE);
+            binding.habitProgress.setVisibility(View.INVISIBLE);
+            binding.createToDoText.setVisibility(View.INVISIBLE);
+        }
+
+        binding.saveButton.setOnClickListener(view1 -> {
+            currentHabit.setNote(binding.noteEditText.getText().toString().trim());
+            if(binding.difficultyButtonGroup.getCheckedButtonId() == R.id.trivial_button){
+                currentHabit.setDifficulty(1);
+            } else if (binding.difficultyButtonGroup.getCheckedButtonId() == R.id.easy_button) {
+                currentHabit.setDifficulty(2);
+            } else if (binding.difficultyButtonGroup.getCheckedButtonId() == R.id.medium_button) {
+                currentHabit.setDifficulty(3);
+            } else if (binding.difficultyButtonGroup.getCheckedButtonId() == R.id.hard_button) {
+                currentHabit.setDifficulty(4);
+            } else {
+                currentHabit.setDifficulty(0);
+            }
+            if(binding.negativePositiveButtonGroup.getCheckedButtonIds().contains(R.id.positive_button)) {
+                currentHabit.setPositive(true);
+            } else if(binding.negativePositiveButtonGroup.getCheckedButtonIds().contains(R.id.negative_button)) {
+                currentHabit.setNegative(true);
+            }
+            dataViewModel.updateHabit(userViewModel.getLoggedUser(), currentHabit);
+            dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
+                if (result.isSuccess()) {
+                    Snackbar.make(requireView(),
+                            getString(R.string.habit_updated),
+                            Snackbar.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    intent.putExtra(LOAD_FRAGMENT, HABIT_FRAGMENT);
+                    startActivity(intent);
+                    requireActivity().finish();
+                } else {
+                    String error = ((Result.Fail) result).getError();
+                    Snackbar.make(view,
+                            error,
+                            Snackbar.LENGTH_SHORT).show();
+
+                    binding.createButton.setVisibility(View.VISIBLE);
+                    binding.habitProgress.setVisibility(View.INVISIBLE);
+                }
+            });
+        });
 
         binding.backButton.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), MainActivity.class);
@@ -168,6 +228,21 @@ public class CreateHabitFragment extends Fragment {
 
                 binding.createButton.setVisibility(View.VISIBLE);
                 binding.habitProgress.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
+
+    private void loadAndFilterHabitByName(String habitName) {
+        dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
+            if (result instanceof Result.HabitSuccess) {
+                List<Habit> habits = ((Result.HabitSuccess) result).getHabitList();
+                for (Habit habit : habits) {
+                    if (habit.getName().equals(habitName)) {
+                        currentHabit = habit;
+                        break;
+                    }
+                }
             }
         });
     }

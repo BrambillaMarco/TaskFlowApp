@@ -58,7 +58,6 @@ public class DataRepository implements IDataCallback {
     public void getAllHabit(User user) {
         remoteData.getAllHabit(user);
     }
-
     public void updateHabit(User user, Habit habit) {
         remoteData.updateHabit(user, habit);
     }

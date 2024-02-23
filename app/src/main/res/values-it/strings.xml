@@ -29,6 +29,7 @@
     <string name="delete">Cancella</string>
     <string name="back">Indietro</string>
     <string name="create_habit">Crea abitudine</string>
+    <string name="update_habit">Aggiorna habit</string>
     <string name="title">Titolo</string>
     <string name="notes">Note</string>
     <string name="positive">Positivo</string>
@@ -63,4 +64,14 @@
     <string name="error_change_email">Impossibile aggiornare email</string>
     <string name="minus">-</string>
     <string name="plus">+</string>
+    <string name="email_sent">Email inviata</string>
+    <string name="insert_email">Inserisci email</string>
+    <string name="insert_fields">Inserisci tutti i campi</string>
+    <string name="habit_created">Habit creata</string>
+    <string name="habit_updated">Habit aggiornata</string>
+    <string name="daily_created">Daily creata</string>
+    <string name="to_do_created">To do creata</string>
+    <string name="error_position">Impossibile localizzare il device</string>
+    <string name="permission_granted">Permesso garantito</string>
+    <string name="permission_denied">Permesso negato. Perfavore accettare il permesso</string>
 </resources>

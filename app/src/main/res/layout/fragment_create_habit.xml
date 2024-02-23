@@ -43,6 +43,18 @@
         app:layout_constraintBaseline_toBaselineOf="@id/create_button"
         android:text="@string/create_habit"
         android:layout_marginStart="24dp"
+        android:textSize="20sp"
+        android:visibility="invisible">
+    </com.google.android.material.textview.MaterialTextView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/update_to_do_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/back_button"
+        app:layout_constraintBaseline_toBaselineOf="@id/create_button"
+        android:text="@string/update_habit"
+        android:layout_marginStart="24dp"
         android:textSize="20sp">
     </com.google.android.material.textview.MaterialTextView>
 
@@ -56,7 +68,6 @@
         android:text="@string/delete"
         android:textSize="15sp"
         android:layout_marginTop="36dp"
-        android:visibility="invisible"
         android:textAlignment="textEnd">
     </com.google.android.material.button.MaterialButton>
 
@@ -70,8 +81,7 @@
         android:text="@string/save"
         android:textSize="15sp"
         android:layout_marginTop="36dp"
-        android:textAlignment="textEnd"
-        android:visibility="invisible">
+        android:textAlignment="textEnd">
     </com.google.android.material.button.MaterialButton>
 
     <com.google.android.material.button.MaterialButton
@@ -84,7 +94,8 @@
         android:text="@string/create"
         android:textSize="15sp"
         android:layout_marginTop="36dp"
-        android:textAlignment="textEnd">
+        android:textAlignment="textEnd"
+        android:visibility="invisible">
     </com.google.android.material.button.MaterialButton>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -94,8 +105,8 @@
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="36dp"
-        android:visibility="invisible"
-        android:indeterminate="true">
+        android:indeterminate="true"
+        android:visibility="invisible">
     </com.google.android.material.progressindicator.CircularProgressIndicator>
 
     <com.google.android.material.textfield.TextInputLayout
