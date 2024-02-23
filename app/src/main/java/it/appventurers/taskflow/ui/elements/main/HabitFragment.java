@@ -97,6 +97,17 @@ public class HabitFragment extends Fragment {
                                 userViewModel.getLoggedUser()
                                         .setXp(userViewModel.getLoggedUser().getXp() +
                                                 habitList.get(position).getDifficulty() * 2);
+                                if (userViewModel.getLoggedUser().getCurrentLife() <
+                                userViewModel.getLoggedUser().getLife()) {
+                                    userViewModel.getLoggedUser()
+                                            .setCurrentLife(userViewModel.getLoggedUser().getCurrentLife() +
+                                                    habitList.get(position).getDifficulty() * 2);
+                                    if (userViewModel.getLoggedUser().getCurrentLife() >
+                                    userViewModel.getLoggedUser().getLife()) {
+                                        userViewModel.getLoggedUser()
+                                                .setCurrentLife(userViewModel.getLoggedUser().getLife());
+                                    }
+                                }
                                 if (userViewModel.getLoggedUser().getXp() >= 100) {
                                     if (userViewModel.getLoggedUser().getLevel() < 10) {
                                         userViewModel.getLoggedUser()
@@ -127,11 +138,19 @@ public class HabitFragment extends Fragment {
                                                 habitList.get(position).getDifficulty());
                                 if (userViewModel.getLoggedUser().getCurrentLife() <= 0) {
                                     userViewModel.getLoggedUser().setXp(0);
-                                    if (userViewModel.getLoggedUser().getLevel() >= 1) {
+                                    if (userViewModel.getLoggedUser().getLevel() >= 1 &&
+                                    userViewModel.getLoggedUser().getLevel() <= 10) {
                                         userViewModel.getLoggedUser()
                                                 .setLevel(userViewModel.getLoggedUser().getLevel() - 1);
                                         userViewModel.getLoggedUser()
                                                 .setLife(userViewModel.getLoggedUser().getLife() - 10);
+                                        userViewModel.getLoggedUser()
+                                                .setCurrentLife(userViewModel.getLoggedUser().getLife());
+                                    } else if (userViewModel.getLoggedUser().getLevel() > 10) {
+                                        userViewModel.getLoggedUser()
+                                                .setLevel(userViewModel.getLoggedUser().getLevel() - 1);
+                                        userViewModel.getLoggedUser()
+                                                .setLife(userViewModel.getLoggedUser().getLife());
                                         userViewModel.getLoggedUser()
                                                 .setCurrentLife(userViewModel.getLoggedUser().getLife());
                                     } else {

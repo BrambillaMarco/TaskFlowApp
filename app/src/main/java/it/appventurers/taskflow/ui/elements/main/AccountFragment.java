@@ -2,9 +2,11 @@ package it.appventurers.taskflow.ui.elements.main;
 
 import static it.appventurers.taskflow.util.Constant.EMAIL_ADDRESS;
 import static it.appventurers.taskflow.util.Constant.ENCRYPTED_SHARED_PREFERENCES_FILE;
+import static it.appventurers.taskflow.util.Constant.ENGLISH;
+import static it.appventurers.taskflow.util.Constant.ITALIANO;
 import static it.appventurers.taskflow.util.Constant.LANGUAGE;
 import static it.appventurers.taskflow.util.Constant.PASSWORD;
-import static it.appventurers.taskflow.util.Constant.THEME;
+import static it.appventurers.taskflow.util.Constant.THEME_DARK;
 import static it.appventurers.taskflow.util.Constant.TOKEN;
 
 import android.content.Intent;
@@ -15,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,26 +149,30 @@ public class AccountFragment extends Fragment {
         binding.languageButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (checkedId == R.id.english_button) {
                 try {
-                    encryptedSharedPreferences.saveCredentialInformationEncrypted(
+                    encryptedSharedPreferences.updateCredentialInformationEncrypted(
                             ENCRYPTED_SHARED_PREFERENCES_FILE,
-                            LANGUAGE + userViewModel.getLoggedUser().getuId(),
-                            "en");
+                            LANGUAGE,
+                            ENGLISH);
+
                     Intent intent=new Intent(getActivity(),MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     requireActivity().finish();
-                } catch (GeneralSecurityException | IOException e) {
-                    Snackbar.make(view, getString(R.string.error_saving), Snackbar.LENGTH_SHORT).show();
+                } catch (GeneralSecurityException | IOException ignored) {
+                    Log.d("ciao", "errore nel update lingua inglese");
                 }
             } else if (checkedId == R.id.italian_button) {
                 try {
-                    encryptedSharedPreferences.saveCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE, LANGUAGE + userViewModel.getLoggedUser().getuId(), "it");
+                    encryptedSharedPreferences.updateCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
+                            LANGUAGE,
+                            ITALIANO);
+
                     Intent intent=new Intent(getActivity(),MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     requireActivity().finish();
-                } catch (GeneralSecurityException | IOException e) {
-                    Snackbar.make(view, getString(R.string.error_saving), Snackbar.LENGTH_SHORT).show();
+                } catch (GeneralSecurityException | IOException ignored) {
+                    Log.d("ciao", "errore nel update lingua italiano");
                 }
             }
         });
@@ -173,23 +180,31 @@ public class AccountFragment extends Fragment {
         binding.themeButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (checkedId == R.id.light_button) {
                 try {
-                    encryptedSharedPreferences.saveCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE, THEME + userViewModel.getLoggedUser().getuId(), "light");
+                    encryptedSharedPreferences.updateCredentialInformationEncrypted(
+                            ENCRYPTED_SHARED_PREFERENCES_FILE,
+                            THEME_DARK,
+                            "false");
+
                     Intent intent=new Intent(getActivity(),MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    getActivity().finish();
-                } catch (GeneralSecurityException | IOException e) {
-                    Snackbar.make(view, getString(R.string.error_saving), Snackbar.LENGTH_SHORT).show();
+                    requireActivity().finish();
+                } catch (GeneralSecurityException | IOException ignored) {
+                    Log.d("ciao", "errore nel update tema chiaro");
                 }
             } else if (checkedId == R.id.dark_button) {
                 try {
-                    encryptedSharedPreferences.saveCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE, THEME + userViewModel.getLoggedUser().getuId(), "dark");
+                    encryptedSharedPreferences.updateCredentialInformationEncrypted(
+                            ENCRYPTED_SHARED_PREFERENCES_FILE,
+                            THEME_DARK,
+                            "true");
+
                     Intent intent=new Intent(getActivity(),MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    getActivity().finish();
-                } catch (GeneralSecurityException | IOException e) {
-                    Snackbar.make(view, getString(R.string.error_saving), Snackbar.LENGTH_SHORT).show();
+                    requireActivity().finish();
+                } catch (GeneralSecurityException | IOException ignored) {
+                    Log.d("ciao", "errore nel update tema scuro");
                 }
             }
         });

@@ -1,16 +1,16 @@
 package it.appventurers.taskflow.ui.elements.main;
 
 import static it.appventurers.taskflow.util.Constant.ENCRYPTED_SHARED_PREFERENCES_FILE;
+import static it.appventurers.taskflow.util.Constant.ENGLISH;
+import static it.appventurers.taskflow.util.Constant.ITALIANO;
 import static it.appventurers.taskflow.util.Constant.LANGUAGE;
 import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
-import static it.appventurers.taskflow.util.Constant.THEME;
+import static it.appventurers.taskflow.util.Constant.THEME_DARK;
 import static it.appventurers.taskflow.util.Constant.DAILY_FRAGMENT;
 import static it.appventurers.taskflow.util.Constant.DAY;
 import static it.appventurers.taskflow.util.Constant.HABIT_FRAGMENT;
-import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
 import static it.appventurers.taskflow.util.Constant.TO_DO_FRAGMENT;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
@@ -23,9 +23,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.LocaleList;
+import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -103,24 +105,39 @@ public class MainActivity extends AppCompatActivity {
             navController.navigate(R.id.toDoFragment);
         }
 
-        try {
-            String language = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
-                    LANGUAGE + userViewModel.getLoggedUser().getuId());
-            setAppLocale(language);
-        } catch (GeneralSecurityException | IOException e) {
-            setAppLocale("it");
-        }
 
         try {
-            String theme = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
-                    THEME + userViewModel.getLoggedUser().getuId());
-            if("dark".equalsIgnoreCase(theme)){
+            String language = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
+                    LANGUAGE);
+            Log.d("ciao" , language);
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Resources resources = this.getResources();
+            Configuration configuration = resources.getConfiguration();
+            resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+        } catch (GeneralSecurityException | IOException e) {
+            Log.d("ciao", "sono nell'eccezione");
+        }
+
+        String theme;
+        try {
+            theme = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
+                    THEME_DARK);
+            if(theme.equals("true")){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else if("light".equalsIgnoreCase(theme)){
+            } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
         } catch (GeneralSecurityException | IOException e) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            int currentNightMode = getBaseContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            switch (currentNightMode) {
+                case Configuration.UI_MODE_NIGHT_NO:
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    break;
+                case Configuration.UI_MODE_NIGHT_YES:
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    break;
+            }
         }
 
         dataViewModel.getUserInfo(userViewModel.getLoggedUser());

@@ -42,10 +42,10 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            negativeButton = itemView.findViewById(R.id.italian_button);
+            negativeButton = itemView.findViewById(R.id.negative_button);
             titleTextView = itemView.findViewById(R.id.habit_title_text);
             habitCardView = itemView.findViewById(R.id.habit_card);
-            positiveButton = itemView.findViewById(R.id.english_button);
+            positiveButton = itemView.findViewById(R.id.positive_button);
         }
 
         public Button getNegativeButton() {

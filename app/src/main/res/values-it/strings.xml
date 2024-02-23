@@ -56,7 +56,6 @@
     <string name="error_saving">Impossibile salvare i dati. Prova più tardi.</string>
     <string name="error_login">Email o Password errata.</string>
     <string name="error_reading">Impossibile leggere le credenziali. Prova più tardi.</string>
-    <string name="error_retrieving_credentials">Impossibile recuperare le credenziali. Riprova più tardi.</string>
     <string name="error_credentials_empty">Inserisci le credenziali</string>
     <string name="account_deleted">Account cancellato.</string>
     <string name="error_deleting">Impossibile cancellare account.</string>
