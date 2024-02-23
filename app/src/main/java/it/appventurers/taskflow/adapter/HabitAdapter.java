@@ -10,10 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.model.Habit;
@@ -45,10 +42,10 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            negativeButton = itemView.findViewById(R.id.negative_button);
+            negativeButton = itemView.findViewById(R.id.italian_button);
             titleTextView = itemView.findViewById(R.id.habit_title_text);
             habitCardView = itemView.findViewById(R.id.habit_card);
-            positiveButton = itemView.findViewById(R.id.positive_button);
+            positiveButton = itemView.findViewById(R.id.english_button);
         }
 
         public Button getNegativeButton() {

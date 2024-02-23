@@ -222,7 +222,7 @@
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                android:id="@+id/positive_button"
+                android:id="@+id/english_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/english"
@@ -233,7 +233,7 @@
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                android:id="@+id/negative_button"
+                android:id="@+id/italian_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/italian"

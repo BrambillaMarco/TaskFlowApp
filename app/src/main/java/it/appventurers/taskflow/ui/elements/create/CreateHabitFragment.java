@@ -108,9 +108,9 @@ public class CreateHabitFragment extends Fragment {
                     .trim();
 
             positive = binding.negativePositiveButtonGroup.getCheckedButtonIds()
-                    .contains(R.id.positive_button);
+                    .contains(R.id.english_button);
             negative = binding.negativePositiveButtonGroup.getCheckedButtonIds()
-                    .contains(R.id.negative_button);
+                    .contains(R.id.italian_button);
 
             if (binding.difficultyButtonGroup.getCheckedButtonId() == R.id.trivial_button) {
                 difficulty = 1;

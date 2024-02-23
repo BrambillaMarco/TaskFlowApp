@@ -57,13 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private NavController navController;
-    private String fragmentToLoad;
-    private WeatherViewModel weatherViewModel;
-    private FusedLocationProviderClient fusedLocationClient;
-    private Weather weather;
-    private UserViewModel userViewModel;
-    private DataViewModel dataViewModel;
-    private EncryptedSharedPreferencesUtil encryptedSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,30 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-
-        encryptedSharedPreferences = new EncryptedSharedPreferencesUtil(this);
-
-        try {
-            String lingua = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
-                    LANGUAGE);
-            setAppLocale(lingua);
-        } catch (GeneralSecurityException | IOException e) {
-            setAppLocale("it");
-        }
-
-        try {
-            String tema = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
-                    THEME);
-            if("dark".equalsIgnoreCase(tema)){
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else if("light".equalsIgnoreCase(tema)){
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-        } catch (GeneralSecurityException | IOException e) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-
         setContentView(view);
+
+        EncryptedSharedPreferencesUtil encryptedSharedPreferences = new EncryptedSharedPreferencesUtil(this);
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.main_fragment_container);
@@ -129,6 +101,26 @@ public class MainActivity extends AppCompatActivity {
             navController.navigate(R.id.dailyFragment);
         } else if (TO_DO_FRAGMENT.equals(fragmentToLoad)) {
             navController.navigate(R.id.toDoFragment);
+        }
+
+        try {
+            String language = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
+                    LANGUAGE + userViewModel.getLoggedUser().getuId());
+            setAppLocale(language);
+        } catch (GeneralSecurityException | IOException e) {
+            setAppLocale("it");
+        }
+
+        try {
+            String theme = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
+                    THEME + userViewModel.getLoggedUser().getuId());
+            if("dark".equalsIgnoreCase(theme)){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else if("light".equalsIgnoreCase(theme)){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+        } catch (GeneralSecurityException | IOException e) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
         dataViewModel.getUserInfo(userViewModel.getLoggedUser());

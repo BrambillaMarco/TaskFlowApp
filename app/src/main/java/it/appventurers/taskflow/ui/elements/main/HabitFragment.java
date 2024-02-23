@@ -59,7 +59,7 @@ public class HabitFragment extends Fragment {
         UserRepository userRepository = ClassBuilder.getClassBuilder()
                 .getUserRepository(requireActivity().getApplication());
         userViewModel = new ViewModelProvider(
-                this,
+                requireActivity(),
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
         DataRepository dataRepository = ClassBuilder.getClassBuilder()
