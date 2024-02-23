@@ -1,6 +1,7 @@
 package it.appventurers.taskflow.ui.elements.create;
 
 import static it.appventurers.taskflow.util.Constant.DAILY_FRAGMENT;
+import static it.appventurers.taskflow.util.Constant.HABIT;
 import static it.appventurers.taskflow.util.Constant.HABIT_FRAGMENT;
 import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
 import static it.appventurers.taskflow.util.Constant.TO_DO_FRAGMENT;
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import it.appventurers.taskflow.R;
@@ -34,10 +36,11 @@ public class CreateActivity extends AppCompatActivity {
         NavController navController = navHostFragment.getNavController();
 
         String fragmentToLoad = getIntent().getStringExtra(LOAD_FRAGMENT);
+        Bundle bundle = getIntent().getBundleExtra(HABIT);
 
         if (HABIT_FRAGMENT.equals(fragmentToLoad)) {
             navController.popBackStack();
-            navController.navigate(R.id.createHabitFragment);
+            navController.navigate(R.id.createHabitFragment, bundle);
         } else if (DAILY_FRAGMENT.equals(fragmentToLoad)) {
             navController.popBackStack();
             navController.navigate(R.id.createDailyFragment);

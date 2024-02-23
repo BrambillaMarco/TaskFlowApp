@@ -18,7 +18,6 @@ public class DataViewModel extends ViewModel {
 
     private final DataRepository dataRepository;
     private MutableLiveData<Result> data;
-    private MutableLiveData<Result> habitData;
     private MutableLiveData<User> userInfo;
 
 

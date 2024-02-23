@@ -1,5 +1,6 @@
 package it.appventurers.taskflow.ui.elements.create;
 
+import static it.appventurers.taskflow.util.Constant.HABIT;
 import static it.appventurers.taskflow.util.Constant.HABIT_FRAGMENT;
 import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
 
@@ -9,8 +10,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +56,7 @@ public class CreateHabitFragment extends Fragment {
     private int resetCounter;
 
     private Habit currentHabit;
+    private Bundle bundle;
 
     public CreateHabitFragment() {
         // Required empty public constructor
@@ -63,6 +69,8 @@ public class CreateHabitFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        bundle = getArguments();
 
         UserRepository userRepository = ClassBuilder.getClassBuilder().getUserRepository(
                 requireActivity().getApplication());
@@ -95,21 +103,49 @@ public class CreateHabitFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        if (getArguments() != null && getArguments().containsKey("habitName")) {
-            String habitName = getArguments().getString("habitName");
+        if (bundle != null) {
+            currentHabit = bundle.getParcelable(HABIT);
 
-            loadAndFilterHabitByName(habitName);
-            binding.titleEditText.setText(habitName);
-            binding.titleEditText.setEnabled(false);
-            binding.createButton.setVisibility(view.INVISIBLE);
+            binding.createButton.setVisibility(View.INVISIBLE);
             binding.deleteButton.setVisibility(View.VISIBLE);
             binding.saveButton.setVisibility(View.VISIBLE);
-            binding.habitProgress.setVisibility(View.INVISIBLE);
-            binding.createToDoText.setVisibility(View.INVISIBLE);
+            binding.createHabitText.setVisibility(View.INVISIBLE);
+            binding.updateHabitText.setVisibility(View.VISIBLE);
+            binding.titleEditText.setText(currentHabit.getName());
+            binding.titleEditText.setEnabled(false);
+            binding.noteEditText.setText(currentHabit.getNote());
+            binding.positiveButton.setChecked(currentHabit.isPositive());
+            binding.negativeButton.setChecked(currentHabit.isNegative());
+            switch (currentHabit.getDifficulty()) {
+                case 1:
+                    binding.trivialButton.setChecked(true);
+                    break;
+                case 2:
+                    binding.easyButton.setChecked(true);
+                    break;
+                case 3:
+                    binding.mediumButton.setChecked(true);
+                    break;
+                case 4:
+                    binding.hardButton.setChecked(true);
+                    break;
+            }
+            switch (currentHabit.getResetCounter()) {
+                case 1:
+                    binding.dailyButton.setChecked(true);
+                    break;
+                case 2:
+                    binding.weeklyButton.setChecked(true);
+                    break;
+                case 3:
+                    binding.monthlyButton.setChecked(true);
+                    break;
+            }
         }
 
         binding.saveButton.setOnClickListener(view1 -> {
             currentHabit.setNote(binding.noteEditText.getText().toString().trim());
+
             if(binding.difficultyButtonGroup.getCheckedButtonId() == R.id.trivial_button){
                 currentHabit.setDifficulty(1);
             } else if (binding.difficultyButtonGroup.getCheckedButtonId() == R.id.easy_button) {
@@ -121,16 +157,42 @@ public class CreateHabitFragment extends Fragment {
             } else {
                 currentHabit.setDifficulty(0);
             }
-            if(binding.negativePositiveButtonGroup.getCheckedButtonIds().contains(R.id.positive_button)) {
-                currentHabit.setPositive(true);
-            } else if(binding.negativePositiveButtonGroup.getCheckedButtonIds().contains(R.id.negative_button)) {
-                currentHabit.setNegative(true);
-            }
+
+            currentHabit.setPositive(binding.negativePositiveButtonGroup.getCheckedButtonIds()
+                        .contains(R.id.positive_button));
+            currentHabit.setNegative(binding.negativePositiveButtonGroup.getCheckedButtonIds()
+                        .contains(R.id.negative_button));
+
             dataViewModel.updateHabit(userViewModel.getLoggedUser(), currentHabit);
             dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
                 if (result.isSuccess()) {
                     Snackbar.make(requireView(),
                             getString(R.string.habit_updated),
+                            Snackbar.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    intent.putExtra(LOAD_FRAGMENT, HABIT_FRAGMENT);
+                    startActivity(intent);
+                    requireActivity().finish();
+                } else {
+                    String error = ((Result.Fail) result).getError();
+                    Snackbar.make(view,
+                            error,
+                            Snackbar.LENGTH_SHORT).show();
+
+                    binding.createButton.setVisibility(View.VISIBLE);
+                    binding.habitProgress.setVisibility(View.INVISIBLE);
+                }
+            });
+        });
+
+        binding.deleteButton.setOnClickListener(view12 -> {
+
+            dataViewModel.deleteHabit(userViewModel.getLoggedUser(), currentHabit);
+            dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
+                if (result.isSuccess()) {
+                    Snackbar.make(requireView(),
+                            getString(R.string.habit_deleted),
                             Snackbar.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(getContext(), MainActivity.class);
@@ -168,9 +230,9 @@ public class CreateHabitFragment extends Fragment {
                     .trim();
 
             positive = binding.negativePositiveButtonGroup.getCheckedButtonIds()
-                    .contains(R.id.english_button);
+                    .contains(R.id.positive_button);
             negative = binding.negativePositiveButtonGroup.getCheckedButtonIds()
-                    .contains(R.id.italian_button);
+                    .contains(R.id.negative_button);
 
             if (binding.difficultyButtonGroup.getCheckedButtonId() == R.id.trivial_button) {
                 difficulty = 1;
@@ -231,20 +293,6 @@ public class CreateHabitFragment extends Fragment {
             }
         });
 
-    }
-
-    private void loadAndFilterHabitByName(String habitName) {
-        dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
-            if (result instanceof Result.HabitSuccess) {
-                List<Habit> habits = ((Result.HabitSuccess) result).getHabitList();
-                for (Habit habit : habits) {
-                    if (habit.getName().equals(habitName)) {
-                        currentHabit = habit;
-                        break;
-                    }
-                }
-            }
-        });
     }
 
     @Override

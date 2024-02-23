@@ -1,5 +1,10 @@
 package it.appventurers.taskflow.ui.elements.main;
 
+import static it.appventurers.taskflow.util.Constant.HABIT;
+import static it.appventurers.taskflow.util.Constant.HABIT_FRAGMENT;
+import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
+
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,6 +32,7 @@ import it.appventurers.taskflow.data.repository.user.UserRepository;
 import it.appventurers.taskflow.databinding.FragmentHabitBinding;
 import it.appventurers.taskflow.model.Habit;
 import it.appventurers.taskflow.model.Result;
+import it.appventurers.taskflow.ui.elements.create.CreateActivity;
 import it.appventurers.taskflow.ui.viewmodel.data.DataViewModel;
 import it.appventurers.taskflow.ui.viewmodel.data.DataViewModelFactory;
 import it.appventurers.taskflow.ui.viewmodel.user.UserViewModel;
@@ -172,11 +178,13 @@ public class HabitFragment extends Fragment {
 
                             @Override
                             public void onCardViewClick(int position) {
-                                Habit habit = habitList.get(position);
-                                String habitName = habit.getName();
                                 Bundle bundle = new Bundle();
-                                bundle.putString("habitName", habitName);
-                                navController.navigate(R.id.action_habitFragment_to_createActivity);
+                                bundle.putParcelable(HABIT, habitList.get(position));
+                                Intent intent = new Intent(getContext(), CreateActivity.class);
+                                intent.putExtra(LOAD_FRAGMENT, HABIT_FRAGMENT);
+                                intent.putExtra(HABIT, bundle);
+                                startActivity(intent);
+                                requireActivity().finish();
                             }
                         });
 
