@@ -1,11 +1,14 @@
 package it.appventurers.taskflow.ui.viewmodel.data;
 
-import android.util.Log;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import it.appventurers.taskflow.data.repository.data.DataRepository;
 import it.appventurers.taskflow.model.Daily;
@@ -18,8 +21,9 @@ public class DataViewModel extends ViewModel {
 
     private final DataRepository dataRepository;
     private MutableLiveData<Result> data;
-    private MutableLiveData<Result> habitData;
+    private MutableLiveData<Result> habitData = new MutableLiveData<>();
     private MutableLiveData<User> userInfo;
+    private LiveData<List<Habit>> habitsLiveData;
 
 
     public DataViewModel(DataRepository dataRepository) {
@@ -53,10 +57,15 @@ public class DataViewModel extends ViewModel {
         setData();
     }
 
+
     public void getAllHabit(User user) {
         dataRepository.getAllHabit(user);
         setData();
     }
+
+
+
+
 
     public void updateHabit(User user, Habit habit) {
         dataRepository.updateHabit(user, habit);

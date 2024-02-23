@@ -138,7 +138,7 @@ public class CreateHabitFragment extends Fragment {
                     (positive || negative) &&
                     difficulty != 0 &&
                     resetCounter != 0) {
-                Habit habit = new Habit(title, note, negative, positive, difficulty, resetCounter);
+                Habit habit = new Habit(title, note, negative, positive, difficulty, resetCounter, false);
 
                 dataViewModel.saveHabit(userViewModel.getLoggedUser(), habit);
                 dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {

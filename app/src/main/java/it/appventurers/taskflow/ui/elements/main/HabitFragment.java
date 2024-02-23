@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -83,7 +84,6 @@ public class HabitFragment extends Fragment {
 
         layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
-
         dataViewModel.getAllHabit(userViewModel.getLoggedUser());
         dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()) {
