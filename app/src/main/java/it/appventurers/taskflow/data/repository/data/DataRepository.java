@@ -1,13 +1,23 @@
 package it.appventurers.taskflow.data.repository.data;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.room.Room;
 
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import it.appventurers.taskflow.data.source.data.BaseRemoteData;
+import it.appventurers.taskflow.database.AppDatabase;
+import it.appventurers.taskflow.database.HabitDao;
 import it.appventurers.taskflow.model.Daily;
 import it.appventurers.taskflow.model.Habit;
 import it.appventurers.taskflow.model.Result;
@@ -19,12 +29,27 @@ public class DataRepository implements IDataCallback {
     private final BaseRemoteData remoteData;
     private final MutableLiveData<Result> data;
     private final MutableLiveData<User> userInfo;
+    private HabitDao habitDao;
+    private Context context;
 
-    public DataRepository(BaseRemoteData remoteData) {
+
+    public DataRepository(Context context, BaseRemoteData remoteData) {
+        this.context = context.getApplicationContext();
         this.remoteData = remoteData;
         remoteData.setBaseRemoteData(this);
         data = new MutableLiveData<>();
         userInfo = new MutableLiveData<>();
+
+        // Inizializza il database Room e il DAO delle abitudini
+        AppDatabase db = Room.databaseBuilder(context.getApplicationContext(),
+                AppDatabase.class, "taskflow_database").build();
+        this.habitDao = db.habitDao();
+    }
+
+    private boolean isConnected() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
     public MutableLiveData<Result> getData() {
@@ -52,11 +77,62 @@ public class DataRepository implements IDataCallback {
     }
 
     public void saveHabit(User user, Habit habit) {
-        remoteData.saveHabit(user, habit);
+        new Thread(() -> {
+            if (isConnected()) {
+                // Salvataggio remoto con BaseRemoteData
+                habit.setSynced(true);
+                remoteData.saveHabit(user, habit);
+            } else {
+                habit.setSynced(false);
+            }
+            // Salvataggio locale con Room
+            habitDao.insert(habit);
+        }).start();
     }
 
+
+    private void syncHabits(String userId, String email) {
+        new Thread(() -> {
+            List<Habit> unSyncedHabits = habitDao.getUnsyncedHabits();
+            for (Habit habit : unSyncedHabits) {
+                boolean success = saveHabitRemotely(User.getInstance(userId, email), habit);
+                if (success) {
+                    habit.setSynced(true);
+                    habitDao.update(habit);
+                }
+            }
+        }).start();
+
+    }
+
+    private boolean saveHabitRemotely(User user, Habit habit) {
+        try {
+            remoteData.saveHabit(user, habit);
+            return true;
+        } catch (Exception e) {
+            Log.e("DataRepository", "Errore nel salvataggio remoto: ", e);
+            return false;
+        }
+    }
+
+
+
     public void getAllHabit(User user) {
-        remoteData.getAllHabit(user);
+        if(isConnected()){
+            syncHabits(user.getuId(), user.getEmail());
+            remoteData.getAllHabit(user);
+        }else{
+            postLocalHabits(user.getuId());
+        }
+
+    }
+
+    private void postLocalHabits(String userId) {
+        new Thread(() -> {
+            List<Habit> localHabits = habitDao.getHabitsByUserIdNonLive(userId); // Assumi l'esistenza di questo metodo.
+            Result.HabitSuccess result = new Result.HabitSuccess(new ArrayList<>(localHabits));
+            data.postValue(result); // Utilizza LiveData per postare i risultati.
+        }).start();
     }
     public void updateHabit(User user, Habit habit) {
         remoteData.updateHabit(user, habit);

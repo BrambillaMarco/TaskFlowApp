@@ -36,7 +36,7 @@ public class ClassBuilder {
 
     public DataRepository getDataRepository(Application application) {
         BaseRemoteData baseRemoteData = new RemoteData();
-        return new DataRepository(baseRemoteData);
+        return new DataRepository(application.getApplicationContext(), baseRemoteData);
     }
 
     public WeatherRepository getWeatherRepository(Application application) {
