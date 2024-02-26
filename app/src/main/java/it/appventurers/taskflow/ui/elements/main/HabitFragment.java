@@ -104,7 +104,6 @@ public class HabitFragment extends Fragment {
                 habitList.addAll(((Result.HabitSuccess) result).getHabitList());
                 HabitAdapter habitAdapter = new HabitAdapter(habitList,
                         new HabitAdapter.OnItemClickListener() {
-
                             @Override
                             public void onPositiveButtonClick(int position) {
                                 userViewModel.getLoggedUser()

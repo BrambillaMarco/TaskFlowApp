@@ -3,21 +3,23 @@ package it.appventurers.taskflow.data.repository.data;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import it.appventurers.taskflow.data.source.data.BaseRemoteData;
 import it.appventurers.taskflow.database.AppDatabase;
 import it.appventurers.taskflow.database.HabitDao;
+import it.appventurers.taskflow.database.UserDao;
 import it.appventurers.taskflow.model.Daily;
 import it.appventurers.taskflow.model.Habit;
 import it.appventurers.taskflow.model.Result;
@@ -30,7 +32,11 @@ public class DataRepository implements IDataCallback {
     private final MutableLiveData<Result> data;
     private final MutableLiveData<User> userInfo;
     private HabitDao habitDao;
+    private UserDao userDao;
     private Context context;
+    private Executor ioExecutor;
+    private Handler mainThreadHandler;
+    protected IDataCallback dataCallback;
 
 
     public DataRepository(Context context, BaseRemoteData remoteData) {
@@ -39,11 +45,14 @@ public class DataRepository implements IDataCallback {
         remoteData.setBaseRemoteData(this);
         data = new MutableLiveData<>();
         userInfo = new MutableLiveData<>();
+        this.ioExecutor = Executors.newSingleThreadExecutor();
+        this.mainThreadHandler = new Handler(Looper.getMainLooper());
 
-        // Inizializza il database Room e il DAO delle abitudini
-        AppDatabase db = Room.databaseBuilder(context.getApplicationContext(),
-                AppDatabase.class, "taskflow_database").build();
+        AppDatabase db = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "taskflow_database")
+                .fallbackToDestructiveMigration()
+                .build();
         this.habitDao = db.habitDao();
+        this.userDao = db.userDao();
     }
 
     private boolean isConnected() {
@@ -61,8 +70,22 @@ public class DataRepository implements IDataCallback {
     }
 
     public void saveUser(User user) {
-        remoteData.saveUser(user);
-    }
+        ioExecutor.execute(() -> {
+            try {
+                boolean isConnected = isConnected();
+                if (isConnected) {
+                    remoteData.saveUser(user);
+                }
+                userDao.insert(user);
+                mainThreadHandler.post(this::onSuccessUser);
+                } catch (Exception e) {
+                    mainThreadHandler.post(() -> {
+                        onFailure("Unable to save habit: " + e.getMessage());
+                    });
+                }
+            });
+        }
+
 
     public void getUserInfo(User user) {
         remoteData.getUserInfo(user);
@@ -76,22 +99,34 @@ public class DataRepository implements IDataCallback {
         remoteData.deleteUser(user);
     }
 
+
     public void saveHabit(User user, Habit habit) {
-        new Thread(() -> {
-            if (isConnected()) {
-                // Salvataggio remoto con BaseRemoteData
-                habit.setSynced(true);
-                remoteData.saveHabit(user, habit);
-            } else {
-                habit.setSynced(false);
+        ioExecutor.execute(() -> {
+            try {
+                boolean isConnected = isConnected();
+
+                if (isConnected) {
+                    habit.setSynced(true);
+                    remoteData.saveHabit(user, habit);
+                    syncSaveHabits(user.getUId(), user.getEmail());
+                } else {
+                    habit.setSynced(false);
+                    }
+
+                habitDao.insert(habit);
+                mainThreadHandler.post(() -> {
+                    onSuccessHabit(habit);
+                });
+            } catch (Exception e) {
+                mainThreadHandler.post(() -> {
+                    onFailure("Unable to save habit: " + e.getMessage());
+                });
             }
-            // Salvataggio locale con Room
-            habitDao.insert(habit);
-        }).start();
+        });
     }
 
 
-    private void syncHabits(String userId, String email) {
+    private void syncSaveHabits(String userId, String email) {
         new Thread(() -> {
             List<Habit> unSyncedHabits = habitDao.getUnsyncedHabits();
             for (Habit habit : unSyncedHabits) {
@@ -102,7 +137,6 @@ public class DataRepository implements IDataCallback {
                 }
             }
         }).start();
-
     }
 
     private boolean saveHabitRemotely(User user, Habit habit) {
@@ -119,27 +153,89 @@ public class DataRepository implements IDataCallback {
 
     public void getAllHabit(User user) {
         if(isConnected()){
-            syncHabits(user.getuId(), user.getEmail());
+            syncSaveHabits(user.getUId(), user.getEmail());
             remoteData.getAllHabit(user);
         }else{
-            postLocalHabits(user.getuId());
+            postLocalHabits();
         }
-
     }
 
-    private void postLocalHabits(String userId) {
+
+    private void postLocalHabits() {
+        ioExecutor.execute(() -> {
+            try {
+                List<Habit> localHabits = habitDao.getHabits();
+                ArrayList<Habit> habitArrayList = new ArrayList<>(localHabits);
+                mainThreadHandler.post(() -> {
+                    onSuccessGetHabit(habitArrayList);
+                });
+            } catch (Exception e) {
+                mainThreadHandler.post(() -> {
+                    onFailure("Unable to load the data: " + e.getMessage());
+                });
+            }
+        });
+    }
+
+
+    public void updateHabit(User user, Habit habit) {
+        ioExecutor.execute(() -> {
+            try {
+                boolean isConnected = isConnected();
+
+                if (isConnected) {
+                    remoteData.updateHabit(user, habit);
+                    habit.setSynced(true);
+                    syncUpdateHabits(user.getUId(), user.getEmail());
+                } else {
+                    habit.setSynced(false);
+                }
+                    habitDao.update(habit);
+                    mainThreadHandler.post(() -> {
+                    onSuccessHabit(habit);
+                });
+            } catch (Exception e) {
+                mainThreadHandler.post(() -> {
+                    onFailure("Unable to update habit: " + e.getMessage());
+                });
+            }
+        });
+    }
+
+
+    private void syncUpdateHabits(String userId, String email) {
         new Thread(() -> {
-            List<Habit> localHabits = habitDao.getHabitsByUserIdNonLive(userId); // Assumi l'esistenza di questo metodo.
-            Result.HabitSuccess result = new Result.HabitSuccess(new ArrayList<>(localHabits));
-            data.postValue(result); // Utilizza LiveData per postare i risultati.
+            List<Habit> unSyncedHabits = habitDao.getUnsyncedHabits();
+            for (Habit habit : unSyncedHabits) {
+                boolean success = updateHabitRemotely(User.getInstance(userId, email), habit);
+                if (success) {
+                    habit.setSynced(true);
+                    habitDao.update(habit);
+                }
+            }
         }).start();
     }
-    public void updateHabit(User user, Habit habit) {
-        remoteData.updateHabit(user, habit);
+
+    private boolean updateHabitRemotely(User user, Habit habit) {
+        try {
+            remoteData.updateHabit(user, habit);
+            return true;
+        } catch (Exception e) {
+            Log.e("DataRepository", "Errore nell'update remoto: ", e);
+            return false;
+        }
     }
 
     public void deleteHabit(User user, Habit habit) {
-        remoteData.deleteHabit(user, habit);
+        new Thread(() -> {
+        if (isConnected()) {
+            habitDao.delete(habit);
+            remoteData.deleteHabit(user, habit);
+        }else{
+            mainThreadHandler.post(() -> {
+                onFailure("Please ensure you have an active connection and try again.");
+            });
+        }}).start();
     }
 
     public void saveDaily(User user, Daily daily) {
@@ -187,11 +283,11 @@ public class DataRepository implements IDataCallback {
 
     @Override
     public void onSuccessGetUser(User user) {
-        User.getInstance(user.getEmail(), user.getuId()).setLevel(user.getLevel());
-        User.getInstance(user.getEmail(), user.getuId()).setCurrentLife(user.getCurrentLife());
-        User.getInstance(user.getEmail(), user.getuId()).setLife(user.getLife());
-        User.getInstance(user.getEmail(), user.getuId()).setXp(user.getXp());
-        userInfo.postValue(User.getInstance(user.getEmail(), user.getuId()));
+        User.getInstance(user.getEmail(), user.getUId()).setLevel(user.getLevel());
+        User.getInstance(user.getEmail(), user.getUId()).setCurrentLife(user.getCurrentLife());
+        User.getInstance(user.getEmail(), user.getUId()).setLife(user.getLife());
+        User.getInstance(user.getEmail(), user.getUId()).setXp(user.getXp());
+        userInfo.postValue(User.getInstance(user.getEmail(), user.getUId()));
     }
 
     @Override

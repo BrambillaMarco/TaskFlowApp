@@ -31,7 +31,7 @@ public class ClassBuilder {
 
     public UserRepository getUserRepository(Application application) {
         BaseRemoteUserAuth baseRemoteUserAuth = new RemoteUserAuth();
-        return new UserRepository(baseRemoteUserAuth);
+        return new UserRepository(application.getApplicationContext(), baseRemoteUserAuth);
     }
 
     public DataRepository getDataRepository(Application application) {

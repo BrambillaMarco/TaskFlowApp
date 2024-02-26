@@ -1,25 +1,53 @@
 package it.appventurers.taskflow.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "users")
 public class User {
 
     private static User instance;
+    @PrimaryKey(autoGenerate = true)
+    private int id; // Campo aggiunto per Room come chiave primaria
+
+    @ColumnInfo(name = "email")
     private String email;
+
+    @ColumnInfo(name = "uId")
     private String uId;
+
+    @ColumnInfo(name = "life")
     private int life;
+
+    @ColumnInfo(name = "current_life")
     private int currentLife;
+
+    @ColumnInfo(name = "xp")
     private int xp;
+
+    @ColumnInfo(name = "level")
     private int level;
 
+    // Costruttore vuoto richiesto da Room
     public User() {
     }
 
-    private User(String email, String uId) {
+    public User(String email, String uId) {
         this.email = email;
         this.uId = uId;
         this.life = 10;
         this.currentLife = 10;
         this.xp = 0;
         this.level = 1;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public static User getInstance(String email, String uId) {
@@ -37,11 +65,11 @@ public class User {
         this.email = email;
     }
 
-    public String getuId() {
-        return uId;
+    public String getUId() {
+        return this.uId;
     }
 
-    public void setuId(String uId) {
+    public void setUId(String uId) {
         this.uId = uId;
     }
 

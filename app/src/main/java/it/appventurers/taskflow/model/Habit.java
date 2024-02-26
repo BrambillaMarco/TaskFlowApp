@@ -145,11 +145,12 @@ public class Habit implements Parcelable {
         dest.writeInt(resetCounter);
     }
 
-    public boolean isSynced() {
-        return isSynced;
-    }
+        public boolean isSynced () {
+            return isSynced;
+        }
 
-    public void setSynced(boolean synced) {
-        isSynced = synced;
-    }
+        public void setSynced ( boolean synced){
+            isSynced = synced;
+        }
+
 }

@@ -106,10 +106,10 @@ public class LoginFragment extends Fragment {
                         try {
                             String savedEmail = encryptedSharedPreferences.readCredentialInformationEncrypted(
                                     ENCRYPTED_SHARED_PREFERENCES_FILE,
-                                    EMAIL_ADDRESS + user.getuId());
+                                    EMAIL_ADDRESS + user.getUId());
                             String savedPassword = encryptedSharedPreferences.readCredentialInformationEncrypted(
                                     ENCRYPTED_SHARED_PREFERENCES_FILE,
-                                    PASSWORD + user.getuId());
+                                    PASSWORD + user.getUId());
                             if (savedEmail != null && savedPassword != null) {
                                 if (savedEmail.equals(email) && savedPassword.equals(password)) {
                                     navController.navigate(R.id.action_loginFragment_to_mainActivity);
@@ -163,16 +163,16 @@ public class LoginFragment extends Fragment {
         try {
             encryptedSharedPreferences.saveCredentialInformationEncrypted(
                     ENCRYPTED_SHARED_PREFERENCES_FILE,
-                    EMAIL_ADDRESS + user.getuId(),
+                    EMAIL_ADDRESS + user.getUId(),
                     email);
             encryptedSharedPreferences.saveCredentialInformationEncrypted(
                     ENCRYPTED_SHARED_PREFERENCES_FILE,
-                    PASSWORD + user.getuId(),
+                    PASSWORD + user.getUId(),
                     password);
             encryptedSharedPreferences.saveCredentialInformationEncrypted(
                     ENCRYPTED_SHARED_PREFERENCES_FILE,
-                    TOKEN + user.getuId(),
-                    user.getuId());
+                    TOKEN + user.getUId(),
+                    user.getUId());
         } catch (GeneralSecurityException | IOException e) {
             Snackbar.make(requireView(),
                     getString(R.string.error_saving),

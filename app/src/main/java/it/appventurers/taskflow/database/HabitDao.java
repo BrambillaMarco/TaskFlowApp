@@ -29,6 +29,9 @@ public interface HabitDao {
     @Query("SELECT * FROM habits WHERE synced = 0")
     List<Habit> getUnsyncedHabits();
 
+    @Query("SELECT * FROM habits")
+    List<Habit> getHabits();
+
     // Aggiunto metodo per ottenere gli habit in modo sincrono
     @Query("SELECT * FROM habits WHERE user_id = :userId")
     List<Habit> getHabitsByUserIdNonLive(String userId);

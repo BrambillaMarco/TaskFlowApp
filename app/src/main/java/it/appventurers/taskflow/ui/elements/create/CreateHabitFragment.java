@@ -205,7 +205,7 @@ public class CreateHabitFragment extends Fragment {
                             error,
                             Snackbar.LENGTH_SHORT).show();
 
-                    binding.createButton.setVisibility(View.VISIBLE);
+                    binding.createButton.setVisibility(View.INVISIBLE);
                     binding.habitProgress.setVisibility(View.INVISIBLE);
                 }
             });

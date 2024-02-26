@@ -1,20 +1,47 @@
 package it.appventurers.taskflow.data.repository.user;
 
+
+import static it.appventurers.taskflow.util.Constant.ENCRYPTED_SHARED_PREFERENCES_FILE;
+import static it.appventurers.taskflow.util.Constant.TOKEN;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
+
 import it.appventurers.taskflow.data.source.user.BaseRemoteUserAuth;
+import it.appventurers.taskflow.database.AppDatabase;
+import it.appventurers.taskflow.database.UserDao;
+import it.appventurers.taskflow.model.Habit;
 import it.appventurers.taskflow.model.Result;
 import it.appventurers.taskflow.model.User;
+import it.appventurers.taskflow.util.EncryptedSharedPreferencesUtil;
 
 public class UserRepository implements IUserCallback{
 
     private final BaseRemoteUserAuth remoteUserAuth;
     private final MutableLiveData<Result> userData;
+    private Context context;
+    private UserDao userDao;
+    private final AppDatabase appDatabase;
 
-    public UserRepository(BaseRemoteUserAuth remoteUserAuth) {
+
+
+
+    public UserRepository(Context context, BaseRemoteUserAuth remoteUserAuth) {
+        this.context = context.getApplicationContext();
         this.remoteUserAuth = remoteUserAuth;
         this.remoteUserAuth.setBaseRemoteUserAuth(this);
         userData = new MutableLiveData<>();
+        this.appDatabase = AppDatabase.getDatabase(context);
+        this.userDao = appDatabase.userDao();
     }
 
     public MutableLiveData<Result> getUserData() {
@@ -22,8 +49,10 @@ public class UserRepository implements IUserCallback{
     }
 
     public User getLoggedUser() {
-        return remoteUserAuth.getLoggedUser();
+            return remoteUserAuth.getLoggedUser();
     }
+
+
 
     public void signUp(String email, String password) {
         remoteUserAuth.signUp(email, password);

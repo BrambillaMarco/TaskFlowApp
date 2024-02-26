@@ -92,7 +92,7 @@ public class AccountFragment extends Fragment {
 
         try {
             String password = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
-                    PASSWORD + userViewModel.getLoggedUser().getuId());
+                    PASSWORD + userViewModel.getLoggedUser().getUId());
             binding.passwordEditText.setText(password);
         } catch (GeneralSecurityException | IOException e) {
             binding.passwordEditText.setText("");
@@ -117,11 +117,11 @@ public class AccountFragment extends Fragment {
         binding.deleteButton.setOnClickListener(view1 -> {
             try {
                 encryptedSharedPreferences.deleteCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
-                        EMAIL_ADDRESS + userViewModel.getLoggedUser().getuId());
+                        EMAIL_ADDRESS + userViewModel.getLoggedUser().getUId());
                 encryptedSharedPreferences.deleteCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
-                        PASSWORD + userViewModel.getLoggedUser().getuId());
+                        PASSWORD + userViewModel.getLoggedUser().getUId());
                 encryptedSharedPreferences.deleteCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
-                        TOKEN + userViewModel.getLoggedUser().getuId());
+                        TOKEN + userViewModel.getLoggedUser().getUId());
             } catch (GeneralSecurityException | IOException e) {
                 Snackbar.make(view,
                                 getString(R.string.error_deleting),

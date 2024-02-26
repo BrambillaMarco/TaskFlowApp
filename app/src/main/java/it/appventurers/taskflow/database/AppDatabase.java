@@ -6,10 +6,12 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import it.appventurers.taskflow.model.Habit;
+import it.appventurers.taskflow.model.User;
 
-@Database(entities = {Habit.class}, version = 1)
+@Database(entities = {Habit.class, User.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract HabitDao habitDao();
+    public abstract UserDao userDao();
 
     private static volatile AppDatabase INSTANCE;
 
