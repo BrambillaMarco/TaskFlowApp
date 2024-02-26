@@ -199,4 +199,11 @@ public class HabitFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        binding = null;
+    }
 }

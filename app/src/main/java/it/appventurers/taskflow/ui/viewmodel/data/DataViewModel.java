@@ -21,9 +21,7 @@ public class DataViewModel extends ViewModel {
 
     private final DataRepository dataRepository;
     private MutableLiveData<Result> data;
-    private MutableLiveData<Result> habitData = new MutableLiveData<>();
     private MutableLiveData<User> userInfo;
-    private LiveData<List<Habit>> habitsLiveData;
 
 
     public DataViewModel(DataRepository dataRepository) {
@@ -62,10 +60,6 @@ public class DataViewModel extends ViewModel {
         dataRepository.getAllHabit(user);
         setData();
     }
-
-
-
-
 
     public void updateHabit(User user, Habit habit) {
         dataRepository.updateHabit(user, habit);

@@ -14,6 +14,7 @@ public class Constant {
     public static final String DAILY = "daily";
     public static final String TO_DO = "to do";
     public static final String BASE_WEATHER_SERVER = "https://api.weatherapi.com/v1/";
+    public static final String APP_DATABASE = "taskflow_database";
     public static final String HABIT_FRAGMENT = "HabitFragment";
     public static final String DAILY_FRAGMENT = "DailyFragment";
     public static final String TO_DO_FRAGMENT = "ToDoFragment";

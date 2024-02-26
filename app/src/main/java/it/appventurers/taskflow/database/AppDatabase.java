@@ -1,5 +1,7 @@
 package it.appventurers.taskflow.database;
 
+import static it.appventurers.taskflow.util.Constant.APP_DATABASE;
+
 import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -18,7 +20,7 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                    AppDatabase.class, "taskflow_database")
+                                    AppDatabase.class, APP_DATABASE)
                             .fallbackToDestructiveMigration()
                             .build();
                 }

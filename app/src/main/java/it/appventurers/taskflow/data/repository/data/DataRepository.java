@@ -39,8 +39,7 @@ public class DataRepository implements IDataCallback {
         remoteData.setBaseRemoteData(this);
         data = new MutableLiveData<>();
         userInfo = new MutableLiveData<>();
-
-        // Inizializza il database Room e il DAO delle abitudini
+        
         AppDatabase db = Room.databaseBuilder(context.getApplicationContext(),
                 AppDatabase.class, "taskflow_database").build();
         this.habitDao = db.habitDao();
@@ -79,13 +78,11 @@ public class DataRepository implements IDataCallback {
     public void saveHabit(User user, Habit habit) {
         new Thread(() -> {
             if (isConnected()) {
-                // Salvataggio remoto con BaseRemoteData
                 habit.setSynced(true);
                 remoteData.saveHabit(user, habit);
             } else {
                 habit.setSynced(false);
             }
-            // Salvataggio locale con Room
             habitDao.insert(habit);
         }).start();
     }
@@ -129,9 +126,9 @@ public class DataRepository implements IDataCallback {
 
     private void postLocalHabits(String userId) {
         new Thread(() -> {
-            List<Habit> localHabits = habitDao.getHabitsByUserIdNonLive(userId); // Assumi l'esistenza di questo metodo.
+            List<Habit> localHabits = habitDao.getHabitsByUserIdNonLive(userId);
             Result.HabitSuccess result = new Result.HabitSuccess(new ArrayList<>(localHabits));
-            data.postValue(result); // Utilizza LiveData per postare i risultati.
+            data.postValue(result);
         }).start();
     }
     public void updateHabit(User user, Habit habit) {
