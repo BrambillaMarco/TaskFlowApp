@@ -1,5 +1,7 @@
 package it.appventurers.taskflow.data.repository.data;
 
+import static it.appventurers.taskflow.util.Constant.APP_DATABASE;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -20,10 +22,8 @@ import it.appventurers.taskflow.data.source.data.BaseRemoteData;
 import it.appventurers.taskflow.database.AppDatabase;
 import it.appventurers.taskflow.database.HabitDao;
 import it.appventurers.taskflow.database.UserDao;
-import it.appventurers.taskflow.model.Daily;
 import it.appventurers.taskflow.model.Habit;
 import it.appventurers.taskflow.model.Result;
-import it.appventurers.taskflow.model.ToDo;
 import it.appventurers.taskflow.model.User;
 
 public class DataRepository implements IDataCallback {
@@ -36,7 +36,6 @@ public class DataRepository implements IDataCallback {
     private Context context;
     private Executor ioExecutor;
     private Handler mainThreadHandler;
-    protected IDataCallback dataCallback;
 
 
     public DataRepository(Context context, BaseRemoteData remoteData) {
@@ -47,8 +46,9 @@ public class DataRepository implements IDataCallback {
         userInfo = new MutableLiveData<>();
         this.ioExecutor = Executors.newSingleThreadExecutor();
         this.mainThreadHandler = new Handler(Looper.getMainLooper());
-
-        AppDatabase db = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "taskflow_database")
+        
+        AppDatabase db = Room.databaseBuilder(context.getApplicationContext(),
+                AppDatabase.class, APP_DATABASE)
                 .fallbackToDestructiveMigration()
                 .build();
         this.habitDao = db.habitDao();
@@ -144,12 +144,9 @@ public class DataRepository implements IDataCallback {
             remoteData.saveHabit(user, habit);
             return true;
         } catch (Exception e) {
-            Log.e("DataRepository", "Errore nel salvataggio remoto: ", e);
             return false;
         }
     }
-
-
 
     public void getAllHabit(User user) {
         if(isConnected()){
@@ -238,38 +235,6 @@ public class DataRepository implements IDataCallback {
         }}).start();
     }
 
-    public void saveDaily(User user, Daily daily) {
-        remoteData.saveDaily(user, daily);
-    }
-
-    public void getAllDaily(User user) {
-        remoteData.getAllDaily(user);
-    }
-
-    public void updateDaily(User user, Daily daily) {
-        remoteData.updateDaily(user, daily);
-    }
-
-    public void deleteDaily(User user, Daily daily) {
-        remoteData.deleteDaily(user, daily);
-    }
-
-    public void saveToDo(User user, ToDo toDo) {
-        remoteData.saveToDo(user, toDo);
-    }
-
-    public void getAllToDo(User user) {
-        remoteData.getAllToDo(user);
-    }
-
-    public void updateToDo(User user, ToDo toDo) {
-        remoteData.updateToDo(user, toDo);
-    }
-
-    public void deleteToDo(User user, ToDo toDo) {
-        remoteData.deleteToDo(user, toDo);
-    }
-
     @Override
     public void onSuccessUser() {
         Result.UserSuccess result = new Result.UserSuccess(null);
@@ -299,30 +264,6 @@ public class DataRepository implements IDataCallback {
     @Override
     public void onSuccessGetHabit(ArrayList<Habit> habitList) {
         Result.HabitSuccess result = new Result.HabitSuccess(habitList);
-        data.postValue(result);
-    }
-
-    @Override
-    public void onSuccessDaily(Daily daily) {
-        Result.DailySuccess result = new Result.DailySuccess(daily);
-        data.postValue(result);
-    }
-
-    @Override
-    public void onSuccessGetDaily(ArrayList<Daily> dailyList) {
-        Result.DailySuccess result = new Result.DailySuccess(dailyList);
-        data.postValue(result);
-    }
-
-    @Override
-    public void onSuccessToDo(ToDo toDo) {
-        Result.ToDoSuccess result = new Result.ToDoSuccess(toDo);
-        data.postValue(result);
-    }
-
-    @Override
-    public void onSuccessGetToDo(ArrayList<ToDo> toDoList) {
-        Result.ToDoSuccess result = new Result.ToDoSuccess(toDoList);
         data.postValue(result);
     }
 

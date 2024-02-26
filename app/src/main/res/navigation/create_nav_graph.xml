@@ -10,14 +10,4 @@
         android:name="it.appventurers.taskflow.ui.elements.create.CreateHabitFragment"
         android:label="fragment_create_habit"
         tools:layout="@layout/fragment_create_habit" />
-    <fragment
-        android:id="@+id/createDailyFragment"
-        android:name="it.appventurers.taskflow.ui.elements.create.CreateDailyFragment"
-        android:label="fragment_create_daily"
-        tools:layout="@layout/fragment_create_daily" />
-    <fragment
-        android:id="@+id/createToDoFragment"
-        android:name="it.appventurers.taskflow.ui.elements.create.CreateToDoFragment"
-        android:label="fragment_create_to_do"
-        tools:layout="@layout/fragment_create_to_do" />
 </navigation>

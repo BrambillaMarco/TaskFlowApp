@@ -1,8 +1,6 @@
 package it.appventurers.taskflow.data.source.data;
 
-import static it.appventurers.taskflow.util.Constant.DAILY;
 import static it.appventurers.taskflow.util.Constant.HABIT;
-import static it.appventurers.taskflow.util.Constant.TO_DO;
 import static it.appventurers.taskflow.util.Constant.USER;
 
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -11,23 +9,17 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
-import it.appventurers.taskflow.model.Daily;
 import it.appventurers.taskflow.model.Habit;
-import it.appventurers.taskflow.model.ToDo;
 import it.appventurers.taskflow.model.User;
 
 public class RemoteData extends BaseRemoteData{
 
     private FirebaseFirestore db;
     private final ArrayList<Habit> habitList;
-    private ArrayList<Daily> dailyList;
-    private ArrayList<ToDo> toDoList;
 
     public RemoteData() {
         db = FirebaseFirestore.getInstance();
         habitList = new ArrayList<>();
-        dailyList = new ArrayList<>();
-        toDoList = new ArrayList<>();
     }
 
     @Override
@@ -145,101 +137,6 @@ public class RemoteData extends BaseRemoteData{
                         dataCallback.onSuccessHabit(null);
                     } else {
                         dataCallback.onFailure("Unable to delete habit");
-                    }
-                });
-    }
-
-    @Override
-    public void saveDaily(User user, Daily daily) {
-        db.collection(USER).document(user.getUId())
-                .collection(DAILY).document(daily.getName())
-                .set(daily).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        dataCallback.onSuccessDaily(daily);
-                    } else {
-                        dataCallback.onFailure("Unable to save daily");
-                    }
-                });
-    }
-
-    @Override
-    public void getAllDaily(User user) {
-        dailyList = new ArrayList<>();
-        db.collection(USER).document(user.getUId())
-                .collection(DAILY).get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            dailyList.add(document.toObject(Daily.class));
-                        }
-                        dailyList.add(new Daily());
-                        dataCallback.onSuccessGetDaily(dailyList);
-                    } else {
-                        dataCallback.onFailure("Unable to load the data");
-                    }
-                });
-    }
-
-    @Override
-    public void updateDaily(User user, Daily daily) {
-
-    }
-
-    @Override
-    public void deleteDaily(User user, Daily daily) {
-        db.collection(USER).document(user.getUId())
-                .collection(DAILY).document(daily.getName())
-                .delete().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        dataCallback.onSuccessDaily(null);
-                    } else {
-                        dataCallback.onFailure("Unable to delete daily");
-                    }
-                });
-    }
-
-    @Override
-    public void saveToDo(User user, ToDo toDo) {
-        db.collection(USER).document(user.getUId())
-                .collection(TO_DO).document(toDo.getName())
-                .set(toDo).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        dataCallback.onSuccessToDo(toDo);
-                    } else {
-                        dataCallback.onFailure("Unable to save to do");
-                    }
-                });
-    }
-
-    @Override
-    public void getAllToDo(User user) {
-        toDoList = new ArrayList<>();
-        db.collection(USER).document(user.getUId())
-                .collection(TO_DO).get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            toDoList.add(document.toObject(ToDo.class));
-                        }
-                        dataCallback.onSuccessGetToDo(toDoList);
-                    } else {
-                        dataCallback.onFailure("Unable to load the data");
-                    }
-                });
-    }
-
-    @Override
-    public void updateToDo(User user, ToDo toDo) {
-
-    }
-
-    @Override
-    public void deleteToDo(User user, ToDo toDo) {
-        db.collection(USER).document(user.getUId())
-                .collection(TO_DO).document(toDo.getName())
-                .delete().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        dataCallback.onSuccessToDo(null);
-                    } else {
-                        dataCallback.onFailure("Unable to delete to do");
                     }
                 });
     }

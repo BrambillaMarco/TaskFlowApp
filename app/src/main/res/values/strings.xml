@@ -70,7 +70,7 @@
     <string name="habit_updated">Habit updated</string>
     <string name="daily_created">Daily created</string>
     <string name="to_do_created">To do created</string>
-    <string name="error_position">Couldn\'t locate the device</string>
+    <string name="error_position">Unable to locate the device</string>
     <string name="permission_granted">Permission granted</string>
     <string name="permission_denied">Permission denied. Please accept the permission</string>
     <string name="habit_deleted">Habit deleted</string>

@@ -1,8 +1,6 @@
 package it.appventurers.taskflow.ui.elements.main;
 
 import static it.appventurers.taskflow.util.Constant.HABIT;
-import static it.appventurers.taskflow.util.Constant.HABIT_FRAGMENT;
-import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -181,7 +179,6 @@ public class HabitFragment extends Fragment {
                                 Bundle bundle = new Bundle();
                                 bundle.putParcelable(HABIT, habitList.get(position));
                                 Intent intent = new Intent(getContext(), CreateActivity.class);
-                                intent.putExtra(LOAD_FRAGMENT, HABIT_FRAGMENT);
                                 intent.putExtra(HABIT, bundle);
                                 startActivity(intent);
                                 requireActivity().finish();

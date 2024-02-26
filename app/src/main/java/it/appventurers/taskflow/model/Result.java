@@ -11,8 +11,6 @@ public abstract class Result {
     public boolean isSuccess() {
         return this instanceof UserSuccess ||
                 this instanceof HabitSuccess ||
-                this instanceof DailySuccess ||
-                this instanceof ToDoSuccess ||
                 this instanceof WeatherSuccess;
     }
 
@@ -50,54 +48,6 @@ public abstract class Result {
 
         public ArrayList<Habit> getHabitList() {
             return habitList;
-        }
-    }
-
-    public static final class DailySuccess extends Result {
-
-        private final Daily daily;
-        private final ArrayList<Daily> dailyList;
-
-        public DailySuccess(ArrayList<Daily> dailyList) {
-            this.daily = null;
-            this.dailyList = dailyList;
-        }
-
-        public DailySuccess(Daily daily) {
-            this.daily = daily;
-            this.dailyList = null;
-        }
-
-        public Daily getDaily() {
-            return daily;
-        }
-
-        public ArrayList<Daily> getDailyList() {
-            return dailyList;
-        }
-    }
-
-    public static final class ToDoSuccess extends Result {
-
-        private final ToDo toDo;
-        private final ArrayList<ToDo> toDoList;
-
-        public ToDoSuccess(ArrayList<ToDo> toDoList) {
-            this.toDo = null;
-            this.toDoList = toDoList;
-        }
-
-        public ToDoSuccess(ToDo toDo) {
-            this.toDo = toDo;
-            this.toDoList = null;
-        }
-
-        public ToDo getToDo() {
-            return toDo;
-        }
-
-        public ArrayList<ToDo> getToDoList() {
-            return toDoList;
         }
     }
 

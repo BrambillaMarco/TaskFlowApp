@@ -67,11 +67,12 @@
     <string name="email_sent">Email inviata</string>
     <string name="insert_email">Inserisci email</string>
     <string name="insert_fields">Inserisci tutti i campi</string>
-    <string name="habit_created">Habit creata</string>
-    <string name="habit_updated">Habit aggiornata</string>
+    <string name="habit_created">Abitudine creata</string>
+    <string name="habit_updated">Abitudine aggiornata</string>
     <string name="daily_created">Daily creata</string>
     <string name="to_do_created">To do creata</string>
     <string name="error_position">Impossibile localizzare il device</string>
     <string name="permission_granted">Permesso garantito</string>
     <string name="permission_denied">Permesso negato. Perfavore accettare il permesso</string>
+    <string name="habit_deleted">Abitudine cancellata</string>
 </resources>

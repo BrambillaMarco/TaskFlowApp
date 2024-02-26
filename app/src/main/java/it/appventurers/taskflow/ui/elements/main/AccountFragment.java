@@ -145,69 +145,6 @@ public class AccountFragment extends Fragment {
                 }
             });
         });
-
-        binding.languageButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (checkedId == R.id.english_button) {
-                try {
-                    encryptedSharedPreferences.updateCredentialInformationEncrypted(
-                            ENCRYPTED_SHARED_PREFERENCES_FILE,
-                            LANGUAGE,
-                            ENGLISH);
-
-                    Intent intent=new Intent(getActivity(),MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    requireActivity().finish();
-                } catch (GeneralSecurityException | IOException ignored) {
-                    Log.d("ciao", "errore nel update lingua inglese");
-                }
-            } else if (checkedId == R.id.italian_button) {
-                try {
-                    encryptedSharedPreferences.updateCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
-                            LANGUAGE,
-                            ITALIANO);
-
-                    Intent intent=new Intent(getActivity(),MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    requireActivity().finish();
-                } catch (GeneralSecurityException | IOException ignored) {
-                    Log.d("ciao", "errore nel update lingua italiano");
-                }
-            }
-        });
-
-        binding.themeButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (checkedId == R.id.light_button) {
-                try {
-                    encryptedSharedPreferences.updateCredentialInformationEncrypted(
-                            ENCRYPTED_SHARED_PREFERENCES_FILE,
-                            THEME_DARK,
-                            "false");
-
-                    Intent intent=new Intent(getActivity(),MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    requireActivity().finish();
-                } catch (GeneralSecurityException | IOException ignored) {
-                    Log.d("ciao", "errore nel update tema chiaro");
-                }
-            } else if (checkedId == R.id.dark_button) {
-                try {
-                    encryptedSharedPreferences.updateCredentialInformationEncrypted(
-                            ENCRYPTED_SHARED_PREFERENCES_FILE,
-                            THEME_DARK,
-                            "true");
-
-                    Intent intent=new Intent(getActivity(),MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    requireActivity().finish();
-                } catch (GeneralSecurityException | IOException ignored) {
-                    Log.d("ciao", "errore nel update tema scuro");
-                }
-            }
-        });
     }
     @Override
     public void onDestroy () {

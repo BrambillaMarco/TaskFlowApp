@@ -1,8 +1,6 @@
 package it.appventurers.taskflow.ui.elements.create;
 
 import static it.appventurers.taskflow.util.Constant.HABIT;
-import static it.appventurers.taskflow.util.Constant.HABIT_FRAGMENT;
-import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -171,7 +169,6 @@ public class CreateHabitFragment extends Fragment {
                             Snackbar.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(getContext(), MainActivity.class);
-                    intent.putExtra(LOAD_FRAGMENT, HABIT_FRAGMENT);
                     startActivity(intent);
                     requireActivity().finish();
                 } else {
@@ -196,7 +193,6 @@ public class CreateHabitFragment extends Fragment {
                             Snackbar.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(getContext(), MainActivity.class);
-                    intent.putExtra(LOAD_FRAGMENT, HABIT_FRAGMENT);
                     startActivity(intent);
                     requireActivity().finish();
                 } else {
@@ -213,7 +209,6 @@ public class CreateHabitFragment extends Fragment {
 
         binding.backButton.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), MainActivity.class);
-            intent.putExtra(LOAD_FRAGMENT, HABIT_FRAGMENT);
             startActivity(intent);
             requireActivity().finish();
         });
@@ -270,7 +265,6 @@ public class CreateHabitFragment extends Fragment {
                                 Snackbar.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(getContext(), MainActivity.class);
-                        intent.putExtra(LOAD_FRAGMENT, HABIT_FRAGMENT);
                         startActivity(intent);
                         requireActivity().finish();
                     } else {

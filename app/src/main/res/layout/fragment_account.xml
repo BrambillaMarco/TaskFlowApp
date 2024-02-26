@@ -1,312 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.elements.main.AccountFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/account_info_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="24dp"
+        android:text="@string/account_info"
+        android:textSize="25sp">
+    </com.google.android.material.textview.MaterialTextView>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/account_info_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="24dp"
-            android:text="@string/account_info"
-            android:textSize="25sp">
-        </com.google.android.material.textview.MaterialTextView>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email_text_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/account_info_text"
+        android:layout_marginTop="24dp"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/email"
+        android:enabled="false"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:errorEnabled="true">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email_text_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/accept_email_button"
-            app:layout_constraintTop_toBottomOf="@id/account_info_text"
-            android:layout_marginTop="24dp"
-            app:endIconMode="clear_text"
-            app:startIconDrawable="@drawable/email"
-            android:enabled="false"
-            android:layout_marginStart="10dp"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:text="@{Email}">
-            </com.google.android.material.textfield.TextInputEditText>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/modify_email_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?attr/materialIconButtonStyle"
-            app:layout_constraintEnd_toStartOf="@id/denied_email_button"
-            app:layout_constraintBaseline_toBaselineOf="@id/email_text_layout"
-            app:icon="@drawable/pencil"
-            app:iconTint="@color/black"
-            android:contentDescription="@string/modify"
-            android:layout_marginStart="12dp">
-        </com.google.android.material.button.MaterialButton>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/accept_email_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?attr/materialIconButtonStyle"
-            app:layout_constraintEnd_toStartOf="@id/denied_email_button"
-            app:layout_constraintBaseline_toBaselineOf="@id/email_text_layout"
-            app:icon="@drawable/done"
-            app:iconTint="@color/black"
-            android:contentDescription="@string/accept"
-            android:visibility="invisible"
-            android:layout_marginStart="12dp">
-        </com.google.android.material.button.MaterialButton>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/denied_email_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?attr/materialIconButtonStyle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBaseline_toBaselineOf="@id/email_text_layout"
-            app:icon="@drawable/delete"
-            app:iconTint="@color/black"
-            android:contentDescription="@string/denied"
-            android:visibility="invisible">
-        </com.google.android.material.button.MaterialButton>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/password_text_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/accept_password_button"
-            app:layout_constraintTop_toBottomOf="@id/email_text_layout"
-            android:layout_marginTop="24dp"
-            app:endIconMode="clear_text"
-            app:startIconDrawable="@drawable/password"
-            android:enabled="false"
-            android:layout_marginStart="10dp"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:text="@{Password}">
-            </com.google.android.material.textfield.TextInputEditText>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/modify_password_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?attr/materialIconButtonStyle"
-            app:layout_constraintEnd_toStartOf="@id/denied_password_button"
-            app:layout_constraintBaseline_toBaselineOf="@id/password_text_layout"
-            app:icon="@drawable/pencil"
-            app:iconTint="@color/black"
-            android:contentDescription="@string/modify"
-            android:layout_marginStart="12dp">
-        </com.google.android.material.button.MaterialButton>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/accept_password_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?attr/materialIconButtonStyle"
-            app:layout_constraintEnd_toStartOf="@id/denied_password_button"
-            app:layout_constraintBaseline_toBaselineOf="@id/password_text_layout"
-            app:icon="@drawable/done"
-            app:iconTint="@color/black"
-            android:contentDescription="@string/accept"
-            android:visibility="invisible"
-            android:layout_marginStart="12dp">
-        </com.google.android.material.button.MaterialButton>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/denied_password_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?attr/materialIconButtonStyle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBaseline_toBaselineOf="@id/password_text_layout"
-            app:icon="@drawable/delete"
-            app:iconTint="@color/black"
-            android:contentDescription="@string/denied"
-            android:visibility="invisible">
-        </com.google.android.material.button.MaterialButton>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/logout_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.Material3.Button.TextButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/password_text_layout"
-            android:text="@string/logout"
-            android:textSize="15sp"
-            android:layout_marginTop="24dp"
-            android:textAlignment="textStart">
-        </com.google.android.material.button.MaterialButton>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/delete_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.Material3.Button.TextButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/logout_button"
-            android:text="@string/delete_account"
-            android:textSize="15sp"
-            android:layout_marginTop="12dp"
-            android:textAlignment="textStart">
-        </com.google.android.material.button.MaterialButton>
-
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/account_divider"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/delete_button"
-            android:layout_marginTop="24dp">
-        </com.google.android.material.divider.MaterialDivider>
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:text="@{Email}">
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/settings_text"
-            android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_text_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/email_text_layout"
+        android:layout_marginTop="24dp"
+        app:endIconMode="password_toggle"
+        app:startIconDrawable="@drawable/password"
+        android:enabled="false"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password_edit_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/account_divider"
-            android:layout_marginTop="24dp"
-            android:text="@string/settings"
-            android:textSize="25sp">
-        </com.google.android.material.textview.MaterialTextView>
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:text="@{Password}">
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/language_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/settings_text"
-            android:text="@string/language"
-            android:layout_marginTop="36dp"
-            android:layout_marginStart="10dp">
-        </com.google.android.material.textview.MaterialTextView>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button.TextButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/password_text_layout"
+        android:text="@string/logout"
+        android:textSize="15sp"
+        android:layout_marginTop="24dp"
+        android:textAlignment="textStart">
+    </com.google.android.material.button.MaterialButton>
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/language_button_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/language_text"
-            app:layout_constraintTop_toBottomOf="@id/settings_text"
-            app:layout_constraintBottom_toTopOf="@id/theme_button_group"
-            app:layout_constraintVertical_chainStyle="packed"
-            android:layout_marginTop="26dp"
-            android:layout_marginStart="48dp"
-            app:singleSelection="true">
-
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                android:id="@+id/english_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:icon="@drawable/english"
-                android:paddingStart="32dp"
-                android:paddingEnd="32dp"
-                app:iconTint="@null">
-            </com.google.android.material.button.MaterialButton>
-
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                android:id="@+id/italian_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:icon="@drawable/italian"
-                android:paddingStart="32dp"
-                android:paddingEnd="32dp"
-                app:iconTint="@null">
-            </com.google.android.material.button.MaterialButton>
-        </com.google.android.material.button.MaterialButtonToggleGroup>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/theme_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/language_text"
-            android:text="@string/theme"
-            android:layout_marginTop="60dp"
-            android:layout_marginStart="10dp">
-        </com.google.android.material.textview.MaterialTextView>
-
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/theme_button_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/theme_text"
-            app:layout_constraintTop_toBottomOf="@id/language_button_group"
-            app:layout_constraintVertical_chainStyle="packed"
-            android:layout_marginTop="26dp"
-            app:singleSelection="true"
-            android:layout_marginStart="66dp">
-
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                android:id="@+id/light_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:icon="@drawable/sun"
-                android:paddingStart="32dp"
-                android:paddingEnd="32dp"
-                app:iconTint="@null">
-            </com.google.android.material.button.MaterialButton>
-
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                android:id="@+id/dark_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:icon="@drawable/moon"
-                android:paddingStart="32dp"
-                android:paddingEnd="32dp"
-                app:iconTint="@null">
-            </com.google.android.material.button.MaterialButton>
-        </com.google.android.material.button.MaterialButtonToggleGroup>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/notifications_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/theme_text"
-            android:text="@string/notifications"
-            android:layout_marginTop="55dp"
-            android:layout_marginStart="10dp">
-        </com.google.android.material.textview.MaterialTextView>
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/notifications_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/notifications_text"
-            app:layout_constraintBaseline_toBaselineOf="@id/notifications_text"
-            android:layout_marginStart="30dp"
-            android:checked="true">
-        </com.google.android.material.materialswitch.MaterialSwitch>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button.TextButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logout_button"
+        android:text="@string/delete_account"
+        android:textSize="15sp"
+        android:layout_marginTop="12dp"
+        android:textAlignment="textStart">
+    </com.google.android.material.button.MaterialButton>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,15 +1,9 @@
 package it.appventurers.taskflow.ui.elements.main;
 
 import static it.appventurers.taskflow.util.Constant.ENCRYPTED_SHARED_PREFERENCES_FILE;
-import static it.appventurers.taskflow.util.Constant.ENGLISH;
-import static it.appventurers.taskflow.util.Constant.ITALIANO;
 import static it.appventurers.taskflow.util.Constant.LANGUAGE;
-import static it.appventurers.taskflow.util.Constant.LOAD_FRAGMENT;
 import static it.appventurers.taskflow.util.Constant.THEME_DARK;
-import static it.appventurers.taskflow.util.Constant.DAILY_FRAGMENT;
 import static it.appventurers.taskflow.util.Constant.DAY;
-import static it.appventurers.taskflow.util.Constant.HABIT_FRAGMENT;
-import static it.appventurers.taskflow.util.Constant.TO_DO_FRAGMENT;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -25,8 +19,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.LocaleList;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -95,28 +87,16 @@ public class MainActivity extends AppCompatActivity {
         FusedLocationProviderClient fusedLocationClient = LocationServices
                 .getFusedLocationProviderClient(this);
 
-        String fragmentToLoad = getIntent().getStringExtra(LOAD_FRAGMENT);
-
-        if (HABIT_FRAGMENT.equals(fragmentToLoad)) {
-            navController.navigate(R.id.habitFragment);
-        } else if (DAILY_FRAGMENT.equals(fragmentToLoad)) {
-            navController.navigate(R.id.dailyFragment);
-        } else if (TO_DO_FRAGMENT.equals(fragmentToLoad)) {
-            navController.navigate(R.id.toDoFragment);
-        }
-
-
         try {
             String language = encryptedSharedPreferences.readCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
                     LANGUAGE);
-            Log.d("ciao" , language);
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
             Resources resources = this.getResources();
             Configuration configuration = resources.getConfiguration();
             resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-        } catch (GeneralSecurityException | IOException e) {
-            Log.d("ciao", "sono nell'eccezione");
+        } catch (GeneralSecurityException | IOException ignored) {
+
         }
 
         String theme;
@@ -205,30 +185,6 @@ public class MainActivity extends AppCompatActivity {
                 item.setIcon(R.drawable.habit_filled);
                 updateBottomNavigationIcons(R.id.habit_item);
                 binding.createButton.show();
-            } else if (selectedItem == R.id.daily_item) {
-                navController.navigate(R.id.dailyFragment, null,
-                        new NavOptions.Builder()
-                                .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
-                                .setExitAnim(androidx.navigation.ui.R.anim.nav_default_exit_anim)
-                                .setPopEnterAnim(androidx.navigation.ui.R.anim.nav_default_pop_enter_anim)
-                                .setPopExitAnim(androidx.navigation.ui.R.anim.nav_default_pop_exit_anim)
-                                .build());
-                item.setChecked(true);
-                item.setIcon(R.drawable.daily_filled);
-                updateBottomNavigationIcons(R.id.daily_item);
-                binding.createButton.show();
-            } else if (selectedItem == R.id.to_do_item) {
-                navController.navigate(R.id.toDoFragment, null,
-                        new NavOptions.Builder()
-                                .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
-                                .setExitAnim(androidx.navigation.ui.R.anim.nav_default_exit_anim)
-                                .setPopEnterAnim(androidx.navigation.ui.R.anim.nav_default_pop_enter_anim)
-                                .setPopExitAnim(androidx.navigation.ui.R.anim.nav_default_pop_exit_anim)
-                                .build());
-                item.setChecked(true);
-                item.setIcon(R.drawable.to_do_filled);
-                updateBottomNavigationIcons(R.id.to_do_item);
-                binding.createButton.show();
             } else if (selectedItem == R.id.account_item) {
                 navController.navigate(R.id.accountFragment, null,
                         new NavOptions.Builder()
@@ -241,48 +197,35 @@ public class MainActivity extends AppCompatActivity {
                 item.setIcon(R.drawable.account_filled);
                 updateBottomNavigationIcons(R.id.account_item);
                 binding.createButton.hide();
+            } else if (selectedItem == R.id.settings_item) {
+                navController.navigate(R.id.settingsFragment, null,
+                        new NavOptions.Builder()
+                                .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
+                                .setExitAnim(androidx.navigation.ui.R.anim.nav_default_exit_anim)
+                                .setPopEnterAnim(androidx.navigation.ui.R.anim.nav_default_pop_enter_anim)
+                                .setPopExitAnim(androidx.navigation.ui.R.anim.nav_default_pop_exit_anim)
+                                .build());
+                item.setChecked(true);
+                item.setIcon(R.drawable.settings_filled);
+                updateBottomNavigationIcons(R.id.settings_item);
+                binding.createButton.hide();
             }
             return false;
         });
 
         binding.createButton.setOnClickListener(view1 -> {
-            if (binding.mainBottomNavigationView.getSelectedItemId() == R.id.habit_item) {
-                Intent intent = new Intent(getBaseContext(), CreateActivity.class);
-                intent.putExtra(LOAD_FRAGMENT, HABIT_FRAGMENT);
-                startActivity(intent);
-                finish();
-            } else if (binding.mainBottomNavigationView.getSelectedItemId() == R.id.daily_item) {
-                Intent intent = new Intent(getBaseContext(), CreateActivity.class);
-                intent.putExtra(LOAD_FRAGMENT, DAILY_FRAGMENT);
-                startActivity(intent);
-                finish();
-            } else if (binding.mainBottomNavigationView.getSelectedItemId() == R.id.to_do_item) {
-                Intent intent = new Intent(getBaseContext(), CreateActivity.class);
-                intent.putExtra(LOAD_FRAGMENT, TO_DO_FRAGMENT);
-                startActivity(intent);
-                finish();
-            }
+            Intent intent = new Intent(getBaseContext(), CreateActivity.class);
+            startActivity(intent);
+            finish();
         });
 
     }
 
-    private void setAppLocale(String localeCode) {
-        if (localeCode == null || localeCode.isEmpty()) {
-            localeCode = "it";
-        }
-        Locale locale = new Locale(localeCode);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-    }
-
-
     private void updateBottomNavigationIcons(int selectedItemId) {
-        int[] itemIds = {R.id.habit_item, R.id.daily_item,
-                R.id.to_do_item, R.id.account_item};
-        int[] icons = {R.drawable.habit_outlined, R.drawable.daily_outline,
-                R.drawable.to_do_outlined, R.drawable.account_outlined};
+        int[] itemIds = {R.id.habit_item, R.id.account_item,
+                R.id.settings_item};
+        int[] icons = {R.drawable.habit_outlined, R.drawable.account_outlined,
+                R.drawable.settings_outlined};
 
         for (int i = 0; i < itemIds.length; i++) {
             if (itemIds[i] != selectedItemId) {
