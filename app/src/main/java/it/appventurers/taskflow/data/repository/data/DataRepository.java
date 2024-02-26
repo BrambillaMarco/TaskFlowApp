@@ -107,16 +107,16 @@ public class DataRepository implements IDataCallback {
 
                 if (isConnected) {
                     habit.setSynced(true);
-                    remoteData.saveHabit(user, habit);
+                    habitDao.insert(habit);
                     syncSaveHabits(user.getUId(), user.getEmail());
+                    remoteData.saveHabit(user, habit);
                 } else {
                     habit.setSynced(false);
+                    habitDao.insert(habit);
+                    mainThreadHandler.post(() -> {
+                        onSuccessHabit(habit);
+                    });
                     }
-
-                habitDao.insert(habit);
-                mainThreadHandler.post(() -> {
-                    onSuccessHabit(habit);
-                });
             } catch (Exception e) {
                 mainThreadHandler.post(() -> {
                     onFailure("Unable to save habit: " + e.getMessage());
@@ -179,18 +179,18 @@ public class DataRepository implements IDataCallback {
         ioExecutor.execute(() -> {
             try {
                 boolean isConnected = isConnected();
-
                 if (isConnected) {
-                    remoteData.updateHabit(user, habit);
+                    habitDao.update(habit);
                     habit.setSynced(true);
                     syncUpdateHabits(user.getUId(), user.getEmail());
+                    remoteData.updateHabit(user, habit);
                 } else {
                     habit.setSynced(false);
-                }
                     habitDao.update(habit);
                     mainThreadHandler.post(() -> {
-                    onSuccessHabit(habit);
-                });
+                        onSuccessHabit(habit);
+                    });
+                }
             } catch (Exception e) {
                 mainThreadHandler.post(() -> {
                     onFailure("Unable to update habit: " + e.getMessage());
