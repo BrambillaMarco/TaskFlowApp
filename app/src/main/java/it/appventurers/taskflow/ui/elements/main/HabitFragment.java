@@ -49,8 +49,6 @@ public class HabitFragment extends Fragment {
     private ArrayList<Habit> habitList;
     private RecyclerView.LayoutManager layoutManager;
 
-    private NavController navController;
-
     public HabitFragment() {
         // Required empty public constructor
     }
@@ -93,7 +91,7 @@ public class HabitFragment extends Fragment {
         layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
 
-        navController = NavHostFragment.findNavController(this);
+        NavController navController = NavHostFragment.findNavController(this);
 
         dataViewModel.getAllHabit(userViewModel.getLoggedUser());
         dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
@@ -148,7 +146,7 @@ public class HabitFragment extends Fragment {
                                                 habitList.get(position).getDifficulty());
                                 if (userViewModel.getLoggedUser().getCurrentLife() <= 0) {
                                     userViewModel.getLoggedUser().setXp(0);
-                                    if (userViewModel.getLoggedUser().getLevel() >= 1 &&
+                                    if (userViewModel.getLoggedUser().getLevel() > 1 &&
                                     userViewModel.getLoggedUser().getLevel() <= 10) {
                                         userViewModel.getLoggedUser()
                                                 .setLevel(userViewModel.getLoggedUser().getLevel() - 1);

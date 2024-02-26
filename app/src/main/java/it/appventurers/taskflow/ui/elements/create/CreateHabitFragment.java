@@ -8,19 +8,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.List;
 
 import it.appventurers.taskflow.R;
 import it.appventurers.taskflow.data.repository.data.DataRepository;
@@ -28,7 +24,6 @@ import it.appventurers.taskflow.data.repository.user.UserRepository;
 import it.appventurers.taskflow.databinding.FragmentCreateHabitBinding;
 import it.appventurers.taskflow.model.Habit;
 import it.appventurers.taskflow.model.Result;
-import it.appventurers.taskflow.model.User;
 import it.appventurers.taskflow.ui.elements.main.MainActivity;
 import it.appventurers.taskflow.ui.viewmodel.data.DataViewModel;
 import it.appventurers.taskflow.ui.viewmodel.data.DataViewModelFactory;
@@ -100,7 +95,6 @@ public class CreateHabitFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         if (bundle != null) {
             currentHabit = bundle.getParcelable(HABIT);
 
@@ -143,6 +137,9 @@ public class CreateHabitFragment extends Fragment {
 
         binding.saveButton.setOnClickListener(view1 -> {
             currentHabit.setNote(binding.noteEditText.getText().toString().trim());
+            binding.saveButton.setVisibility(View.INVISIBLE);
+            binding.deleteButton.setVisibility(View.INVISIBLE);
+            binding.habitProgress.setVisibility(View.VISIBLE);
 
             if(binding.difficultyButtonGroup.getCheckedButtonId() == R.id.trivial_button){
                 currentHabit.setDifficulty(1);
@@ -168,7 +165,7 @@ public class CreateHabitFragment extends Fragment {
                             getString(R.string.habit_updated),
                             Snackbar.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    Intent intent = new Intent(requireContext(), MainActivity.class);
                     startActivity(intent);
                     requireActivity().finish();
                 } else {
@@ -177,13 +174,18 @@ public class CreateHabitFragment extends Fragment {
                             error,
                             Snackbar.LENGTH_SHORT).show();
 
-                    binding.createButton.setVisibility(View.VISIBLE);
+                    binding.saveButton.setVisibility(View.VISIBLE);
+                    binding.deleteButton.setVisibility(View.VISIBLE);
                     binding.habitProgress.setVisibility(View.INVISIBLE);
                 }
             });
         });
 
-        binding.deleteButton.setOnClickListener(view12 -> {
+        binding.deleteButton.setOnClickListener(view1 -> {
+
+            binding.saveButton.setVisibility(View.INVISIBLE);
+            binding.deleteButton.setVisibility(View.INVISIBLE);
+            binding.habitProgress.setVisibility(View.VISIBLE);
 
             dataViewModel.deleteHabit(userViewModel.getLoggedUser(), currentHabit);
             dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
@@ -192,7 +194,7 @@ public class CreateHabitFragment extends Fragment {
                             getString(R.string.habit_deleted),
                             Snackbar.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    Intent intent = new Intent(requireContext(), MainActivity.class);
                     startActivity(intent);
                     requireActivity().finish();
                 } else {
@@ -201,14 +203,15 @@ public class CreateHabitFragment extends Fragment {
                             error,
                             Snackbar.LENGTH_SHORT).show();
 
-                    binding.createButton.setVisibility(View.INVISIBLE);
+                    binding.saveButton.setVisibility(View.VISIBLE);
+                    binding.deleteButton.setVisibility(View.VISIBLE);
                     binding.habitProgress.setVisibility(View.INVISIBLE);
                 }
             });
         });
 
         binding.backButton.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getContext(), MainActivity.class);
+            Intent intent = new Intent(requireContext(), MainActivity.class);
             startActivity(intent);
             requireActivity().finish();
         });
@@ -264,7 +267,7 @@ public class CreateHabitFragment extends Fragment {
                                 getString(R.string.habit_created),
                                 Snackbar.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        Intent intent = new Intent(requireContext(), MainActivity.class);
                         startActivity(intent);
                         requireActivity().finish();
                     } else {

@@ -32,7 +32,6 @@ public class CreateActivity extends AppCompatActivity {
 
 
         Bundle bundle = getIntent().getBundleExtra(HABIT);
-        navController.popBackStack();
         navController.navigate(R.id.createHabitFragment, bundle);
 
     }

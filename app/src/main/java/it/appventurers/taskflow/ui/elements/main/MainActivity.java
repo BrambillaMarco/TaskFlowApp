@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        binding.mainBottomNavigationView.setSelectedItemId(R.id.habit_item);
         binding.mainBottomNavigationView.setOnItemSelectedListener(item -> {
             int selectedItem = item.getItemId();
 

@@ -9,5 +9,14 @@
         android:id="@+id/createHabitFragment"
         android:name="it.appventurers.taskflow.ui.elements.create.CreateHabitFragment"
         android:label="fragment_create_habit"
-        tools:layout="@layout/fragment_create_habit" />
+        tools:layout="@layout/fragment_create_habit" >
+        <action
+            android:id="@+id/action_createHabitFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="it.appventurers.taskflow.ui.elements.main.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 </navigation>
