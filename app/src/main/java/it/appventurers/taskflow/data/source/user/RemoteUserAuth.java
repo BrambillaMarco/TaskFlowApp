@@ -63,25 +63,6 @@ public class RemoteUserAuth extends BaseRemoteUserAuth{
     }
 
     @Override
-    public void signInWithGoogle(String token) {
-        if (token != null) {
-            AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(token, null);
-            mAuth.signInWithCredential(firebaseCredential).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    if (user != null) {
-                        userCallback.onSuccessAuthUser(User.getInstance(user.getEmail(), user.getUid()));
-                    } else {
-                        userCallback.onFailure("Unable to sign in with Google");
-                    }
-                } else {
-                    userCallback.onFailure("Unable to sign in with Google");
-                }
-            });
-        }
-    }
-
-    @Override
     public void updatePassword(String password) {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {

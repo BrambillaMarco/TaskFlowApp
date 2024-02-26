@@ -30,11 +30,6 @@ public class UserViewModel extends ViewModel {
         setUserData();
     }
 
-    public void signInWithGoogle(String token) {
-        userRepository.signInWithGoogle(token);
-        setUserData();
-    }
-
     public void retrievePassword(String email) {
         userRepository.retrievePassword(email);
         setUserData();

@@ -104,31 +104,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        app:layout_constraintBottom_toTopOf="@id/google_login_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_button"
-        android:visibility="invisible">
-    </com.google.android.material.progressindicator.CircularProgressIndicator>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/google_login_button"
-        style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintTop_toBottomOf="@id/login_button"
-        android:text="@string/login_google"
-        android:textSize="16sp"
-        android:layout_marginTop="12dp"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/white"
-        app:icon="@drawable/google"
-        app:iconTint="@null"
-        app:iconGravity="textStart"
-        android:isCredential="true">
-    </com.google.android.material.button.MaterialButton>
+        android:visibility="invisible">
+    </com.google.android.material.progressindicator.CircularProgressIndicator>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/new_account_text"

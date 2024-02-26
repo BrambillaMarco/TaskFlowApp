@@ -95,7 +95,6 @@ public class LoginFragment extends Fragment {
 
             if (!email.isEmpty() && !password.isEmpty()) {
                 binding.loginButton.setVisibility(View.INVISIBLE);
-                binding.googleLoginButton.setVisibility(View.INVISIBLE);
                 binding.loginProgress.setVisibility(View.VISIBLE);
 
                 userViewModel.signIn(email, password);
@@ -137,7 +136,6 @@ public class LoginFragment extends Fragment {
                     }
 
                     binding.loginButton.setVisibility(View.VISIBLE);
-                    binding.googleLoginButton.setVisibility(View.VISIBLE);
                     binding.loginProgress.setVisibility(View.INVISIBLE);
                     binding.emailEditText.setText(null);
                     binding.passwordEditText.setText(null);
@@ -146,10 +144,6 @@ public class LoginFragment extends Fragment {
                 binding.emailTextLayout.setError(getString(R.string.error_credentials_empty));
                 binding.passwordTextLayout.setError(getString(R.string.error_credentials_empty));
             }
-        });
-
-        binding.googleLoginButton.setOnClickListener(view1 -> {
-
         });
 
         binding.forgotPasswordButton.setOnClickListener(view1 ->

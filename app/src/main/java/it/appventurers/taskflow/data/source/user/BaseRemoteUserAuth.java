@@ -17,8 +17,6 @@ public abstract class BaseRemoteUserAuth {
 
     public abstract void signIn(String email, String password);
 
-    public abstract void signInWithGoogle(String idToken);
-
     public abstract void updatePassword(String password);
 
     public abstract void updateEmail(String newEmail, String oldEmail, String password);

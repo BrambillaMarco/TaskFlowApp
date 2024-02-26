@@ -62,10 +62,6 @@ public class UserRepository implements IUserCallback{
         remoteUserAuth.signIn(email, password);
     }
 
-    public void signInWithGoogle(String token) {
-        remoteUserAuth.signInWithGoogle(token);
-    }
-
     public void logout() {
         remoteUserAuth.logout();
     }

@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="48dp"
-        android:src="@drawable/ic_launcher_foreground">
+        android:src="@drawable/logo_app">
     </com.google.android.material.imageview.ShapeableImageView>
 
     <androidx.fragment.app.FragmentContainerView
