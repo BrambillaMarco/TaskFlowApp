@@ -52,7 +52,6 @@
         android:layout_marginTop="24dp"
         app:endIconMode="password_toggle"
         app:startIconDrawable="@drawable/password"
-        android:enabled="false"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         app:errorEnabled="true">
@@ -63,6 +62,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/password"
             android:inputType="textPassword"
+            android:enabled="false"
             android:text="@{Password}">
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
