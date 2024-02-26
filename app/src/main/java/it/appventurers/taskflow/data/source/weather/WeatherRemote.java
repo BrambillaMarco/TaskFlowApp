@@ -55,7 +55,12 @@ public class WeatherRemote extends BaseWeatherRemote{
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                weatherCallback.onFailure(t.toString());
+                Weather weather = new Weather();
+                weather.setCity("Offline");
+                weather.setTemperature("15");
+                weather.setCode("3000");
+                weather.setDay("true");
+                weatherCallback.onSuccessWeather(weather);
             }
         });
     }

@@ -102,6 +102,8 @@ public class WeatherIconUtil {
                 return R.drawable.patchy_light_snow_with_thunder;
             case "1282":
                 return R.drawable.moderate_or_heavy_snow_with_thunder;
+            case "3000":
+                return R.drawable.cloud_connection;
             default:
                 return R.drawable.ic_launcher_foreground;
         }
@@ -205,6 +207,8 @@ public class WeatherIconUtil {
                 return R.drawable.patchy_light_snow_with_thunder;
             case "1282":
                 return R.drawable.moderate_or_heavy_snow_with_thunder;
+            case "3000":
+                return R.drawable.cloud_connection;
             default:
                 return R.drawable.ic_launcher_foreground;
         }
