@@ -15,6 +15,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -115,30 +116,38 @@ public class AccountFragment extends Fragment {
         });
 
         binding.deleteButton.setOnClickListener(view1 -> {
-            try {
-                encryptedSharedPreferences.deleteCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
-                        EMAIL_ADDRESS + userViewModel.getLoggedUser().getUId());
-                encryptedSharedPreferences.deleteCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
-                        PASSWORD + userViewModel.getLoggedUser().getUId());
-                encryptedSharedPreferences.deleteCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
-                        TOKEN + userViewModel.getLoggedUser().getUId());
-            } catch (GeneralSecurityException | IOException e) {
-                Snackbar.make(view,
-                                getString(R.string.error_deleting),
-                                Snackbar.LENGTH_SHORT)
-                        .show();
-            }
-            userViewModel.deleteUser();
-            userViewModel.getUserData().observe(getViewLifecycleOwner(), result -> {
-                if (result.isSuccess()) {
 
-                    Snackbar.make(
-                            view,
-                            getString(R.string.account_deleted),
-                            Snackbar.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getContext(), WelcomeActivity.class);
-                    startActivity(intent);
-                    requireActivity().finish();
+            dataViewModel.deleteUser(userViewModel.getLoggedUser());
+            dataViewModel.getData().observe(getViewLifecycleOwner(), result -> {
+                if (result.isSuccess()) {
+                    try {
+                        encryptedSharedPreferences.deleteCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
+                                EMAIL_ADDRESS + userViewModel.getLoggedUser().getUId());
+                        encryptedSharedPreferences.deleteCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
+                                PASSWORD + userViewModel.getLoggedUser().getUId());
+                        encryptedSharedPreferences.deleteCredentialInformationEncrypted(ENCRYPTED_SHARED_PREFERENCES_FILE,
+                                TOKEN + userViewModel.getLoggedUser().getUId());
+                    } catch (GeneralSecurityException | IOException e) {
+                        Snackbar.make(view,
+                                        getString(R.string.error_deleting),
+                                        Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                    userViewModel.deleteUser();
+                    userViewModel.getUserData().observe(getViewLifecycleOwner(), result1 -> {
+                        if (result1.isSuccess()) {
+                            Snackbar.make(
+                                    view,
+                                    getString(R.string.account_deleted),
+                                    Snackbar.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getContext(), WelcomeActivity.class);
+                            startActivity(intent);
+                            requireActivity().finish();
+                        } else {
+                            String error = ((Result.Fail) result1).getError();
+                            Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show();
+                        }
+                    });
                 } else {
                     String error = ((Result.Fail) result).getError();
                     Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show();
