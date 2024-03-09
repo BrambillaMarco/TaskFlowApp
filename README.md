@@ -3,8 +3,8 @@ An Android application for the course "Mobile Device Programming". This is a Uni
 
 Made by Group Appventurers:
 
--Federico Colciago 858643
 -Marco Brambilla   856428
+-Federico Colciago 858643
 -Lorenzo Mauro     869782
 
 ____________________________________________________________________________________________________________________________________
